@@ -1,0 +1,57 @@
+import Image from 'next/image';
+import Link from 'next/link';
+
+import brandLogo from '@/assets/images/books-maison-logo-light.svg';
+import FacebookIcon from '@/components/ui/facebook-icon';
+import InstagramIcon from '@/components/ui/instagram-icon';
+import XIcon from '@/components/ui/x-icon/x-icon';
+import YoutubeIcon from '@/components/ui/youtube-icon';
+
+export default function Footer() {
+  return (
+    <footer className="bg-black/85 py-16 text-white">
+      <div className="container grid grid-cols-12">
+        <div className="col-span-6 flex flex-col gap-5">
+          <Image src={brandLogo} alt="Brand logo" width="289" height="72" />
+          <p className="text-sm">
+            Address: 3 Phu Xa Street, Phu Thuong Ward, Tay Ho District, Hanoi
+          </p>
+          <p className="text-sm">Phone: (+84) 9 0606 35 98</p>
+          <p className="text-sm">© 2024 Books Maison. All rights reserved.</p>
+          <div className="mt-2 flex gap-8">
+            <Link href="#">
+              <FacebookIcon />
+            </Link>
+            <Link href="#">
+              <InstagramIcon />
+            </Link>
+            <Link href="#">
+              <XIcon />
+            </Link>
+            <Link href="#">
+              <YoutubeIcon />
+            </Link>
+          </div>
+        </div>
+        <div className="col-span-3">
+          <h2 className="mb-6 text-2xl font-semibold">Links</h2>
+          <div className="flex flex-col gap-3 text-sm">
+            <Link href="#">About Books Maison</Link>
+            <Link href="#">FAQ (Frequently Asked Questions)</Link>
+            <Link href="#">Authors</Link>
+            <Link href="#">Categories</Link>
+            <Link href="#">Terms and Conditions</Link>
+            <Link href="#">Privacy policy</Link>
+          </div>
+        </div>
+        <div className="col-span-3">
+          <h2 className="mb-6 text-2xl font-semibold">Working hours</h2>
+          <div className="flex flex-col gap-3 text-sm">
+            <p>Monday - Sunday, excluding holidays</p>
+            <p>08:00 am - 05:00 pm</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
