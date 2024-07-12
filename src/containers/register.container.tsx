@@ -2,7 +2,6 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -24,7 +23,6 @@ import {
 
 export default function RegisterContainer() {
   const [isRegistering, setIsRegistering] = useState(false);
-  const router = useRouter();
   const form = useForm<RegisterSchema>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -34,8 +32,26 @@ export default function RegisterContainer() {
   });
 
   const onSubmit = async (formData: RegisterSchema) => {
-    // TODO: fetch login API
-    console.log(formData);
+    try {
+      setIsRegistering(true);
+      await axios.post(
+        `${process.env['NEXT_PUBLIC_API_ENDPOINT']}/auth/register`,
+        formData,
+      );
+      const res = await axios.post(
+        `${process.env['NEXT_PUBLIC_API_ENDPOINT']}/auth/login`,
+        {
+          email: formData.email,
+          password: formData.password,
+        },
+      );
+      await axios.post('/api/auth/set-cookie', res.data);
+      document.location.href = '/';
+    } catch (error: any) {
+      toast.error(`Registration failed: ${error.response.data.message}`);
+    } finally {
+      setIsRegistering(false);
+    }
   };
 
   return (

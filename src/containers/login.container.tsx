@@ -2,7 +2,6 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -21,7 +20,6 @@ import { LoginSchema, loginSchema } from '@/lib/validators/login.validator';
 
 export default function LoginContainer() {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
-  const router = useRouter();
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -38,7 +36,7 @@ export default function LoginContainer() {
         formData,
       );
       await axios.post('/api/auth/set-cookie', res.data);
-      router.replace('/');
+      document.location.href = '/';
     } catch (error: any) {
       toast.error('Log in failed!');
     } finally {
@@ -83,7 +81,7 @@ export default function LoginContainer() {
           )}
         />
         <Button type="submit" disabled={isLoggingIn}>
-          {isLoggingIn ? 'Logging in' : 'Login'}
+          {isLoggingIn ? 'Logging in...' : 'Login'}
         </Button>
       </form>
     </Form>
