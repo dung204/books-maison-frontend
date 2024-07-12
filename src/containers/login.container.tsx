@@ -31,8 +31,19 @@ export default function LoginContainer() {
   });
 
   const onSubmit = async (formData: LoginSchema) => {
-    // TODO: fetch login API
-    console.log(formData);
+    try {
+      setIsLoggingIn(true);
+      const res = await axios.post(
+        `${process.env['NEXT_PUBLIC_API_ENDPOINT']}/auth/login`,
+        formData,
+      );
+      await axios.post('/api/auth/set-cookie', res.data);
+      router.replace('/');
+    } catch (error: any) {
+      toast.error('Log in failed!');
+    } finally {
+      setIsLoggingIn(false);
+    }
   };
 
   return (

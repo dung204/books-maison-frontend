@@ -1,9 +1,6 @@
 import { type Metadata } from 'next';
-import Image from 'next/image';
 import Link from 'next/link';
 
-import brandLogo from '@/assets/images/books-maison-logo-dark.svg';
-import loginBannerImage from '@/assets/images/library-banner-3.jpg';
 import LoginContainer from '@/containers/login.container';
 
 export const metadata: Metadata = {
