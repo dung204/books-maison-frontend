@@ -29,6 +29,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import LoadingIndicator from '@/components/ui/loading-indicator';
 
 export default function UserMenuContainer({}) {
   const { accessToken } = useAuth();
@@ -43,80 +44,79 @@ export default function UserMenuContainer({}) {
   }, [accessToken]);
 
   const handleLogout = async () => {
-    await axios.delete(`/api/auth/delete-cookie`);
-    document.location.href = '/';
-    await axios.delete(
-      `${process.env['NEXT_PUBLIC_API_ENDPOINT']}/auth/logout`,
-      {
+    await Promise.all([
+      axios.delete(`/api/auth/delete-cookie`),
+      axios.delete(`${process.env['NEXT_PUBLIC_API_ENDPOINT']}/auth/logout`, {
         headers: { Authorization: `Bearer ${accessToken}` },
-      },
-    );
+      }),
+    ]);
+    document.location.href = '/';
   };
 
-  return (
-    user && (
-      <DropdownMenu>
-        <DropdownMenuTrigger>
-          <Avatar title={`${user.firstName} ${user.lastName}`}>
-            <AvatarFallback>
-              {StringUtils.getFirstLettersUpperCase(
-                `${user.firstName} ${user.lastName}`,
-              )}
-            </AvatarFallback>
-          </Avatar>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-56">
-          <DropdownMenuLabel>
-            {user.firstName} {user.lastName}
-          </DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuGroup>
-            <DropdownMenuItem>
-              <UserIcon className="mr-2 h-4 w-4" />
-              Profile
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <BookText className="mr-2 h-4 w-4" />
-              Reading books
-              <DropdownMenuShortcut>
-                <Badge variant="destructive">1</Badge>
-              </DropdownMenuShortcut>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Heart className="mr-2 h-4 w-4" />
-              Favourite books
-              <DropdownMenuShortcut>
-                <Badge variant="destructive">1</Badge>
-              </DropdownMenuShortcut>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Gavel className="mr-2 h-4 w-4" />
-              Fines
-              <DropdownMenuShortcut>
-                <Badge variant="destructive">1</Badge>
-              </DropdownMenuShortcut>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <CircleDollarSign className="mr-2 h-4 w-4" />
-              Transactions
-              <DropdownMenuShortcut>
-                <Badge variant="destructive">1</Badge>
-              </DropdownMenuShortcut>
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-          <DropdownMenuSeparator />
-          <DropdownMenuGroup>
-            <DropdownMenuItem>
-              <Settings className="mr-2 h-4 w-4" />
-              Settings
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={handleLogout}>
-              <LogOut className="mr-2 h-4 w-4" />
-              Log out
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    )
+  return !user ? (
+    <LoadingIndicator />
+  ) : (
+    <DropdownMenu>
+      <DropdownMenuTrigger>
+        <Avatar title={`${user.firstName} ${user.lastName}`}>
+          <AvatarFallback>
+            {StringUtils.getFirstLettersUpperCase(
+              `${user.firstName} ${user.lastName}`,
+            )}
+          </AvatarFallback>
+        </Avatar>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-56">
+        <DropdownMenuLabel>
+          {user.firstName} {user.lastName}
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem>
+            <UserIcon className="mr-2 h-4 w-4" />
+            Profile
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <BookText className="mr-2 h-4 w-4" />
+            Reading books
+            <DropdownMenuShortcut>
+              <Badge variant="destructive">1</Badge>
+            </DropdownMenuShortcut>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Heart className="mr-2 h-4 w-4" />
+            Favourite books
+            <DropdownMenuShortcut>
+              <Badge variant="destructive">1</Badge>
+            </DropdownMenuShortcut>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Gavel className="mr-2 h-4 w-4" />
+            Fines
+            <DropdownMenuShortcut>
+              <Badge variant="destructive">1</Badge>
+            </DropdownMenuShortcut>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <CircleDollarSign className="mr-2 h-4 w-4" />
+            Transactions
+            <DropdownMenuShortcut>
+              <Badge variant="destructive">1</Badge>
+            </DropdownMenuShortcut>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem>
+            <Settings className="mr-2 h-4 w-4" />
+            Settings
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={handleLogout}>
+            <LogOut className="mr-2 h-4 w-4" />
+            Log out
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }
