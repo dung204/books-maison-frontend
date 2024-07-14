@@ -11,6 +11,7 @@ import {
   User as UserIcon,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 import useAuth from '@/common/hooks/use-auth.hook';
 import { User } from '@/common/types/api/user.type';
@@ -40,6 +41,17 @@ export default function UserMenuContainer({}) {
       >(`${process.env['NEXT_PUBLIC_API_ENDPOINT']}/users/me`, { headers: { Authorization: `Bearer ${accessToken}` } })
       .then(res => setUser(res.data.data));
   }, [accessToken]);
+
+  const handleLogout = async () => {
+    await axios.delete(`/api/auth/delete-cookie`);
+    document.location.href = '/';
+    await axios.delete(
+      `${process.env['NEXT_PUBLIC_API_ENDPOINT']}/auth/logout`,
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      },
+    );
+  };
 
   return (
     user && (
@@ -98,7 +110,7 @@ export default function UserMenuContainer({}) {
               <Settings className="mr-2 h-4 w-4" />
               Settings
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout}>
               <LogOut className="mr-2 h-4 w-4" />
               Log out
             </DropdownMenuItem>
