@@ -20,13 +20,12 @@ export default function MoveToTopButton({
 
   useEffect(() => {
     document.onscroll = () => {
-      if (document.documentElement.scrollTop > 0)
-        buttonRef.current?.classList.add('opacity-100', 'pointer-events-auto');
-      else
-        buttonRef.current?.classList.remove(
-          'opacity-100',
-          'pointer-events-auto',
-        );
+      if (document.documentElement.scrollTop > 0) {
+        buttonRef.current?.classList.add('opacity-100');
+      } else {
+        setTimeout(() => buttonRef.current?.classList.add('hidden'), 200);
+        buttonRef.current?.classList.remove('opacity-100');
+      }
     };
   }, []);
 
@@ -47,7 +46,7 @@ export default function MoveToTopButton({
               ref={buttonRef}
               variant="secondary"
               className={cn(
-                'pointer-events-none rounded-full px-4 py-8 opacity-0 shadow-lg transition-all',
+                'rounded-full px-4 py-8 opacity-0 shadow-lg transition-all',
                 className,
               )}
               onClick={handleMoveToTop}
