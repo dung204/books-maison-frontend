@@ -25,7 +25,7 @@ export default function Header() {
         <nav>
           <ul className="flex items-center gap-16">
             <Link href="#">About Books Maison</Link>
-            <Link href="#">Categories</Link>
+            <Link href="/categories">Categories</Link>
             <Link href="#">Authors</Link>
             <Link href="#">Search</Link>
             <Link href="/auth/login">
