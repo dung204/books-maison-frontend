@@ -29,6 +29,12 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import LoadingIndicator from '@/components/ui/loading-indicator';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 export default function UserMenuContainer({}) {
   const { accessToken } = useAuth();
@@ -57,13 +63,22 @@ export default function UserMenuContainer({}) {
   ) : (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <Avatar title={`${user.firstName} ${user.lastName}`}>
-          <AvatarFallback>
-            {StringUtils.getFirstLettersUpperCase(
-              `${user.firstName} ${user.lastName}`,
-            )}
-          </AvatarFallback>
-        </Avatar>
+        <TooltipProvider>
+          <Tooltip delayDuration={0}>
+            <TooltipTrigger>
+              <Avatar>
+                <AvatarFallback>
+                  {StringUtils.getFirstLettersUpperCase(
+                    `${user.firstName} ${user.lastName}`,
+                  )}
+                </AvatarFallback>
+              </Avatar>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">
+              <p>User Menu</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuLabel>

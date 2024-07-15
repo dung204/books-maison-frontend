@@ -4,6 +4,7 @@ import { Toaster } from 'sonner';
 
 import favIcon from '@/assets/images/favicon.ico';
 import AuthProvider from '@/common/providers/auth.provider';
+import MoveToTopButton from '@/components/ui/move-to-top-button';
 import '@/styles/globals.css';
 
 export const metadata: Metadata = {
@@ -30,6 +31,7 @@ export default function RootLayout({
         <AuthProvider initialTokens={{ accessToken, refreshToken }}>
           {children}
         </AuthProvider>
+        <MoveToTopButton />
       </body>
       <Toaster richColors closeButton position="top-right" duration={3000} />
     </html>
