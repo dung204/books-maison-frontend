@@ -63,22 +63,13 @@ export default function UserMenuContainer({}) {
   ) : (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <TooltipProvider>
-          <Tooltip delayDuration={0}>
-            <TooltipTrigger>
-              <Avatar>
-                <AvatarFallback>
-                  {StringUtils.getFirstLettersUpperCase(
-                    `${user.firstName} ${user.lastName}`,
-                  )}
-                </AvatarFallback>
-              </Avatar>
-            </TooltipTrigger>
-            <TooltipContent side="bottom">
-              <p>User Menu</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <Avatar>
+          <AvatarFallback>
+            {StringUtils.getFirstLettersUpperCase(
+              `${user.firstName} ${user.lastName}`,
+            )}
+          </AvatarFallback>
+        </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuLabel>
