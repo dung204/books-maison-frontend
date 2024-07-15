@@ -4,12 +4,6 @@ import { MoveUp } from 'lucide-react';
 import { ComponentProps, useEffect, useRef } from 'react';
 
 import { Button } from '@/components/ui/button';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 
 export default function MoveToTopButton({
@@ -39,27 +33,18 @@ export default function MoveToTopButton({
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
-      <TooltipProvider>
-        <Tooltip delayDuration={0}>
-          <TooltipTrigger>
-            <Button
-              ref={buttonRef}
-              variant="secondary"
-              className={cn(
-                'rounded-full px-4 py-8 opacity-0 shadow-lg transition-all',
-                className,
-              )}
-              onClick={handleMoveToTop}
-              {...props}
-            >
-              <MoveUp className="h-14 w-8" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent align="center" side="left">
-            <p>Move to top</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <Button
+        ref={buttonRef}
+        variant="secondary"
+        className={cn(
+          'rounded-full px-4 py-8 opacity-0 shadow-lg transition-all',
+          className,
+        )}
+        onClick={handleMoveToTop}
+        {...props}
+      >
+        <MoveUp className="h-14 w-8" />
+      </Button>
     </div>
   );
 }
