@@ -11,7 +11,6 @@ import {
   User as UserIcon,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
 
 import useAuth from '@/common/hooks/use-auth.hook';
 import { User } from '@/common/types/api/user.type';
@@ -72,32 +71,32 @@ export default function UserMenuContainer({}) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer">
             <UserIcon className="mr-2 h-4 w-4" />
             Profile
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer">
             <BookText className="mr-2 h-4 w-4" />
             Reading books
             <DropdownMenuShortcut>
               <Badge variant="destructive">1</Badge>
             </DropdownMenuShortcut>
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer">
             <Heart className="mr-2 h-4 w-4" />
             Favourite books
             <DropdownMenuShortcut>
               <Badge variant="destructive">1</Badge>
             </DropdownMenuShortcut>
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer">
             <Gavel className="mr-2 h-4 w-4" />
             Fines
             <DropdownMenuShortcut>
               <Badge variant="destructive">1</Badge>
             </DropdownMenuShortcut>
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer">
             <CircleDollarSign className="mr-2 h-4 w-4" />
             Transactions
             <DropdownMenuShortcut>
@@ -107,11 +106,11 @@ export default function UserMenuContainer({}) {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer">
             <Settings className="mr-2 h-4 w-4" />
             Settings
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={handleLogout}>
+          <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
             <LogOut className="mr-2 h-4 w-4" />
             Log out
           </DropdownMenuItem>
