@@ -56,7 +56,7 @@ export default function PaginationContainer({
             </SelectGroup>
           </SelectContent>
         </Select>
-        <div>categories</div>
+        <div>items</div>
       </div>
       <PaginationContent>
         <PaginationItem>

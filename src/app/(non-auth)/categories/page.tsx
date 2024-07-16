@@ -41,7 +41,7 @@ export default async function CategoriesPage({
     pageSize,
   });
 
-  if (+page > pagination!.totalPage) {
+  if (pagination!.totalPage !== 0 && +page > pagination!.totalPage) {
     redirect(`/categories?page=${pagination!.totalPage}&pageSize=${pageSize}`);
   }
 

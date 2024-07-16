@@ -12,7 +12,7 @@ export async function middleware(request: NextRequest) {
   const redirectUrl = request.nextUrl.clone();
   const accessToken = request.cookies.get('accessToken')?.value;
   const refreshToken = request.cookies.get('refreshToken')?.value;
-  const isAuthRoute = pathname.startsWith('/auth');
+  const isAuthRoute = pathToRegexp('/auth/:path').test(pathname);
   const isPrivateRoute = privateRoutes.some(route =>
     pathToRegexp(route).test(pathname),
   );
