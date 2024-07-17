@@ -1,6 +1,6 @@
 'use client';
 
-import { MoveUp } from 'lucide-react';
+import { ChevronUp, MoveUp } from 'lucide-react';
 import { ComponentProps, useEffect, useRef } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -16,9 +16,10 @@ export default function MoveToTopButton({
     document.onscroll = () => {
       if (document.documentElement.scrollTop > 0) {
         buttonRef.current?.classList.add('opacity-100');
+        buttonRef.current?.classList.remove('cursor-default');
       } else {
-        setTimeout(() => buttonRef.current?.classList.add('hidden'), 200);
         buttonRef.current?.classList.remove('opacity-100');
+        buttonRef.current?.classList.add('cursor-default');
       }
     };
   }, []);
@@ -37,13 +38,13 @@ export default function MoveToTopButton({
         ref={buttonRef}
         variant="secondary"
         className={cn(
-          'rounded-full px-4 py-8 opacity-0 shadow-lg transition-all',
+          'h-16 w-16 cursor-default rounded-full opacity-0 shadow-xl transition-all',
           className,
         )}
         onClick={handleMoveToTop}
         {...props}
       >
-        <MoveUp className="h-14 w-8" />
+        <ChevronUp />
       </Button>
     </div>
   );
