@@ -10,17 +10,18 @@ import { PaginationSearchParams } from '@/common/types/pagination-search-params.
 import { SuccessResponse } from '@/common/types/success-response.type';
 import { PaginationUtils } from '@/common/utils/pagination.util';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
+import HomeBanner from '@/components/ui/home-banner';
 import PaginationContainer from '@/containers/pagination.container';
+
+interface CategoriesPageProps {
+  searchParams: PaginationSearchParams;
+}
 
 export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: 'Categories',
 };
-
-interface CategoriesPageProps {
-  searchParams: PaginationSearchParams;
-}
 
 export default async function CategoriesPage({
   searchParams: { page, pageSize },
@@ -46,34 +47,36 @@ export default async function CategoriesPage({
   }
 
   return (
-    <div className="container mt-[74px] py-10">
-      <h1 className="text-4xl font-semibold">Book categories</h1>
-      <section className="mt-10">
-        <PaginationContainer pagination={pagination!} />
-      </section>
-      <section className="mt-10 grid grid-cols-3 gap-8">
-        {categories.map(({ id, name }) => (
-          <Link
-            href={`/search?categoryId=${encodeURIComponent(id)}`}
-            key={id}
-            className="group"
-          >
-            <Card className="relative h-44 w-full overflow-hidden">
-              <div className="absolute left-0 top-0 z-20 h-full w-full bg-black/50"></div>
-              <Image
-                src={banner}
-                alt="banner"
-                fill
-                className="z-10 object-cover transition-all duration-300 group-hover:scale-110"
-              />
-              <CardHeader className="absolute top-1/2 z-30 w-full -translate-y-1/2 text-white">
-                <CardTitle className="text-center">{name}</CardTitle>
-              </CardHeader>
-            </Card>
-          </Link>
-        ))}
-      </section>
-    </div>
+    <>
+      <HomeBanner className="h-[400px]" bannerTitle="Categories" />
+      <div className="container py-10">
+        <section>
+          <PaginationContainer pagination={pagination!} />
+        </section>
+        <section className="mt-10 grid grid-cols-3 gap-8">
+          {categories.map(({ id, name }) => (
+            <Link
+              href={`/search?categoryId=${encodeURIComponent(id)}`}
+              key={id}
+              className="group"
+            >
+              <Card className="relative h-44 w-full overflow-hidden">
+                <div className="absolute left-0 top-0 z-20 h-full w-full bg-black/50"></div>
+                <Image
+                  src={banner}
+                  alt="banner"
+                  fill
+                  className="z-10 object-cover transition-all duration-300 group-hover:scale-110"
+                />
+                <CardHeader className="absolute top-1/2 z-30 w-full -translate-y-1/2 text-white">
+                  <CardTitle className="text-center">{name}</CardTitle>
+                </CardHeader>
+              </Card>
+            </Link>
+          ))}
+        </section>
+      </div>
+    </>
   );
 }
 

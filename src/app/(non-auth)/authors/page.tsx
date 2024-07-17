@@ -9,7 +9,7 @@ import { PaginationSearchParams } from '@/common/types/pagination-search-params.
 import { SuccessResponse } from '@/common/types/success-response.type';
 import { PaginationUtils } from '@/common/utils/pagination.util';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+import HomeBanner from '@/components/ui/home-banner';
 import PaginationContainer from '@/containers/pagination.container';
 
 export const metadata: Metadata = {
@@ -44,29 +44,31 @@ export default async function AuthorsPage({
   }
 
   return (
-    <div className="container mt-[74px] py-10">
-      <h1 className="text-4xl font-semibold">Authors</h1>
-      <section className="mt-10">
-        <PaginationContainer pagination={pagination!} />
-      </section>
-      <section className="mt-10 grid grid-cols-4 place-items-center gap-x-8 gap-y-12">
-        {authors.map(({ id, imageUrl, name }) => (
-          <Link
-            key={id}
-            href={`/author/${id}`}
-            className="flex flex-col items-center justify-center"
-          >
-            <Avatar className="h-40 w-40">
-              {imageUrl && <AvatarImage src={imageUrl} />}
-              <AvatarFallback>
-                <UserPen className="h-20 w-20" />
-              </AvatarFallback>
-            </Avatar>
-            <p className="mt-6 text-center text-xl">{name}</p>
-          </Link>
-        ))}
-      </section>
-    </div>
+    <>
+      <HomeBanner className="h-[400px]" bannerTitle="Authors" />
+      <div className="container py-10">
+        <section>
+          <PaginationContainer pagination={pagination!} />
+        </section>
+        <section className="mt-10 grid grid-cols-4 place-items-center gap-x-8 gap-y-12">
+          {authors.map(({ id, imageUrl, name }) => (
+            <Link
+              key={id}
+              href={`/author/${id}`}
+              className="flex flex-col items-center justify-center"
+            >
+              <Avatar className="h-40 w-40">
+                {imageUrl && <AvatarImage src={imageUrl} />}
+                <AvatarFallback>
+                  <UserPen className="h-20 w-20" />
+                </AvatarFallback>
+              </Avatar>
+              <p className="mt-6 text-center text-xl">{name}</p>
+            </Link>
+          ))}
+        </section>
+      </div>
+    </>
   );
 }
 
