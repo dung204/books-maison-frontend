@@ -3,7 +3,7 @@ export interface Author {
   name: string;
   yearOfBirth: number | null;
   yearOfDeath: number | null;
-  nationality: string;
+  nationality: string | null;
   imageUrl: string | null;
   biography: string | null;
   createdTimestamp: string;
