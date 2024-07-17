@@ -45,10 +45,12 @@ export interface BookAdvancedFilterData {
 
 interface BookFilterContainerProps {
   searchParams: Omit<BookSearchParams, keyof PaginationSearchParams>;
+  hiddenFields?: (keyof BookAdvancedFilterData)[];
 }
 
 export default function BookFilterContainer({
   searchParams,
+  hiddenFields = [],
 }: BookFilterContainerProps) {
   const pathname = usePathname();
   const router = useRouter();
@@ -163,153 +165,165 @@ export default function BookFilterContainer({
           </SheetDescription>
         </SheetHeader>
         <div className="flex flex-col gap-8 py-4">
-          <div>
-            <Label htmlFor="publisher">Publisher name</Label>
-            <Input
-              id="publisher"
-              className="mt-2"
-              value={filterData.publisher}
-              onChange={e =>
-                setFilterData({ ...filterData, publisher: e.target.value })
-              }
-            />
-          </div>
-          <div>
-            <Label htmlFor="author">Author name</Label>
-            <Input
-              id="author"
-              className="mt-2"
-              value={filterData.authorName}
-              onChange={e =>
-                setFilterData({ ...filterData, authorName: e.target.value })
-              }
-            />
-          </div>
-          <div>
-            <Label>Published year</Label>
-            <div className="mt-2 grid grid-cols-12 gap-2">
-              <div className="col-span-5">
-                <Select
-                  value={filterData.publishedYearFrom}
-                  onValueChange={val =>
-                    setFilterData({
-                      ...filterData,
-                      publishedYearFrom: val === 'none' ? '' : val,
-                    })
-                  }
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="From year" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>From year</SelectLabel>
-                      <SelectItem value="none">(None)</SelectItem>
-                      {Array.from({
-                        length: new Date().getFullYear() - 1900 + 1,
-                      }).map((_, index) => (
-                        <SelectItem
-                          key={index}
-                          value={`${new Date().getFullYear() - index}`}
-                        >
-                          {new Date().getFullYear() - index}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="col-span-2 flex items-center justify-center">
-                <MoveRight />
-              </div>
-              <div className="col-span-5">
-                <Select
-                  value={filterData.publishedYearTo}
-                  onValueChange={val =>
-                    setFilterData({
-                      ...filterData,
-                      publishedYearTo: val === 'none' ? '' : val,
-                    })
-                  }
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="To year" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>To year</SelectLabel>
-                      <SelectItem value="none">(None)</SelectItem>
-                      {Array.from({
-                        length: new Date().getFullYear() - 1900 + 1,
-                      }).map((_, index) => (
-                        <SelectItem
-                          key={index}
-                          value={`${new Date().getFullYear() - index}`}
-                        >
-                          {new Date().getFullYear() - index}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
+          {hiddenFields.includes('publisher') || (
+            <div>
+              <Label htmlFor="publisher">Publisher name</Label>
+              <Input
+                id="publisher"
+                className="mt-2"
+                value={filterData.publisher}
+                onChange={e =>
+                  setFilterData({ ...filterData, publisher: e.target.value })
+                }
+              />
+            </div>
+          )}
+          {hiddenFields.includes('authorName') || (
+            <div>
+              <Label htmlFor="author">Author name</Label>
+              <Input
+                id="author"
+                className="mt-2"
+                value={filterData.authorName}
+                onChange={e =>
+                  setFilterData({ ...filterData, authorName: e.target.value })
+                }
+              />
+            </div>
+          )}
+          {(hiddenFields.includes('publishedYearFrom') &&
+            hiddenFields.includes('publishedYearTo')) || (
+            <div>
+              <Label>Published year</Label>
+              <div className="mt-2 grid grid-cols-12 gap-2">
+                <div className="col-span-5">
+                  <Select
+                    value={filterData.publishedYearFrom}
+                    onValueChange={val =>
+                      setFilterData({
+                        ...filterData,
+                        publishedYearFrom: val === 'none' ? '' : val,
+                      })
+                    }
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="From year" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>From year</SelectLabel>
+                        <SelectItem value="none">(None)</SelectItem>
+                        {Array.from({
+                          length: new Date().getFullYear() - 1900 + 1,
+                        }).map((_, index) => (
+                          <SelectItem
+                            key={index}
+                            value={`${new Date().getFullYear() - index}`}
+                          >
+                            {new Date().getFullYear() - index}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="col-span-2 flex items-center justify-center">
+                  <MoveRight />
+                </div>
+                <div className="col-span-5">
+                  <Select
+                    value={filterData.publishedYearTo}
+                    onValueChange={val =>
+                      setFilterData({
+                        ...filterData,
+                        publishedYearTo: val === 'none' ? '' : val,
+                      })
+                    }
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="To year" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>To year</SelectLabel>
+                        <SelectItem value="none">(None)</SelectItem>
+                        {Array.from({
+                          length: new Date().getFullYear() - 1900 + 1,
+                        }).map((_, index) => (
+                          <SelectItem
+                            key={index}
+                            value={`${new Date().getFullYear() - index}`}
+                          >
+                            {new Date().getFullYear() - index}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
             </div>
-          </div>
-          <div>
-            <Label>Number of pages</Label>
-            <div className="mt-2 grid grid-cols-12 gap-2">
-              <div className="col-span-5">
-                <Input
-                  type="number"
-                  placeholder="Min"
-                  min={0}
-                  value={filterData.minPages}
-                  onChange={e =>
-                    setFilterData({
-                      ...filterData,
-                      minPages: e.target.value,
-                    })
-                  }
-                />
-              </div>
-              <div className="col-span-2 flex items-center justify-center">
-                <MoveRight />
-              </div>
-              <div className="col-span-5">
-                <Input
-                  type="number"
-                  placeholder="Max"
-                  min={0}
-                  value={filterData.maxPages}
-                  onChange={e =>
-                    setFilterData({
-                      ...filterData,
-                      maxPages: e.target.value,
-                    })
-                  }
-                />
+          )}
+          {(hiddenFields.includes('minPages') &&
+            hiddenFields.includes('maxPages')) || (
+            <div>
+              <Label>Number of pages</Label>
+              <div className="mt-2 grid grid-cols-12 gap-2">
+                <div className="col-span-5">
+                  <Input
+                    type="number"
+                    placeholder="Min"
+                    min={0}
+                    value={filterData.minPages}
+                    onChange={e =>
+                      setFilterData({
+                        ...filterData,
+                        minPages: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div className="col-span-2 flex items-center justify-center">
+                  <MoveRight />
+                </div>
+                <div className="col-span-5">
+                  <Input
+                    type="number"
+                    placeholder="Max"
+                    min={0}
+                    value={filterData.maxPages}
+                    onChange={e =>
+                      setFilterData({
+                        ...filterData,
+                        maxPages: e.target.value,
+                      })
+                    }
+                  />
+                </div>
               </div>
             </div>
-          </div>
-          <div>
-            <Label>Categories</Label>
-            <div className="mt-2 flex flex-wrap gap-2">
-              {categories.map(category => (
-                <Badge
-                  key={category.id}
-                  variant={
-                    filterData.categoryIds.includes(category.id)
-                      ? 'default'
-                      : 'outline'
-                  }
-                  className="cursor-pointer text-sm"
-                  onClick={() => handleToggleCategoryId(category.id)}
-                >
-                  {category.name}
-                </Badge>
-              ))}
+          )}
+          {hiddenFields.includes('categoryIds') || (
+            <div>
+              <Label>Categories</Label>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {categories.map(category => (
+                  <Badge
+                    key={category.id}
+                    variant={
+                      filterData.categoryIds.includes(category.id)
+                        ? 'default'
+                        : 'outline'
+                    }
+                    className="cursor-pointer text-sm"
+                    onClick={() => handleToggleCategoryId(category.id)}
+                  >
+                    {category.name}
+                  </Badge>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
         <SheetFooter>
           <Button variant="outline" onClick={handleClearFilter}>
