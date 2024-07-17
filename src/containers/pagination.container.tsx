@@ -31,9 +31,14 @@ export default function PaginationContainer({
 }: PaginationContainerProps) {
   const pathname = usePathname();
   const router = useRouter();
+  const otherSearchParams = useSearchParams()
+    .toString()
+    .replaceAll(/&?((page=\d+&pageSize=\d+)|(pageSize=\d+&page=\d+))&?/g, '');
 
   const handleChangePageSize = (pageSize: string) => {
-    router.push(`${pathname}?page=1&pageSize=${pageSize}`);
+    router.push(
+      `${pathname}?page=1&pageSize=${pageSize}${otherSearchParams ? `&${otherSearchParams}` : ''}`,
+    );
   };
 
   return (
