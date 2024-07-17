@@ -3,17 +3,10 @@ import Link from 'next/link';
 
 import { Author } from '@/common/types/api/author.type';
 import { SuccessResponse } from '@/common/types/success-response.type';
-import { Skeleton } from '@/components/ui/skeleton';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-} from '@/components/ui/table';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { cn } from '@/lib/utils';
 
-interface AuthorOverviewPageProps {
+interface AuthorBioPageProps {
   params: {
     id: string;
   };
@@ -21,23 +14,13 @@ interface AuthorOverviewPageProps {
 
 export const revalidate = 30;
 
-export async function generateMetadata({
+export default async function AuthorBioPage({
   params: { id },
-}: AuthorOverviewPageProps) {
-  const author = await getAuthor(id);
-
-  return {
-    title: author.name,
-  };
-}
-
-export default async function AuthorOverviewPage({
-  params: { id },
-}: AuthorOverviewPageProps) {
+}: AuthorBioPageProps) {
   const author = await getAuthor(id);
 
   return (
-    <Tabs className="w-full" defaultValue="overview">
+    <Tabs className="w-full" defaultValue="bio">
       <TabsList className="mb-6 grid w-full grid-cols-3">
         <Link href={`/author/${id}`}>
           <TabsTrigger value="overview" className="w-full">
@@ -56,26 +39,9 @@ export default async function AuthorOverviewPage({
         </Link>
       </TabsList>
 
-      <Table>
-        <TableBody>
-          <TableRow>
-            <TableHead>Name:</TableHead>
-            <TableCell>{author.name}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableHead>Year of birth:</TableHead>
-            <TableCell>{author.yearOfBirth || 'N/A'}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableHead>Year of death:</TableHead>
-            <TableCell>{author.yearOfDeath || 'N/A'}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableHead>Nationality:</TableHead>
-            <TableCell>{author.nationality || 'N/A'}</TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
+      <p className={cn({ 'text-center': !author.biography })}>
+        {author.biography || 'No biography available'}
+      </p>
     </Tabs>
   );
 }
