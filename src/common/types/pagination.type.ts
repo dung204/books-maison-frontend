@@ -3,6 +3,6 @@ export interface Pagination {
   page: number;
   pageSize: number;
   totalPage: number;
-  hasNextPage: number;
-  hasPreviousPage: number;
+  hasNextPage: boolean;
+  hasPreviousPage: boolean;
 }
