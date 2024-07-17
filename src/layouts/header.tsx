@@ -27,7 +27,7 @@ export default function Header() {
             <Link href="#">About Books Maison</Link>
             <Link href="/categories">Categories</Link>
             <Link href="/authors">Authors</Link>
-            <Link href="#">Search</Link>
+            <Link href="/search">Search</Link>
             <Link href="/auth/login">
               {!accessToken ? <Button>Login</Button> : <UserMenuContainer />}
             </Link>
