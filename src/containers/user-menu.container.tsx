@@ -7,9 +7,9 @@ import {
   Gavel,
   Heart,
   LogOut,
-  Settings,
   User as UserIcon,
 } from 'lucide-react';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 import useAuth from '@/common/hooks/use-auth.hook';
@@ -17,7 +17,6 @@ import { User } from '@/common/types/api/user.type';
 import { SuccessResponse } from '@/common/types/success-response.type';
 import { StringUtils } from '@/common/utils/string.util';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,22 +24,16 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import LoadingIndicator from '@/components/ui/loading-indicator';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
 
-export default function UserMenuContainer({}) {
+export default function UserMenuContainer() {
   const { accessToken } = useAuth();
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
+    if (!accessToken) return;
     axios
       .get<
         SuccessResponse<User>
@@ -77,45 +70,27 @@ export default function UserMenuContainer({}) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem className="cursor-pointer">
-            <UserIcon className="mr-2 h-4 w-4" />
-            Profile
-          </DropdownMenuItem>
-          <DropdownMenuItem className="cursor-pointer">
-            <BookText className="mr-2 h-4 w-4" />
-            Reading books
-            <DropdownMenuShortcut>
-              <Badge variant="destructive">1</Badge>
-            </DropdownMenuShortcut>
-          </DropdownMenuItem>
+          <Link href="/me/checkouts">
+            <DropdownMenuItem className="cursor-pointer">
+              <BookText className="mr-2 h-4 w-4" />
+              Checkouts
+            </DropdownMenuItem>
+          </Link>
           <DropdownMenuItem className="cursor-pointer">
             <Heart className="mr-2 h-4 w-4" />
             Favourite books
-            <DropdownMenuShortcut>
-              <Badge variant="destructive">1</Badge>
-            </DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuItem className="cursor-pointer">
             <Gavel className="mr-2 h-4 w-4" />
             Fines
-            <DropdownMenuShortcut>
-              <Badge variant="destructive">1</Badge>
-            </DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuItem className="cursor-pointer">
             <CircleDollarSign className="mr-2 h-4 w-4" />
             Transactions
-            <DropdownMenuShortcut>
-              <Badge variant="destructive">1</Badge>
-            </DropdownMenuShortcut>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem className="cursor-pointer">
-            <Settings className="mr-2 h-4 w-4" />
-            Settings
-          </DropdownMenuItem>
           <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
             <LogOut className="mr-2 h-4 w-4" />
             Log out
