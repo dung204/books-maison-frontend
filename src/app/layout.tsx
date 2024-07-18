@@ -1,7 +1,10 @@
 import type { Metadata } from 'next';
+import { cookies } from 'next/headers';
 import { Toaster } from 'sonner';
 
 import favIcon from '@/assets/images/favicon.ico';
+import AuthProvider from '@/common/providers/auth.provider';
+import MoveToTopButton from '@/components/ui/move-to-top-button';
 import '@/styles/globals.css';
 
 export const metadata: Metadata = {
@@ -18,9 +21,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookiesStore = cookies();
+  const accessToken = cookiesStore.get('accessToken')?.value;
+  const refreshToken = cookiesStore.get('refreshToken')?.value;
+
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <AuthProvider initialTokens={{ accessToken, refreshToken }}>
+          {children}
+        </AuthProvider>
+        <MoveToTopButton />
+      </body>
       <Toaster richColors closeButton position="top-right" duration={3000} />
     </html>
   );

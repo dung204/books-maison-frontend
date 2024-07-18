@@ -1,9 +1,32 @@
-import { type Metadata } from 'next';
+import Link from 'next/link';
 
-export const metadata: Metadata = {
-  title: 'Search',
-};
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export default function ProfilePage() {
-  return <h1>Profile page</h1>;
+  return (
+    <Tabs className="w-full" defaultValue="checkouts">
+      <TabsList className="mb-6 grid w-full grid-cols-4">
+        <Link href={`/me`}>
+          <TabsTrigger value="checkouts" className="w-full">
+            Checkouts
+          </TabsTrigger>
+        </Link>
+        <Link href={`/me`}>
+          <TabsTrigger value="favourite" className="w-full">
+            Favourite books
+          </TabsTrigger>
+        </Link>
+        <Link href={`/me`}>
+          <TabsTrigger value="fines" className="w-full">
+            Fines
+          </TabsTrigger>
+        </Link>
+        <Link href={`/me`}>
+          <TabsTrigger value="transactions" className="w-full">
+            Transactions
+          </TabsTrigger>
+        </Link>
+      </TabsList>
+    </Tabs>
+  );
 }
