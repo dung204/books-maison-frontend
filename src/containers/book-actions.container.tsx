@@ -3,6 +3,7 @@
 import axios from 'axios';
 import { HandHelping, Heart } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -30,6 +31,7 @@ interface BookActionsContainerProps {
 export default function BookActionsContainer({
   book,
 }: BookActionsContainerProps) {
+  const router = useRouter();
   const { accessToken } = useAuth();
   const [addingToFavorites, setAddingToFavorites] = useState(false);
   const [removingFromFavorites, setRemovingFromFavorites] = useState(false);
@@ -52,6 +54,7 @@ export default function BookActionsContainer({
         );
         setRemovingFromFavorites(false);
         setHasFavored(false);
+        router.refresh();
         toast.success('Removed this books from favourites successfully!');
       } else {
         setAddingToFavorites(true);
@@ -66,6 +69,7 @@ export default function BookActionsContainer({
         );
         setAddingToFavorites(false);
         setHasFavored(true);
+        router.refresh();
         toast.success('Added this books from favourites successfully!');
       }
     } catch (error: any) {
@@ -92,6 +96,7 @@ export default function BookActionsContainer({
         },
       );
 
+      router.refresh();
       toast.success('Borrowed this book successfully!');
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'An error occurred!');
@@ -103,6 +108,8 @@ export default function BookActionsContainer({
     if (!accessToken) return;
     Promise.all([
       (async () => {
+        if (typeof hasFavored === 'boolean') return;
+
         const getFavouriteBookUrl = new URL(
           `${process.env['NEXT_PUBLIC_API_ENDPOINT']}/favourite-books/me`,
         );
@@ -156,7 +163,7 @@ export default function BookActionsContainer({
       })(),
 
       (async () => {
-        if (book.quantity === 0) return;
+        if (typeof isBorrowing === 'boolean' || book.quantity === 0) return;
 
         const latestRentingCheckoutUrl = new URL(
           `${process.env['NEXT_PUBLIC_API_ENDPOINT']}/checkouts/me`,
@@ -175,7 +182,7 @@ export default function BookActionsContainer({
         setIsBorrowing(res.data.data.length > 0);
       })(),
     ]);
-  }, [accessToken, book]);
+  }, [accessToken, book, hasFavored, isBorrowing]);
 
   return (
     <div className="mt-6 flex justify-center gap-4">
