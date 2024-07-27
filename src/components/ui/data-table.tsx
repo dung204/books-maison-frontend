@@ -2,6 +2,7 @@
 
 import {
   ColumnDef,
+  PaginationState,
   SortingState,
   flexRender,
   getCoreRowModel,
@@ -9,8 +10,9 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
+import { Pagination } from '@/common/types/pagination.type';
 import { Button } from '@/components/ui/button';
 import {
   Table,
@@ -24,25 +26,34 @@ import {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  pagination: Pagination;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  pagination,
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = useState<SortingState>([]);
+  const [tablePagination, setTablePagination] = useState<PaginationState>({
+    pageIndex: pagination.page - 1,
+    pageSize: pagination.pageSize,
+  });
 
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    onSortingChange: setSorting,
-    getSortedRowModel: getSortedRowModel(),
+    manualPagination: true,
+    pageCount: pagination.totalPage,
+    onPaginationChange: setTablePagination,
     state: {
-      sorting,
+      pagination: tablePagination,
     },
   });
+
+  useEffect(() => {
+    console.log(tablePagination);
+  }, [tablePagination]);
 
   return (
     <div>
@@ -95,24 +106,6 @@ export function DataTable<TData, TValue>({
             )}
           </TableBody>
         </Table>
-      </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          Previous
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          Next
-        </Button>
       </div>
     </div>
   );

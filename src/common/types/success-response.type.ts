@@ -1,6 +1,8 @@
 import { type Pagination } from '@/common/types/pagination.type';
 
-export interface SuccessResponse<T> {
-  data: T;
-  pagination?: Pagination;
-}
+export type SuccessResponse<T> = T extends any[]
+  ? {
+      data: T;
+      pagination: Pagination;
+    }
+  : { data: T };
