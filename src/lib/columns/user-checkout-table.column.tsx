@@ -5,10 +5,11 @@ import { ArrowUpDown } from 'lucide-react';
 import Link from 'next/link';
 
 import { Book } from '@/common/types/api/book.type';
-import { CheckoutStatus } from '@/common/types/api/checkout-status.type';
 import { Checkout } from '@/common/types/api/checkout.type';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import SortingIcon from '@/components/ui/sorting-icon';
+import { handleSort } from '@/lib/columns/utils';
 import { cn } from '@/lib/utils';
 
 export const userCheckoutTableColumns: ColumnDef<Checkout>[] = [
@@ -16,20 +17,22 @@ export const userCheckoutTableColumns: ColumnDef<Checkout>[] = [
     accessorKey: 'book',
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Book name
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+        <div className="flex justify-center">
+          <Button variant="ghost" onClick={() => handleSort()}>
+            Book name
+            <SortingIcon
+              isSorted={column.getIsSorted()}
+              className="ml-2 h-4 w-4"
+            />
+          </Button>
+        </div>
       );
     },
     cell: ({ row }) => {
       const book = row.getValue<Book>('book');
       return (
         <Link href={`/book/${book.id}`}>
-          <span>{book.title}</span>
+          <p className="text-center">{book.title}</p>
         </Link>
       );
     },
@@ -38,35 +41,35 @@ export const userCheckoutTableColumns: ColumnDef<Checkout>[] = [
     accessorKey: 'status',
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Status
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+        <div className="flex justify-center">
+          <Button variant="ghost" onClick={() => handleSort()}>
+            Status
+            <SortingIcon
+              isSorted={column.getIsSorted()}
+              className="ml-2 h-4 w-4"
+            />
+          </Button>
+        </div>
       );
     },
     cell: ({ row }) => {
-      const status = row.getValue<CheckoutStatus>('status');
+      const status = row.getValue<'RENTING' | 'RETURNED' | 'OVERDUE'>('status');
       return (
-        <Badge
-          variant={
-            status === CheckoutStatus.OVERDUE ? 'destructive' : 'default'
-          }
-          className={cn(
-            {
-              'bg-green-500 hover:bg-green-500/80':
-                status === CheckoutStatus.RETURNED,
-            },
-            {
-              'bg-yellow-500 hover:bg-yellow-500/80':
-                status === CheckoutStatus.RENTING,
-            },
-          )}
-        >
-          {status}
-        </Badge>
+        <div className="flex justify-center">
+          <Badge
+            variant={status === 'OVERDUE' ? 'destructive' : 'default'}
+            className={cn(
+              {
+                'bg-green-500 hover:bg-green-500/80': status === 'RETURNED',
+              },
+              {
+                'bg-yellow-500 hover:bg-yellow-500/80': status === 'RENTING',
+              },
+            )}
+          >
+            {status}
+          </Badge>
+        </div>
       );
     },
   },
@@ -74,13 +77,15 @@ export const userCheckoutTableColumns: ColumnDef<Checkout>[] = [
     accessorKey: 'createdTimestamp',
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Created at
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+        <div className="flex justify-center">
+          <Button variant="ghost" onClick={() => handleSort()}>
+            Created at
+            <SortingIcon
+              isSorted={column.getIsSorted()}
+              className="ml-2 h-4 w-4"
+            />
+          </Button>
+        </div>
       );
     },
     cell: ({ row }) => {
@@ -89,20 +94,22 @@ export const userCheckoutTableColumns: ColumnDef<Checkout>[] = [
         dateStyle: 'medium',
         timeStyle: 'long',
       }).format(date);
-      return formatted;
+      return <p className="text-center">{formatted}</p>;
     },
   },
   {
     accessorKey: 'dueTimestamp',
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Due at
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+        <div className="flex justify-center">
+          <Button variant="ghost" onClick={() => handleSort()}>
+            Due at
+            <SortingIcon
+              isSorted={column.getIsSorted()}
+              className="ml-2 h-4 w-4"
+            />
+          </Button>
+        </div>
       );
     },
     cell: ({ row }) => {
@@ -111,25 +118,27 @@ export const userCheckoutTableColumns: ColumnDef<Checkout>[] = [
         dateStyle: 'medium',
         timeStyle: 'long',
       }).format(date);
-      return formatted;
+      return <p className="text-center">{formatted}</p>;
     },
   },
   {
     accessorKey: 'returnedTimestamp',
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-        >
-          Returned at
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+        <div className="flex justify-center">
+          <Button variant="ghost" onClick={() => handleSort()}>
+            Returned at
+            <SortingIcon
+              isSorted={column.getIsSorted()}
+              className="ml-2 h-4 w-4"
+            />
+          </Button>
+        </div>
       );
     },
     cell: ({ row }) => {
       const dateStr = row.getValue<string | null>('returnedTimestamp');
-      if (dateStr === null) return 'N/A';
+      if (dateStr === null) return <p className="text-center">N/A</p>;
 
       const date = new Date(dateStr);
 
@@ -137,7 +146,7 @@ export const userCheckoutTableColumns: ColumnDef<Checkout>[] = [
         dateStyle: 'medium',
         timeStyle: 'long',
       }).format(date);
-      return formatted;
+      return <p className="text-center">{formatted}</p>;
     },
   },
   {
@@ -145,7 +154,7 @@ export const userCheckoutTableColumns: ColumnDef<Checkout>[] = [
     header: 'Note',
     cell: ({ row }) => {
       const note = row.getValue<string | null>('note');
-      return note === null ? 'N/A' : note;
+      return <p className="text-center">{note === null ? 'N/A' : note}</p>;
     },
   },
 ];

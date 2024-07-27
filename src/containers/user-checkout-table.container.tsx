@@ -11,7 +11,13 @@ export default async function UserCheckoutTableContainer() {
   const accessToken = cookieStore.get('accessToken')?.value;
   const { data: checkouts, pagination } = await getCheckouts(accessToken!);
 
-  return <DataTable columns={userCheckoutTableColumns} data={checkouts} />;
+  return (
+    <DataTable
+      columns={userCheckoutTableColumns}
+      data={checkouts}
+      pagination={pagination}
+    />
+  );
 }
 
 async function getCheckouts(accessToken: string) {

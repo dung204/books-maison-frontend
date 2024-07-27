@@ -1,6 +1,7 @@
 'use client';
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { ComponentProps } from 'react';
 
 import { Pagination as PaginationDto } from '@/common/types/pagination.type';
 import {
@@ -22,27 +23,29 @@ import {
 } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 
-interface PaginationContainerProps {
+interface PaginationContainerProps extends ComponentProps<typeof Pagination> {
   pagination: PaginationDto;
 }
 
 export default function PaginationContainer({
+  className,
   pagination,
+  ...props
 }: PaginationContainerProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const otherSearchParams = useSearchParams()
-    .toString()
-    .replaceAll(/&?((page=\d+&pageSize=\d+)|(pageSize=\d+&page=\d+))&?/g, '');
 
   const handleChangePageSize = (pageSize: string) => {
-    router.push(
-      `${pathname}?page=1&pageSize=${pageSize}${otherSearchParams ? `&${otherSearchParams}` : ''}`,
-    );
+    const url = new URL(location.href);
+    url.searchParams.set('pageSize', pageSize);
+    router.push(url.href);
   };
 
   return (
-    <Pagination className="items-center justify-between">
+    <Pagination
+      className={cn('items-center justify-between', className)}
+      {...props}
+    >
       <div className="flex items-center justify-stretch gap-4">
         <div>Show</div>
         <Select
