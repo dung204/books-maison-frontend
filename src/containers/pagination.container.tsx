@@ -39,13 +39,13 @@ export default function PaginationContainer({
     const url = new URL(location.href);
     url.searchParams.set('page', PaginationUtils.DEFAULT_PAGE.toString());
     url.searchParams.set('pageSize', pageSize);
-    router.push(url.href);
+    router.push(url.href, { scroll: false });
   };
 
   const handleChangePage = (page: number) => {
     const url = new URL(location.href);
     url.searchParams.set('page', page.toString());
-    router.push(url.href);
+    router.push(url.href, { scroll: false });
   };
 
   return (
