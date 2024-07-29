@@ -5,11 +5,13 @@ import Link from 'next/link';
 import { Checkout } from '@/common/types/api/checkout.type';
 import { PaginationSearchParams } from '@/common/types/pagination-search-params.type';
 import { SuccessResponse } from '@/common/types/success-response.type';
+import { SortingUtils } from '@/common/utils/sorting.util';
 import { DataTable } from '@/components/ui/data-table';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import PaginationContainer from '@/containers/pagination.container';
-import UserCheckoutTableContainer from '@/containers/user-checkout-table.container';
 import { userCheckoutTableColumns } from '@/lib/columns/user-checkout-table.column';
+
+export const revalidate = 0;
 
 interface CheckoutsPageProps {
   searchParams: PaginationSearchParams;
@@ -54,7 +56,16 @@ export default async function CheckoutsPage({
       <DataTable
         columns={userCheckoutTableColumns}
         data={checkouts}
-        pagination={pagination}
+        pagination={{
+          pageIndex: pagination.page - 1,
+          pageSize: pagination.pageSize,
+        }}
+        sorting={[
+          {
+            id: searchParams.orderBy || SortingUtils.DEFAULT_ORDER_BY,
+            desc: searchParams.order === 'desc',
+          },
+        ]}
       />
     </Tabs>
   );

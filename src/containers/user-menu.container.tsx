@@ -55,7 +55,7 @@ export default function UserMenuContainer() {
     <LoadingIndicator />
   ) : (
     <DropdownMenu>
-      <DropdownMenuTrigger>
+      <DropdownMenuTrigger className="outline-none">
         <Avatar>
           <AvatarFallback>
             {StringUtils.getFirstLettersUpperCase(
