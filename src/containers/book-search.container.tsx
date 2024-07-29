@@ -1,11 +1,68 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { Search } from 'lucide-react';
+import { ComponentProps } from 'react';
 
-export default function BookSearchContainer() {
-  const router = useRouter();
-  const pathname = usePathname();
-  const [books, setBooks] = useState([]);
+import { BookSearchParams } from '@/app/(non-auth)/search/page';
+import { Book } from '@/common/types/api/book.type';
+import { Pagination } from '@/common/types/pagination.type';
+import BookCard from '@/components/ui/book-card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import BookFilterContainer from '@/containers/book-filter.container';
+import PaginationContainer from '@/containers/pagination.container';
+
+interface BookSearchContainerProps extends ComponentProps<'div'> {
+  books: Book[];
+  pagination: Pagination;
+  searchParams: BookSearchParams;
+}
+
+export default function BookSearchContainer({
+  books,
+  pagination,
+  searchParams,
+}: BookSearchContainerProps) {
+  return (
+    <div>
+      <section className="flex justify-between">
+        <div className="w-1/2">
+          <form className="grid grid-cols-6 gap-4">
+            <div className="relative col-span-5">
+              <Input
+                type="text"
+                placeholder="Enter a book title to search..."
+                className="rounded-full ps-10"
+                id="search-bar"
+                name="title"
+              />
+              <label
+                htmlFor="search-bar"
+                className="absolute left-2 top-1/2 -translate-y-1/2"
+              >
+                <Search className="h-6 w-6" />
+              </label>
+            </div>
+            <Button type="submit" className="col-span-1">
+              Search
+            </Button>
+          </form>
+          <p className="mt-3">Showing books containing title:</p>
+        </div>
+        <BookFilterContainer searchParams={searchParams} />
+      </section>
+      {books.length !== 0 && (
+        <section className="mt-6">
+          <PaginationContainer pagination={pagination} />
+        </section>
+      )}
+      <section className="mt-10 grid grid-cols-3 gap-8">
+        {books.length === 0 ? (
+          <p className="col-span-3 text-center">No books found</p>
+        ) : (
+          books.map(book => <BookCard key={book.id} book={book} />)
+        )}
+      </section>
+    </div>
+  );
 }

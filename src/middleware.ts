@@ -1,11 +1,12 @@
 import axios from 'axios';
+import { secondsToMilliseconds } from 'date-fns';
 import * as jose from 'jose';
 import { NextRequest, NextResponse } from 'next/server';
 import { pathToRegexp } from 'path-to-regexp';
 
 import { RefreshSuccessResponse } from '@/common/types/refresh-success-response.type';
 
-const privateRoutes = ['/me'];
+const privateRoutes = ['/me/:path', '/me'];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -31,6 +32,10 @@ export async function middleware(request: NextRequest) {
 
     try {
       await jose.jwtVerify(accessToken, jwtAccessSecret);
+      const { exp } = jose.decodeJwt(accessToken);
+
+      if (secondsToMilliseconds(exp!) < Date.now()) throw new Error();
+
       return NextResponse.next();
     } catch (accessTokenError) {
       try {
@@ -39,6 +44,10 @@ export async function middleware(request: NextRequest) {
           `${process.env['NEXT_PUBLIC_API_ENDPOINT']}/auth/refresh`,
           { refreshToken },
         );
+        const { exp } = jose.decodeJwt(refreshToken);
+
+        if (secondsToMilliseconds(exp!) < Date.now()) throw new Error();
+
         const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
           response.data.data;
         return NextResponse.redirect(request.nextUrl, {
