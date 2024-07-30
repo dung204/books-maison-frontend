@@ -3,16 +3,14 @@ import { Metadata } from 'next';
 import { cookies } from 'next/headers';
 
 import { Transaction } from '@/common/types/api/transaction.type';
-import { PaginationSearchParams } from '@/common/types/pagination-search-params.type';
+import { CommonSearchParams } from '@/common/types/common-search-params.type';
 import { SuccessResponse } from '@/common/types/success-response.type';
-import { SortingUtils } from '@/common/utils/sorting.util';
 import { DataTable } from '@/components/ui/data-table';
 import { TabsContent } from '@/components/ui/tabs';
-import PaginationContainer from '@/containers/pagination.container';
 import { userTransactionsTableColumns } from '@/lib/columns/user-transactions-table.column';
 
 interface TransactionsPageProps {
-  searchParams: PaginationSearchParams;
+  searchParams: CommonSearchParams;
 }
 
 export const revalidate = 0;
@@ -46,7 +44,7 @@ export default async function TransactionsPage({
 
 async function getTransactions(
   accessToken: string,
-  searchParams?: PaginationSearchParams,
+  searchParams?: CommonSearchParams,
 ) {
   const url = new URL(
     `${process.env['NEXT_PUBLIC_API_ENDPOINT']}/transactions/me`,

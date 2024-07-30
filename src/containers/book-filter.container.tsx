@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 
 import { BookSearchParams } from '@/app/(non-auth)/search/page';
 import { Category } from '@/common/types/api/category.type';
-import { PaginationSearchParams } from '@/common/types/pagination-search-params.type';
+import { CommonSearchParams } from '@/common/types/common-search-params.type';
 import { SuccessResponse } from '@/common/types/success-response.type';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -44,7 +44,7 @@ export interface BookAdvancedFilterData {
 }
 
 interface BookFilterContainerProps {
-  searchParams: Omit<BookSearchParams, keyof PaginationSearchParams>;
+  searchParams: Omit<BookSearchParams, keyof CommonSearchParams>;
   hiddenFields?: (keyof BookAdvancedFilterData)[];
 }
 

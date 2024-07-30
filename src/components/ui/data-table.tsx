@@ -4,7 +4,6 @@ import {
   Column,
   ColumnDef,
   SortDirection,
-  SortingState,
   flexRender,
   getCoreRowModel,
   useReactTable,
@@ -13,8 +12,8 @@ import { ArrowDown, ArrowUp } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { ComponentProps } from 'react';
 
-import { PaginationSearchParams } from '@/common/types/pagination-search-params.type';
 import { Pagination } from '@/common/types/pagination.type';
+import { SortingSearchParams } from '@/common/types/sorting-search-params.type';
 import { SortingUtils } from '@/common/utils/sorting.util';
 import { Button } from '@/components/ui/button';
 import {
@@ -32,7 +31,7 @@ interface DataTableProps<TData, TValue> extends ComponentProps<'div'> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   pagination: Pagination;
-  sorting: Pick<PaginationSearchParams, 'orderBy' | 'order'>;
+  sorting: SortingSearchParams;
 }
 
 interface DataTableHeaderProps extends ComponentProps<'div'> {
