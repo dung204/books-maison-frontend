@@ -65,9 +65,11 @@ export default function UserMenuContainer() {
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuLabel>
-          {user.firstName} {user.lastName}
-        </DropdownMenuLabel>
+        <Link href="#">
+          <DropdownMenuLabel>
+            {user.firstName} {user.lastName}
+          </DropdownMenuLabel>
+        </Link>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <Link href="/me/checkouts">
@@ -82,10 +84,12 @@ export default function UserMenuContainer() {
               Favourite books
             </DropdownMenuItem>
           </Link>
-          <DropdownMenuItem className="cursor-pointer">
-            <Gavel className="mr-2 h-4 w-4" />
-            Fines
-          </DropdownMenuItem>
+          <Link href="/me/fines">
+            <DropdownMenuItem className="cursor-pointer">
+              <Gavel className="mr-2 h-4 w-4" />
+              Fines
+            </DropdownMenuItem>
+          </Link>
           <DropdownMenuItem className="cursor-pointer">
             <CircleDollarSign className="mr-2 h-4 w-4" />
             Transactions
