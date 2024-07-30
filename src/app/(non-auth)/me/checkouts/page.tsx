@@ -3,12 +3,10 @@ import { Metadata } from 'next';
 import { cookies } from 'next/headers';
 
 import { Checkout } from '@/common/types/api/checkout.type';
-import { PaginationSearchParams } from '@/common/types/pagination-search-params.type';
+import { CommonSearchParams } from '@/common/types/common-search-params.type';
 import { SuccessResponse } from '@/common/types/success-response.type';
-import { SortingUtils } from '@/common/utils/sorting.util';
 import { DataTable } from '@/components/ui/data-table';
 import { TabsContent } from '@/components/ui/tabs';
-import PaginationContainer from '@/containers/pagination.container';
 import { userCheckoutTableColumns } from '@/lib/columns/user-checkout-table.column';
 
 export const revalidate = 0;
@@ -18,7 +16,7 @@ export const metadata: Metadata = {
 };
 
 interface CheckoutsPageProps {
-  searchParams: PaginationSearchParams;
+  searchParams: CommonSearchParams;
 }
 
 export default async function CheckoutsPage({
@@ -46,7 +44,7 @@ export default async function CheckoutsPage({
 
 async function getCheckouts(
   accessToken: string,
-  searchParams?: PaginationSearchParams,
+  searchParams?: CommonSearchParams,
 ) {
   const url = new URL(
     `${process.env['NEXT_PUBLIC_API_ENDPOINT']}/checkouts/me`,

@@ -4,13 +4,11 @@ import { Metadata } from 'next';
 import { cookies } from 'next/headers';
 
 import { Fine } from '@/common/types/api/fine.type';
-import { PaginationSearchParams } from '@/common/types/pagination-search-params.type';
+import { CommonSearchParams } from '@/common/types/common-search-params.type';
 import { SuccessResponse } from '@/common/types/success-response.type';
-import { SortingUtils } from '@/common/utils/sorting.util';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { DataTable } from '@/components/ui/data-table';
 import { TabsContent } from '@/components/ui/tabs';
-import PaginationContainer from '@/containers/pagination.container';
 import { userFinesTableColumns } from '@/lib/columns/user-fines-table.column';
 
 export const revalidate = 0;
@@ -20,7 +18,7 @@ export const metadata: Metadata = {
 };
 
 interface FinesPageProps {
-  searchParams: PaginationSearchParams;
+  searchParams: CommonSearchParams;
 }
 
 export default async function FinesPage({ searchParams }: FinesPageProps) {
@@ -60,7 +58,7 @@ export default async function FinesPage({ searchParams }: FinesPageProps) {
 
 async function getFines(
   accessToken: string,
-  searchParams?: PaginationSearchParams,
+  searchParams?: CommonSearchParams,
 ) {
   const url = new URL(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/fines/me`);
 

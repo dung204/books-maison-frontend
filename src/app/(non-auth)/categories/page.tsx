@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation';
 
 import banner from '@/assets/images/library-banner-1.jpg';
 import { Category } from '@/common/types/api/category.type';
-import { PaginationSearchParams } from '@/common/types/pagination-search-params.type';
+import { CommonSearchParams } from '@/common/types/common-search-params.type';
 import { SuccessResponse } from '@/common/types/success-response.type';
 import { PaginationUtils } from '@/common/utils/pagination.util';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
@@ -14,7 +14,7 @@ import HomeBanner from '@/components/ui/home-banner';
 import PaginationContainer from '@/containers/pagination.container';
 
 interface CategoriesPageProps {
-  searchParams: PaginationSearchParams;
+  searchParams: CommonSearchParams;
 }
 
 export const revalidate = 0;
@@ -85,7 +85,7 @@ async function getCategories({
   pageSize,
   orderBy,
   order,
-}: PaginationSearchParams) {
+}: CommonSearchParams) {
   const requestUrl = new URL(
     `${process.env['NEXT_PUBLIC_API_ENDPOINT']}/categories`,
   );
