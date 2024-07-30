@@ -3,7 +3,6 @@
 import {
   Column,
   ColumnDef,
-  PaginationState,
   SortDirection,
   SortingState,
   flexRender,
@@ -14,6 +13,9 @@ import { ArrowDown, ArrowUp } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { ComponentProps } from 'react';
 
+import { PaginationSearchParams } from '@/common/types/pagination-search-params.type';
+import { Pagination } from '@/common/types/pagination.type';
+import { SortingUtils } from '@/common/utils/sorting.util';
 import { Button } from '@/components/ui/button';
 import {
   Table,
@@ -23,13 +25,14 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import PaginationContainer from '@/containers/pagination.container';
 import { cn } from '@/lib/utils';
 
 interface DataTableProps<TData, TValue> extends ComponentProps<'div'> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  pagination: PaginationState;
-  sorting: SortingState;
+  pagination: Pagination;
+  sorting: Pick<PaginationSearchParams, 'orderBy' | 'order'>;
 }
 
 interface DataTableHeaderProps extends ComponentProps<'div'> {
@@ -57,56 +60,73 @@ function DataTable<TData, TValue>({
     manualPagination: true,
     pageCount: pagination.pageSize,
     state: {
-      pagination,
-      sorting,
+      pagination: {
+        pageIndex: pagination.page - 1,
+        pageSize: pagination.pageSize,
+      },
+      sorting: [
+        {
+          id: sorting.orderBy || SortingUtils.DEFAULT_ORDER_BY,
+          desc: sorting.order === 'desc',
+        },
+      ],
     },
   });
 
   return (
-    <div className={cn('rounded-md border', className)} {...props}>
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map(headerGroup => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map(header => {
-                return (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                  </TableHead>
-                );
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map(row => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && 'selected'}
-              >
-                {row.getVisibleCells().map(cell => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
+    <>
+      <PaginationContainer pagination={pagination} className="mb-6" />
+      <div className={cn('rounded-md border', className)} {...props}>
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map(headerGroup => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map(header => {
+                  return (
+                    <TableHead key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
+                    </TableHead>
+                  );
+                })}
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </div>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map(row => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && 'selected'}
+                >
+                  {row.getVisibleCells().map(cell => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext(),
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+    </>
   );
 }
 

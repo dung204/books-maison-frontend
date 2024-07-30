@@ -30,23 +30,15 @@ export default async function CheckoutsPage({
     accessToken!,
     searchParams,
   );
+  const { orderBy, order } = searchParams;
 
   return (
     <TabsContent value="/me/checkouts">
-      <PaginationContainer pagination={pagination} className="mb-6" />
       <DataTable
         columns={userCheckoutTableColumns}
         data={checkouts}
-        pagination={{
-          pageIndex: pagination.page - 1,
-          pageSize: pagination.pageSize,
-        }}
-        sorting={[
-          {
-            id: searchParams.orderBy || SortingUtils.DEFAULT_ORDER_BY,
-            desc: searchParams.order === 'desc',
-          },
-        ]}
+        pagination={pagination}
+        sorting={{ orderBy, order }}
       />
     </TabsContent>
   );
