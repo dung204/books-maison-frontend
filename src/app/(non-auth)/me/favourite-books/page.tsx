@@ -1,5 +1,6 @@
 import { TabsContent } from '@radix-ui/react-tabs';
 import axios from 'axios';
+import { Metadata } from 'next';
 import { cookies } from 'next/headers';
 
 import { BookSearchParams } from '@/app/(non-auth)/search/page';
@@ -10,6 +11,10 @@ import BookSearchContainer from '@/containers/book-search.container';
 interface FavouriteBooksPageProps {
   searchParams: BookSearchParams;
 }
+
+export const metadata: Metadata = {
+  title: 'My favourite books',
+};
 
 export default async function FavouriteBooksPage({
   searchParams,

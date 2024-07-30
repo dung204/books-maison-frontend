@@ -76,10 +76,12 @@ export default function UserMenuContainer() {
               Checkouts
             </DropdownMenuItem>
           </Link>
-          <DropdownMenuItem className="cursor-pointer">
-            <Heart className="mr-2 h-4 w-4" />
-            Favourite books
-          </DropdownMenuItem>
+          <Link href="/me/favourite-books">
+            <DropdownMenuItem className="cursor-pointer">
+              <Heart className="mr-2 h-4 w-4" />
+              Favourite books
+            </DropdownMenuItem>
+          </Link>
           <DropdownMenuItem className="cursor-pointer">
             <Gavel className="mr-2 h-4 w-4" />
             Fines

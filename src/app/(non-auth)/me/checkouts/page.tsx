@@ -1,26 +1,21 @@
 import axios from 'axios';
+import { Metadata } from 'next';
 import { cookies } from 'next/headers';
-import Link from 'next/link';
 
 import { Checkout } from '@/common/types/api/checkout.type';
 import { PaginationSearchParams } from '@/common/types/pagination-search-params.type';
 import { SuccessResponse } from '@/common/types/success-response.type';
 import { SortingUtils } from '@/common/utils/sorting.util';
 import { DataTable } from '@/components/ui/data-table';
-import { Skeleton } from '@/components/ui/skeleton';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { TabsContent } from '@/components/ui/tabs';
 import PaginationContainer from '@/containers/pagination.container';
 import { userCheckoutTableColumns } from '@/lib/columns/user-checkout-table.column';
 
 export const revalidate = 0;
+
+export const metadata: Metadata = {
+  title: 'My checkouts',
+};
 
 interface CheckoutsPageProps {
   searchParams: PaginationSearchParams;
