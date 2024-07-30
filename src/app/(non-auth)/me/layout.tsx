@@ -1,14 +1,12 @@
 import axios from 'axios';
-import { Clock, House, Mail, UserPen } from 'lucide-react';
+import { Clock, House, Mail } from 'lucide-react';
 import { cookies } from 'next/headers';
-import Link from 'next/link';
 import { PropsWithChildren } from 'react';
 
 import { User } from '@/common/types/api/user.type';
 import { SuccessResponse } from '@/common/types/success-response.type';
 import { StringUtils } from '@/common/utils/string.util';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Tooltip,
   TooltipContent,
@@ -16,17 +14,6 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import TabsContainer from '@/containers/tabs.container';
-
-export async function generateMetadata() {
-  const cookieStore = cookies();
-  const accessToken = cookieStore.get('accessToken')?.value;
-
-  const user = await getCurrentUser(accessToken!);
-
-  return {
-    title: `${user.firstName} ${user.lastName}`,
-  };
-}
 
 export default async function UserLayout({ children }: PropsWithChildren) {
   const cookieStore = cookies();

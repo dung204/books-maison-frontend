@@ -47,7 +47,10 @@ export default function BookSearchContainer({
               Search
             </Button>
           </form>
-          <p className="mt-3">Showing books containing title:</p>
+          <p className="mt-3">
+            Showing books containing title:{' '}
+            <b>&quot;{searchParams.title || ''}&quot;</b>
+          </p>
         </div>
         <BookFilterContainer searchParams={searchParams} />
       </section>

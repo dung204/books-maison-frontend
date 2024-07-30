@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { ComponentProps, PropsWithChildren } from 'react';
+import { ComponentProps, PropsWithChildren, useEffect } from 'react';
 
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
@@ -25,15 +25,15 @@ export default function TabsContainer({
 }: TabsContainerProps) {
   const pathname = usePathname();
 
+  useEffect(() => {
+    console.log('pathname:', pathname);
+  }, [pathname]);
+
   return (
-    <Tabs
-      defaultValue={pathname}
-      className={cn('w-full', className)}
-      {...props}
-    >
+    <Tabs value={pathname} className={cn('w-full', className)} {...props}>
       <TabsList className="mb-6 grid w-full grid-cols-4">
         {tabs.map(tab => (
-          <Link key={tab.href} href={tab.href}>
+          <Link key={tab.href} href={tab.href} scroll={false}>
             <TabsTrigger value={tab.href} className="w-full">
               {tab.label}
             </TabsTrigger>
