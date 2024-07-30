@@ -1,34 +1,11 @@
 'use client';
 
 import { ColumnDef } from '@tanstack/react-table';
-import axios, { AxiosError } from 'axios';
-import { Info } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
 
-import useAuth from '@/common/hooks/use-auth.hook';
 import { Checkout } from '@/common/types/api/checkout.type';
 import { Fine } from '@/common/types/api/fine.type';
-import { TransactionMethod } from '@/common/types/api/transaction-method.type';
-import { Transaction } from '@/common/types/api/transaction.type';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { DataTableHeader } from '@/components/ui/data-table';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import MomoIcon from '@/components/ui/momo-icon/momo-icon';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
 import PayFineContainer from '@/containers/pay-fine.container';
 import { cn } from '@/lib/utils';
 

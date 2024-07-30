@@ -4,4 +4,10 @@ export class StringUtils {
       .map(s => s.toUpperCase())
       .join('');
   }
+
+  public static toProperCase(str: string) {
+    return str
+      .toLowerCase()
+      .replaceAll(/\b[a-z]/g, letter => letter.toUpperCase());
+  }
 }
