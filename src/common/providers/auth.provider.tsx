@@ -38,6 +38,7 @@ export default function AuthProvider({
     accessToken,
     refreshToken,
     user,
+    setUser,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

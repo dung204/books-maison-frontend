@@ -31,7 +31,7 @@ export default async function TransactionsPage({
   const { orderBy, order } = searchParams;
 
   return (
-    <TabsContent value="/me/transactions">
+    <TabsContent value="/me/transactions" className="outline-none">
       <DataTable
         columns={userTransactionsTableColumns}
         data={transactions}

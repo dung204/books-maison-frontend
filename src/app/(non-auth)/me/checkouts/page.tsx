@@ -31,7 +31,7 @@ export default async function CheckoutsPage({
   const { orderBy, order } = searchParams;
 
   return (
-    <TabsContent value="/me/checkouts">
+    <TabsContent value="/me/checkouts" className="outline-none">
       <DataTable
         columns={userCheckoutTableColumns}
         data={checkouts}

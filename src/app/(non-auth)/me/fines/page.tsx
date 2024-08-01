@@ -32,7 +32,7 @@ export default async function FinesPage({ searchParams }: FinesPageProps) {
   const { orderBy, order } = searchParams;
 
   return (
-    <TabsContent value="/me/fines">
+    <TabsContent value="/me/fines" className="outline-none">
       <Alert className="mb-6 bg-sky-100 text-sky-800">
         <Info className="h-4 w-4" color="rgb(7 89 133)" />
         <AlertDescription>
