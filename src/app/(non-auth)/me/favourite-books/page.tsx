@@ -6,6 +6,8 @@ import { cookies } from 'next/headers';
 import { BookSearchParams } from '@/app/(non-auth)/search/page';
 import { Book } from '@/common/types/api/book.type';
 import { SuccessResponse } from '@/common/types/success-response.type';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 import BookSearchContainer from '@/containers/book-search.container';
 
 interface FavouriteBooksPageProps {

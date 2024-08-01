@@ -60,7 +60,9 @@ export default function PayFineContainer({ fine }: PayFineContainerProps) {
       location.href = transaction.purchaseUrl;
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
-        toast.error(error.response?.data.message);
+        toast.error(
+          `Failed to redirect to purchase link: ${error.response?.data.message}`,
+        );
       }
     }
     setIsCreatingTransaction(false);
