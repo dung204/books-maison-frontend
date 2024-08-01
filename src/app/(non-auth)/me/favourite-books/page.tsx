@@ -29,7 +29,7 @@ export default async function FavouriteBooksPage({
   );
 
   return (
-    <TabsContent value="/me/favourite-books">
+    <TabsContent value="/me/favourite-books" className="outline-none">
       <BookSearchContainer
         books={books}
         pagination={pagination}

@@ -12,6 +12,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import EditProfileContainer from '@/containers/edit-profile.container';
 
 export default function UserProfileContainer() {
   const { user } = useAuth();
@@ -30,9 +31,9 @@ export default function UserProfileContainer() {
           </AvatarFallback>
         </Avatar>
         {!user ? (
-          <Skeleton className="mt-6 h-10 w-full" />
+          <Skeleton className="mb-2 mt-6 h-10 w-full" />
         ) : (
-          <h2 className="mt-6 text-3xl font-semibold">{fullName}</h2>
+          <h2 className="mb-2 mt-6 text-3xl font-semibold">{fullName}</h2>
         )}
       </div>
       <div className="mt-4">
@@ -87,6 +88,9 @@ export default function UserProfileContainer() {
             )}
           </span>
         </div>
+      </div>
+      <div className="mt-8 flex justify-center">
+        <EditProfileContainer />
       </div>
     </>
   );
