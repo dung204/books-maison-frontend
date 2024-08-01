@@ -25,10 +25,6 @@ export default function TabsContainer({
 }: TabsContainerProps) {
   const pathname = usePathname();
 
-  useEffect(() => {
-    console.log('pathname:', pathname);
-  }, [pathname]);
-
   return (
     <Tabs value={pathname} className={cn('w-full', className)} {...props}>
       <TabsList className="mb-6 grid w-full grid-cols-4">
