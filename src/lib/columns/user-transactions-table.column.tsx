@@ -18,7 +18,9 @@ import {
 export const userTransactionsTableColumns: ColumnDef<Transaction>[] = [
   {
     accessorKey: 'id',
-    header: ({ column }) => <DataTableHeader column={column} headerName="ID" />,
+    header: ({ column }) => (
+      <DataTableHeader column={column} headerName="Transaction ID" />
+    ),
     cell: ({ row }) => {
       const id = row.getValue<string>('id');
       return <p className="text-center">{id}</p>;
