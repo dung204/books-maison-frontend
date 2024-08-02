@@ -45,7 +45,7 @@ export default function UserMenuContainer() {
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
-        <Link href="#">
+        <Link href="/me/checkouts">
           <DropdownMenuLabel>
             {user.firstName} {user.lastName}
           </DropdownMenuLabel>
