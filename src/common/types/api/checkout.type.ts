@@ -6,7 +6,7 @@ export interface Checkout {
   id: string;
   user: User;
   book: Book;
-  status: 'RENTING' | 'RETURNED' | 'OVERDUE';
+  status: CheckoutStatus;
   createdTimestamp: string;
   dueTimestamp: string;
   returnedTimestamp: string | null;

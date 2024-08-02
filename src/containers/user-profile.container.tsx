@@ -12,6 +12,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import ChangePasswordContainer from '@/containers/change-password.container';
 import EditProfileContainer from '@/containers/edit-profile.container';
 
 export default function UserProfileContainer() {
@@ -89,8 +90,9 @@ export default function UserProfileContainer() {
           </span>
         </div>
       </div>
-      <div className="mt-8 flex justify-center">
+      <div className="mt-8 flex justify-center gap-4">
         <EditProfileContainer />
+        <ChangePasswordContainer />
       </div>
     </>
   );
