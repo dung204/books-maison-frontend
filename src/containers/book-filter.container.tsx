@@ -5,7 +5,7 @@ import { Filter, MoveRight } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { BookSearchParams } from '@/app/(non-auth)/search/page';
+import { BookSearchParams } from '@/app/(non-auth)/books/page';
 import { Category } from '@/common/types/api/category.type';
 import { CommonSearchParams } from '@/common/types/common-search-params.type';
 import { SuccessResponse } from '@/common/types/success-response.type';
