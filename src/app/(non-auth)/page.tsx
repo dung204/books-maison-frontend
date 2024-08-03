@@ -1,10 +1,8 @@
-import { Search } from 'lucide-react';
 import { type Metadata } from 'next';
 import Image from 'next/image';
 
 import homeBanner from '@/assets/images/library-banner-1.jpg';
-import { Input } from '@/components/ui/input';
-import GlobalSearchBarContainer from '@/containers/global-search-bar.container';
+import GlobalSearchContainer from '@/containers/global-search.container';
 
 export const metadata: Metadata = {
   title: 'Home',
@@ -30,7 +28,7 @@ export default function HomePage() {
             here
           </p>
           <div className="mx-auto w-3/4">
-            <GlobalSearchBarContainer />
+            <GlobalSearchContainer />
           </div>
         </div>
       </div>
