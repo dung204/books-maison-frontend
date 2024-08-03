@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
-import { BookSearchParams } from '@/app/(non-auth)/search/page';
+import { BookSearchParams } from '@/app/(non-auth)/books/page';
 import placeholderImg from '@/assets/images/placeholder-200x300.svg';
 import { Author } from '@/common/types/api/author.type';
 import { Book } from '@/common/types/api/book.type';
