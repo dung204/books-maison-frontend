@@ -3,13 +3,24 @@
 import { ColumnDef } from '@tanstack/react-table';
 
 import { Checkout } from '@/common/types/api/checkout.type';
+import { FineStatus } from '@/common/types/api/fine-status.type';
 import { Fine } from '@/common/types/api/fine.type';
-import { Badge } from '@/components/ui/badge';
 import { DataTableHeader } from '@/components/ui/data-table';
+import FineStatusBadge from '@/components/ui/fine-status-badge';
+import CheckoutDetailsContainer from '@/containers/checkout-details.container';
 import PayFineContainer from '@/containers/pay-fine.container';
-import { cn } from '@/lib/utils';
 
 export const userFinesTableColumns: ColumnDef<Fine>[] = [
+  {
+    accessorKey: 'id',
+    header: ({ column }) => (
+      <DataTableHeader column={column} headerName="Fine ID" />
+    ),
+    cell: ({ row }) => {
+      const id = row.getValue<string>('id');
+      return <p className="text-center">{id}</p>;
+    },
+  },
   {
     accessorKey: 'checkout',
     header: ({ column }) => (
@@ -17,7 +28,11 @@ export const userFinesTableColumns: ColumnDef<Fine>[] = [
     ),
     cell: ({ row }) => {
       const checkout = row.getValue<Checkout>('checkout');
-      return <p className="text-center">{checkout.id}</p>;
+      return (
+        <div className="flex justify-center">
+          <CheckoutDetailsContainer checkout={checkout} />
+        </div>
+      );
     },
   },
   {
@@ -26,22 +41,10 @@ export const userFinesTableColumns: ColumnDef<Fine>[] = [
       <DataTableHeader column={column} headerName="Status" />
     ),
     cell: ({ row }) => {
-      const status = row.getValue<'ISSUED' | 'CANCELLED' | 'PAID'>('status');
+      const status = row.getValue<FineStatus>('status');
       return (
         <div className="flex justify-center">
-          <Badge
-            variant={status === 'CANCELLED' ? 'destructive' : 'default'}
-            className={cn(
-              {
-                'bg-green-500 hover:bg-green-500/80': status === 'PAID',
-              },
-              {
-                'bg-yellow-500 hover:bg-yellow-500/80': status === 'ISSUED',
-              },
-            )}
-          >
-            {status}
-          </Badge>
+          <FineStatusBadge status={status} />
         </div>
       );
     },
