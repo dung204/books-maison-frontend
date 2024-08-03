@@ -7,7 +7,7 @@ import { redirect } from 'next/navigation';
 
 import placeholderImg from '@/assets/images/placeholder-200x300.svg';
 import { Book } from '@/common/types/api/book.type';
-import { PaginationSearchParams } from '@/common/types/pagination-search-params.type';
+import { CommonSearchParams } from '@/common/types/common-search-params.type';
 import { SuccessResponse } from '@/common/types/success-response.type';
 import { PaginationUtils } from '@/common/utils/pagination.util';
 import { Button } from '@/components/ui/button';
@@ -18,7 +18,7 @@ import BookFilterContainer from '@/containers/book-filter.container';
 import { BookAdvancedFilterData } from '@/containers/book-filter.container';
 import PaginationContainer from '@/containers/pagination.container';
 
-export type BookSearchParams = PaginationSearchParams &
+export type BookSearchParams = CommonSearchParams &
   Partial<Omit<BookAdvancedFilterData, 'categoryIds'>> & {
     title?: string;
     categoryId?: string[];

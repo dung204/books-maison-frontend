@@ -1,8 +1,10 @@
 'use client';
 
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { ComponentProps } from 'react';
 
 import { Pagination as PaginationDto } from '@/common/types/pagination.type';
+import { PaginationUtils } from '@/common/utils/pagination.util';
 import {
   Pagination,
   PaginationContent,
@@ -22,27 +24,35 @@ import {
 } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 
-interface PaginationContainerProps {
+interface PaginationContainerProps extends ComponentProps<typeof Pagination> {
   pagination: PaginationDto;
 }
 
 export default function PaginationContainer({
+  className,
   pagination,
+  ...props
 }: PaginationContainerProps) {
-  const pathname = usePathname();
   const router = useRouter();
-  const otherSearchParams = useSearchParams()
-    .toString()
-    .replaceAll(/&?((page=\d+&pageSize=\d+)|(pageSize=\d+&page=\d+))&?/g, '');
 
   const handleChangePageSize = (pageSize: string) => {
-    router.push(
-      `${pathname}?page=1&pageSize=${pageSize}${otherSearchParams ? `&${otherSearchParams}` : ''}`,
-    );
+    const url = new URL(location.href);
+    url.searchParams.set('page', PaginationUtils.DEFAULT_PAGE.toString());
+    url.searchParams.set('pageSize', pageSize);
+    router.push(url.href, { scroll: false });
+  };
+
+  const handleChangePage = (page: number) => {
+    const url = new URL(location.href);
+    url.searchParams.set('page', page.toString());
+    router.push(url.href, { scroll: false });
   };
 
   return (
-    <Pagination className="items-center justify-between">
+    <Pagination
+      className={cn('items-center justify-between', className)}
+      {...props}
+    >
       <div className="flex items-center justify-stretch gap-4">
         <div>Show</div>
         <Select
@@ -66,7 +76,7 @@ export default function PaginationContainer({
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
-            href={`${pathname}?page=${pagination.page - 1}&pageSize=${pagination.pageSize}`}
+            onClick={() => handleChangePage(pagination.page - 1)}
             className={cn({
               'pointer-events-none opacity-60': !pagination.hasPreviousPage,
             })}
@@ -76,7 +86,7 @@ export default function PaginationContainer({
           Array.from({ length: pagination.totalPage }).map((_, index) => (
             <PaginationItem key={index + 1}>
               <PaginationLink
-                href={`${pathname}?page=${index + 1}&pageSize=${pagination.pageSize}`}
+                onClick={() => handleChangePage(index + 1)}
                 isActive={pagination.page === index + 1}
               >
                 {index + 1}
@@ -88,7 +98,7 @@ export default function PaginationContainer({
             {Array.from({ length: 5 }).map((_, index) => (
               <PaginationItem key={index + 1}>
                 <PaginationLink
-                  href={`${pathname}?page=${index + 1}&pageSize=${pagination.pageSize}`}
+                  onClick={() => handleChangePage(index + 1)}
                   isActive={pagination.page === index + 1}
                 >
                   {index + 1}
@@ -100,7 +110,7 @@ export default function PaginationContainer({
             </PaginationItem>
             <PaginationItem>
               <PaginationLink
-                href={`${pathname}?page=${pagination.totalPage}&pageSize=${pagination.pageSize}`}
+                onClick={() => handleChangePage(pagination.totalPage)}
               >
                 {pagination.totalPage}
               </PaginationLink>
@@ -110,9 +120,7 @@ export default function PaginationContainer({
           pagination.page <= pagination.totalPage ? (
           <>
             <PaginationItem>
-              <PaginationLink
-                href={`${pathname}?page=1&pageSize=${pagination.pageSize}`}
-              >
+              <PaginationLink onClick={() => handleChangePage(1)}>
                 1
               </PaginationLink>
             </PaginationItem>
@@ -122,7 +130,9 @@ export default function PaginationContainer({
             {Array.from({ length: 5 }).map((_, index) => (
               <PaginationItem key={pagination.totalPage - 4 + index}>
                 <PaginationLink
-                  href={`${pathname}?page=${pagination.totalPage - 4 + index}&pageSize=${pagination.pageSize}`}
+                  onClick={() =>
+                    handleChangePage(pagination.totalPage - 4 + index)
+                  }
                   isActive={
                     pagination.page === pagination.totalPage - 4 + index
                   }
@@ -135,9 +145,7 @@ export default function PaginationContainer({
         ) : (
           <>
             <PaginationItem>
-              <PaginationLink
-                href={`${pathname}?page=1&pageSize=${pagination.pageSize}`}
-              >
+              <PaginationLink onClick={() => handleChangePage(1)}>
                 1
               </PaginationLink>
             </PaginationItem>
@@ -146,14 +154,14 @@ export default function PaginationContainer({
             </PaginationItem>
             <PaginationItem>
               <PaginationLink
-                href={`${pathname}?page=${pagination.page - 1}&pageSize=${pagination.pageSize}`}
+                onClick={() => handleChangePage(pagination.page - 1)}
               >
                 {pagination.page - 1}
               </PaginationLink>
             </PaginationItem>
             <PaginationItem>
               <PaginationLink
-                href={`${pathname}?page=${pagination.page}&pageSize=${pagination.pageSize}`}
+                onClick={() => handleChangePage(pagination.page)}
                 isActive
               >
                 {pagination.page}
@@ -161,7 +169,7 @@ export default function PaginationContainer({
             </PaginationItem>
             <PaginationItem>
               <PaginationLink
-                href={`${pathname}?page=${pagination.page + 1}&pageSize=${pagination.pageSize}`}
+                onClick={() => handleChangePage(pagination.page + 1)}
               >
                 {pagination.page + 1}
               </PaginationLink>
@@ -171,7 +179,7 @@ export default function PaginationContainer({
             </PaginationItem>
             <PaginationItem>
               <PaginationLink
-                href={`${pathname}?page=${pagination.totalPage}&pageSize=${pagination.pageSize}`}
+                onClick={() => handleChangePage(pagination.totalPage)}
               >
                 {pagination.totalPage}
               </PaginationLink>
@@ -180,7 +188,7 @@ export default function PaginationContainer({
         )}
         <PaginationItem>
           <PaginationNext
-            href={`${pathname}?page=${pagination.page + 1}&pageSize=${pagination.pageSize}`}
+            onClick={() => handleChangePage(pagination.page + 1)}
             className={cn({
               'pointer-events-none opacity-60': !pagination.hasNextPage,
             })}

@@ -1,40 +1,54 @@
 import axios from 'axios';
+import { Info } from 'lucide-react';
 import { Metadata } from 'next';
 import { cookies } from 'next/headers';
 
-import { Checkout } from '@/common/types/api/checkout.type';
+import { Fine } from '@/common/types/api/fine.type';
 import { CommonSearchParams } from '@/common/types/common-search-params.type';
 import { SuccessResponse } from '@/common/types/success-response.type';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { DataTable } from '@/components/ui/data-table';
 import { TabsContent } from '@/components/ui/tabs';
-import { userCheckoutTableColumns } from '@/lib/columns/user-checkout-table.column';
+import { userFinesTableColumns } from '@/lib/columns/user-fines-table.column';
 
 export const revalidate = 0;
 
 export const metadata: Metadata = {
-  title: 'My checkouts',
+  title: 'My fines',
 };
 
-interface CheckoutsPageProps {
+interface FinesPageProps {
   searchParams: CommonSearchParams;
 }
 
-export default async function CheckoutsPage({
-  searchParams,
-}: CheckoutsPageProps) {
+export default async function FinesPage({ searchParams }: FinesPageProps) {
   const cookieStore = cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
-  const { data: checkouts, pagination } = await getCheckouts(
+
+  const { data: fines, pagination } = await getFines(
     accessToken!,
     searchParams,
   );
   const { orderBy, order } = searchParams;
 
   return (
-    <TabsContent value="/me/checkouts" className="outline-none">
+    <TabsContent value="/me/fines" className="outline-none">
+      <Alert className="mb-6 bg-sky-100 text-sky-800">
+        <Info className="h-4 w-4" color="rgb(7 89 133)" />
+        <AlertDescription>
+          The amount of one fine is{' '}
+          <b>
+            {new Intl.NumberFormat('vi-VN', {
+              style: 'currency',
+              currency: 'VND',
+            }).format(10000)}{' '}
+            per overdue day
+          </b>
+        </AlertDescription>
+      </Alert>
       <DataTable
-        columns={userCheckoutTableColumns}
-        data={checkouts}
+        columns={userFinesTableColumns}
+        data={fines}
         pagination={pagination}
         sorting={{ orderBy, order }}
       />
@@ -42,13 +56,11 @@ export default async function CheckoutsPage({
   );
 }
 
-async function getCheckouts(
+async function getFines(
   accessToken: string,
   searchParams?: CommonSearchParams,
 ) {
-  const url = new URL(
-    `${process.env['NEXT_PUBLIC_API_ENDPOINT']}/checkouts/me`,
-  );
+  const url = new URL(`${process.env.NEXT_PUBLIC_API_ENDPOINT}/fines/me`);
 
   if (searchParams) {
     searchParams.page && url.searchParams.append('page', searchParams.page);
@@ -59,10 +71,8 @@ async function getCheckouts(
     searchParams.order && url.searchParams.append('order', searchParams.order);
   }
 
-  const res = await axios.get<SuccessResponse<Checkout[]>>(url.href, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
+  const res = await axios.get<SuccessResponse<Fine[]>>(url.toString(), {
+    headers: { Authorization: `Bearer ${accessToken}` },
   });
 
   return res.data;

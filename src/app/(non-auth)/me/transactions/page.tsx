@@ -2,39 +2,39 @@ import axios from 'axios';
 import { Metadata } from 'next';
 import { cookies } from 'next/headers';
 
-import { Checkout } from '@/common/types/api/checkout.type';
+import { Transaction } from '@/common/types/api/transaction.type';
 import { CommonSearchParams } from '@/common/types/common-search-params.type';
 import { SuccessResponse } from '@/common/types/success-response.type';
 import { DataTable } from '@/components/ui/data-table';
 import { TabsContent } from '@/components/ui/tabs';
-import { userCheckoutTableColumns } from '@/lib/columns/user-checkout-table.column';
+import { userTransactionsTableColumns } from '@/lib/columns/user-transactions-table.column';
+
+interface TransactionsPageProps {
+  searchParams: CommonSearchParams;
+}
 
 export const revalidate = 0;
 
 export const metadata: Metadata = {
-  title: 'My checkouts',
+  title: 'My transactions',
 };
 
-interface CheckoutsPageProps {
-  searchParams: CommonSearchParams;
-}
-
-export default async function CheckoutsPage({
+export default async function TransactionsPage({
   searchParams,
-}: CheckoutsPageProps) {
+}: TransactionsPageProps) {
   const cookieStore = cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
-  const { data: checkouts, pagination } = await getCheckouts(
+  const { data: transactions, pagination } = await getTransactions(
     accessToken!,
     searchParams,
   );
   const { orderBy, order } = searchParams;
 
   return (
-    <TabsContent value="/me/checkouts" className="outline-none">
+    <TabsContent value="/me/transactions" className="outline-none">
       <DataTable
-        columns={userCheckoutTableColumns}
-        data={checkouts}
+        columns={userTransactionsTableColumns}
+        data={transactions}
         pagination={pagination}
         sorting={{ orderBy, order }}
       />
@@ -42,12 +42,12 @@ export default async function CheckoutsPage({
   );
 }
 
-async function getCheckouts(
+async function getTransactions(
   accessToken: string,
   searchParams?: CommonSearchParams,
 ) {
   const url = new URL(
-    `${process.env['NEXT_PUBLIC_API_ENDPOINT']}/checkouts/me`,
+    `${process.env['NEXT_PUBLIC_API_ENDPOINT']}/transactions/me`,
   );
 
   if (searchParams) {
@@ -56,10 +56,9 @@ async function getCheckouts(
       url.searchParams.append('pageSize', searchParams.pageSize);
     searchParams.orderBy &&
       url.searchParams.append('orderBy', searchParams.orderBy);
-    searchParams.order && url.searchParams.append('order', searchParams.order);
   }
 
-  const res = await axios.get<SuccessResponse<Checkout[]>>(url.href, {
+  const res = await axios.get<SuccessResponse<Transaction[]>>(url.toString(), {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },

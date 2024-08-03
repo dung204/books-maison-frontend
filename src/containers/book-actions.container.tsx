@@ -9,6 +9,7 @@ import { toast } from 'sonner';
 
 import useAuth from '@/common/hooks/use-auth.hook';
 import { Book } from '@/common/types/api/book.type';
+import { CheckoutStatus } from '@/common/types/api/checkout-status.type';
 import { Checkout } from '@/common/types/api/checkout.type';
 import { SuccessResponse } from '@/common/types/success-response.type';
 import {
@@ -169,7 +170,10 @@ export default function BookActionsContainer({
           `${process.env['NEXT_PUBLIC_API_ENDPOINT']}/checkouts/me`,
         );
         latestRentingCheckoutUrl.searchParams.append('bookId', book.id);
-        latestRentingCheckoutUrl.searchParams.append('status', 'RENTING');
+        latestRentingCheckoutUrl.searchParams.append(
+          'status',
+          CheckoutStatus.BORROWING,
+        );
 
         const res = await axios.get<SuccessResponse<Checkout[]>>(
           latestRentingCheckoutUrl.href,

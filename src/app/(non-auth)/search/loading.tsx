@@ -1,5 +1,4 @@
 import { Filter, Search } from 'lucide-react';
-import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,7 +6,7 @@ import HomeBanner from '@/components/ui/home-banner';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
 
-export default function Loading() {
+export default function SearchLoading() {
   return (
     <>
       <HomeBanner

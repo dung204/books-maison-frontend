@@ -1,20 +1,10 @@
 'use client';
 
 import axios from 'axios';
-import {
-  BookText,
-  CircleDollarSign,
-  Gavel,
-  Heart,
-  LogOut,
-  User as UserIcon,
-} from 'lucide-react';
+import { BookText, CircleDollarSign, Gavel, Heart, LogOut } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 
 import useAuth from '@/common/hooks/use-auth.hook';
-import { User } from '@/common/types/api/user.type';
-import { SuccessResponse } from '@/common/types/success-response.type';
 import { StringUtils } from '@/common/utils/string.util';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import {
@@ -29,17 +19,7 @@ import {
 import LoadingIndicator from '@/components/ui/loading-indicator';
 
 export default function UserMenuContainer() {
-  const { accessToken } = useAuth();
-  const [user, setUser] = useState<User | null>(null);
-
-  useEffect(() => {
-    if (!accessToken) return;
-    axios
-      .get<
-        SuccessResponse<User>
-      >(`${process.env['NEXT_PUBLIC_API_ENDPOINT']}/users/me`, { headers: { Authorization: `Bearer ${accessToken}` } })
-      .then(res => setUser(res.data.data));
-  }, [accessToken]);
+  const { user, accessToken } = useAuth();
 
   const handleLogout = async () => {
     await Promise.all([
@@ -55,7 +35,7 @@ export default function UserMenuContainer() {
     <LoadingIndicator />
   ) : (
     <DropdownMenu>
-      <DropdownMenuTrigger>
+      <DropdownMenuTrigger className="outline-none">
         <Avatar>
           <AvatarFallback>
             {StringUtils.getFirstLettersUpperCase(
@@ -65,9 +45,11 @@ export default function UserMenuContainer() {
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuLabel>
-          {user.firstName} {user.lastName}
-        </DropdownMenuLabel>
+        <Link href="/me/checkouts">
+          <DropdownMenuLabel>
+            {user.firstName} {user.lastName}
+          </DropdownMenuLabel>
+        </Link>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <Link href="/me/checkouts">
@@ -76,18 +58,24 @@ export default function UserMenuContainer() {
               Checkouts
             </DropdownMenuItem>
           </Link>
-          <DropdownMenuItem className="cursor-pointer">
-            <Heart className="mr-2 h-4 w-4" />
-            Favourite books
-          </DropdownMenuItem>
-          <DropdownMenuItem className="cursor-pointer">
-            <Gavel className="mr-2 h-4 w-4" />
-            Fines
-          </DropdownMenuItem>
-          <DropdownMenuItem className="cursor-pointer">
-            <CircleDollarSign className="mr-2 h-4 w-4" />
-            Transactions
-          </DropdownMenuItem>
+          <Link href="/me/favourite-books">
+            <DropdownMenuItem className="cursor-pointer">
+              <Heart className="mr-2 h-4 w-4" />
+              Favourite books
+            </DropdownMenuItem>
+          </Link>
+          <Link href="/me/fines">
+            <DropdownMenuItem className="cursor-pointer">
+              <Gavel className="mr-2 h-4 w-4" />
+              Fines
+            </DropdownMenuItem>
+          </Link>
+          <Link href="/me/transactions">
+            <DropdownMenuItem className="cursor-pointer">
+              <CircleDollarSign className="mr-2 h-4 w-4" />
+              Transactions
+            </DropdownMenuItem>
+          </Link>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>

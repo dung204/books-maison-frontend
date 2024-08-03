@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { Filter, UserPen } from 'lucide-react';
+import { UserPen } from 'lucide-react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
 import { Author } from '@/common/types/api/author.type';
-import { PaginationSearchParams } from '@/common/types/pagination-search-params.type';
+import { CommonSearchParams } from '@/common/types/common-search-params.type';
 import { SuccessResponse } from '@/common/types/success-response.type';
 import { PaginationUtils } from '@/common/utils/pagination.util';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 };
 
 interface AuthorsPageProps {
-  searchParams: PaginationSearchParams;
+  searchParams: CommonSearchParams;
 }
 
 export default async function AuthorsPage({
@@ -77,7 +77,7 @@ async function getAuthors({
   pageSize,
   orderBy,
   order,
-}: PaginationSearchParams) {
+}: CommonSearchParams) {
   const requestUrl = new URL(
     `${process.env['NEXT_PUBLIC_API_ENDPOINT']}/authors`,
   );
