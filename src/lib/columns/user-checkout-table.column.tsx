@@ -6,11 +6,20 @@ import Link from 'next/link';
 import { Book } from '@/common/types/api/book.type';
 import { CheckoutStatus } from '@/common/types/api/checkout-status.type';
 import { Checkout } from '@/common/types/api/checkout.type';
-import { Badge } from '@/components/ui/badge';
+import CheckoutStatusBadge from '@/components/ui/checkout-status-badge';
 import { DataTableHeader } from '@/components/ui/data-table';
-import { cn } from '@/lib/utils';
 
 export const userCheckoutTableColumns: ColumnDef<Checkout>[] = [
+  {
+    accessorKey: 'id',
+    header: ({ column }) => (
+      <DataTableHeader column={column} headerName="Checkout ID" />
+    ),
+    cell: ({ row }) => {
+      const id = row.getValue<string>('id');
+      return <p className="text-center">{id}</p>;
+    },
+  },
   {
     accessorKey: 'book',
     header: ({ column }) => (
@@ -36,23 +45,7 @@ export const userCheckoutTableColumns: ColumnDef<Checkout>[] = [
       const status = row.getValue<CheckoutStatus>('status');
       return (
         <div className="flex justify-center">
-          <Badge
-            variant={
-              status === CheckoutStatus.OVERDUE ? 'destructive' : 'default'
-            }
-            className={cn(
-              {
-                'bg-green-500 hover:bg-green-500/80':
-                  status === CheckoutStatus.RETURNED,
-              },
-              {
-                'bg-yellow-500 hover:bg-yellow-500/80':
-                  status === CheckoutStatus.BORROWING,
-              },
-            )}
-          >
-            {status}
-          </Badge>
+          <CheckoutStatusBadge status={status} />
         </div>
       );
     },
