@@ -1,11 +1,12 @@
 'use client';
 
-import { Book, List, MoveRight, UserRoundPen } from 'lucide-react';
+import { Book, List, MoveRight, Search, UserRoundPen } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { ComponentProps, useEffect, useState } from 'react';
 
 import {
   Command,
+  CommandDialog,
   CommandGroup,
   CommandInput,
   CommandItem,
@@ -13,9 +14,73 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from '@/components/ui/command';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 
-export default function GlobalSearchBarContainer() {
+interface GlobalSearchContainerProps extends ComponentProps<'div'> {
+  asDialog?: boolean;
+}
+
+interface InternalGlobalSearchContainerProps extends ComponentProps<'div'> {
+  onItemClick?: () => void;
+}
+
+export default function GlobalSearchContainer({
+  asDialog = false,
+}: GlobalSearchContainerProps) {
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  useEffect(() => {
+    if (!asDialog) return;
+
+    const down = (e: KeyboardEvent) => {
+      if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setDialogOpen(open => !open);
+      }
+    };
+    document.addEventListener('keydown', down);
+    return () => document.removeEventListener('keydown', down);
+  }, [asDialog]);
+
+  if (asDialog) {
+    return (
+      <>
+        <TooltipProvider>
+          <Tooltip delayDuration={0}>
+            <TooltipTrigger asChild>
+              <Search
+                onClick={() => setDialogOpen(true)}
+                className="cursor-pointer"
+              />
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>
+                Press <kbd>Ctrl</kbd> + <kbd>K</kbd> to open the search dialog
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+        <CommandDialog open={dialogOpen} onOpenChange={setDialogOpen}>
+          <InternalGlobalSearchContainer
+            onItemClick={() => setDialogOpen(false)}
+          />
+        </CommandDialog>
+      </>
+    );
+  }
+
+  return <InternalGlobalSearchContainer />;
+}
+
+function InternalGlobalSearchContainer({
+  onItemClick: handleCloseDialog,
+}: InternalGlobalSearchContainerProps) {
   const [searchQuery, setSearchQuery] = useState('');
 
   const handleInputChange = (value: string) => {
@@ -42,7 +107,10 @@ export default function GlobalSearchBarContainer() {
             </div>
           }
         >
-          <Link href={`/search?title=${searchQuery}`}>
+          <Link
+            href={`/books?title=${searchQuery}`}
+            onClick={() => handleCloseDialog?.()}
+          >
             <CommandItem>
               See all books containing title &quot;{searchQuery}&quot;
               <CommandShortcut>
@@ -60,7 +128,10 @@ export default function GlobalSearchBarContainer() {
             </div>
           }
         >
-          <Link href={`/authors?name=${searchQuery}`}>
+          <Link
+            href={`/authors?name=${searchQuery}`}
+            onClick={() => handleCloseDialog?.()}
+          >
             <CommandItem>
               See all authors containing name &quot;{searchQuery}&quot;
               <CommandShortcut>
@@ -78,7 +149,10 @@ export default function GlobalSearchBarContainer() {
             </div>
           }
         >
-          <Link href={`/categories?name=${searchQuery}`}>
+          <Link
+            href={`/categories?name=${searchQuery}`}
+            onClick={() => handleCloseDialog?.()}
+          >
             <CommandItem>
               See all categories containing name &quot;{searchQuery}&quot;
               <CommandShortcut>
