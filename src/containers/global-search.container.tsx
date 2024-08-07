@@ -16,6 +16,7 @@ import { useRouter } from 'next/navigation';
 import { ComponentProps, useEffect, useState, useTransition } from 'react';
 
 import placeholderImg from '@/assets/images/placeholder-200x300.svg';
+import useDebounce from '@/common/hooks/use-debounce.hook';
 import { Author } from '@/common/types/api/author.type';
 import { Book } from '@/common/types/api/book.type';
 import { Category } from '@/common/types/api/category.type';
@@ -100,41 +101,42 @@ function InternalGlobalSearchContainer({
   onItemClick,
 }: InternalGlobalSearchContainerProps) {
   const router = useRouter();
-  const [isSearching, startTransition] = useTransition();
+  const [isSearching, setIsSearching] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchedBooks, setSearchedBooks] = useState<Book[]>([]);
   const [searchedAuthors, setSearchedAuthors] = useState<Author[]>([]);
   const [searchedCategories, setSearchedCategories] = useState<Category[]>([]);
 
+  const debouncedSearch = useDebounce(async (value: string) => {
+    const [booksRes, authorsRes, categoriesRes] = await Promise.all([
+      axios.get<SuccessResponse<Book[]>>(
+        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/books?title=${value}`,
+      ),
+      axios.get<SuccessResponse<Author[]>>(
+        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/authors?name=${value}`,
+      ),
+      axios.get<SuccessResponse<Category[]>>(
+        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/categories?name=${value}`,
+      ),
+    ]);
+
+    setSearchedBooks(booksRes.data.data);
+    setSearchedAuthors(authorsRes.data.data);
+    setSearchedCategories(categoriesRes.data.data);
+    setIsSearching(false);
+  }, 500);
+
   const handleInputChange = (value: string) => {
     setSearchQuery(value);
+    if (value.length === 0) {
+      setSearchedBooks([]);
+      setSearchedAuthors([]);
+      setSearchedCategories([]);
+      return;
+    }
 
-    startTransition(() => {
-      (async () => {
-        if (value.length === 0) {
-          setSearchedBooks([]);
-          setSearchedAuthors([]);
-          setSearchedCategories([]);
-          return;
-        }
-
-        const [booksRes, authorsRes, categoriesRes] = await Promise.all([
-          axios.get<SuccessResponse<Book[]>>(
-            `${process.env.NEXT_PUBLIC_API_ENDPOINT}/books?title=${value}`,
-          ),
-          axios.get<SuccessResponse<Author[]>>(
-            `${process.env.NEXT_PUBLIC_API_ENDPOINT}/authors?name=${value}`,
-          ),
-          axios.get<SuccessResponse<Category[]>>(
-            `${process.env.NEXT_PUBLIC_API_ENDPOINT}/categories?name=${value}`,
-          ),
-        ]);
-
-        setSearchedBooks(booksRes.data.data);
-        setSearchedAuthors(authorsRes.data.data);
-        setSearchedCategories(categoriesRes.data.data);
-      })();
-    });
+    setIsSearching(true);
+    debouncedSearch(value);
   };
 
   const handleRedirectToUrl = (url: string) => {
