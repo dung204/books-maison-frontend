@@ -11,7 +11,7 @@ import BookSearchContainer from '@/containers/book-search.container';
 export type BookSearchParams = CommonSearchParams &
   Partial<Omit<BookAdvancedFilterData, 'categoryIds'>> & {
     title?: string;
-    categoryId?: string[];
+    categoryId?: string | string[];
   };
 interface SearchPageProps {
   searchParams: BookSearchParams;
@@ -74,8 +74,15 @@ async function getBooks({
     requestUrl.searchParams.append('publishedYearTo', `${publishedYearTo}`);
   if (minPages) requestUrl.searchParams.append('minPages', `${minPages}`);
   if (maxPages) requestUrl.searchParams.append('maxPages', `${maxPages}`);
-  if (categoryId)
-    categoryId.forEach(id => requestUrl.searchParams.append('categoryId', id));
+  if (categoryId) {
+    if (Array.isArray(categoryId)) {
+      categoryId.forEach(id => {
+        requestUrl.searchParams.append('categoryId', id);
+      });
+    } else {
+      requestUrl.searchParams.append('categoryId', categoryId);
+    }
+  }
 
   const res = await axios.get<SuccessResponse<Book[]>>(requestUrl.href);
   return res.data;

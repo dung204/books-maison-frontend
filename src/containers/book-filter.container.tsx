@@ -64,7 +64,11 @@ export default function BookFilterContainer({
     publishedYearTo: searchParams.publishedYearTo || '',
     minPages: searchParams.minPages || '',
     maxPages: searchParams.maxPages || '',
-    categoryIds: searchParams.categoryId || [],
+    categoryIds: !searchParams.categoryId
+      ? []
+      : Array.isArray(searchParams.categoryId)
+        ? searchParams.categoryId
+        : [searchParams.categoryId],
   });
 
   const handleToggleCategoryId = (categoryId: string) => {
