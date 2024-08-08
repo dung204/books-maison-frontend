@@ -27,7 +27,12 @@ export default function TabsContainer({
 
   return (
     <Tabs value={pathname} className={cn('w-full', className)} {...props}>
-      <TabsList className="mb-6 grid w-full grid-cols-4">
+      <TabsList
+        className="mb-6 grid w-full"
+        style={{
+          gridTemplateColumns: `repeat(${tabs.length}, minmax(0, 1fr))`,
+        }}
+      >
         {tabs.map(tab => (
           <Link key={tab.href} href={tab.href} scroll={false}>
             <TabsTrigger value={tab.href} className="w-full">
