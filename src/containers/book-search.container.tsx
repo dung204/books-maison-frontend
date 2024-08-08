@@ -10,19 +10,23 @@ import { Pagination } from '@/common/types/pagination.type';
 import BookCard from '@/components/ui/book-card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import BookFilterContainer from '@/containers/book-filter.container';
+import BookFilterContainer, {
+  BookAdvancedFilterHiddenField,
+} from '@/containers/book-advanced-filter.container';
 import PaginationContainer from '@/containers/pagination.container';
 
 interface BookSearchContainerProps extends ComponentProps<'div'> {
   books: Book[];
   pagination: Pagination;
   searchParams: BookSearchParams;
+  advancedFilterHiddenFields?: BookAdvancedFilterHiddenField[];
 }
 
 export default function BookSearchContainer({
   books,
   pagination,
   searchParams,
+  advancedFilterHiddenFields,
 }: BookSearchContainerProps) {
   const router = useRouter();
 
@@ -67,7 +71,10 @@ export default function BookSearchContainer({
             <b>&quot;{searchParams.title || ''}&quot;</b>
           </p>
         </div>
-        <BookFilterContainer searchParams={searchParams} />
+        <BookFilterContainer
+          searchParams={searchParams}
+          hiddenFields={advancedFilterHiddenFields}
+        />
       </section>
       {books.length !== 0 && (
         <section className="mt-6">
