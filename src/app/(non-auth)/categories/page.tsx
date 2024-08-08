@@ -56,7 +56,7 @@ export default async function CategoriesPage({
         <section className="mt-10 grid grid-cols-3 gap-8">
           {categories.map(({ id, name }) => (
             <Link
-              href={`/search?categoryId=${encodeURIComponent(id)}`}
+              href={`/books?categoryId=${encodeURIComponent(id)}`}
               key={id}
               className="group"
             >

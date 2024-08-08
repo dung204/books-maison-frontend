@@ -1,9 +1,11 @@
+import { Search } from 'lucide-react';
 import { cookies } from 'next/headers';
 import Image from 'next/image';
 import Link from 'next/link';
 
 import brandLogo from '@/assets/images/books-maison-logo-dark.svg';
 import { Button } from '@/components/ui/button';
+import GlobalSearchContainer from '@/containers/global-search.container';
 import UserMenuContainer from '@/containers/user-menu.container';
 
 export default function Header() {
@@ -26,7 +28,8 @@ export default function Header() {
           <ul className="flex items-center gap-16">
             <Link href="/categories">Categories</Link>
             <Link href="/authors">Authors</Link>
-            <Link href="/search">Search</Link>
+            <Link href="/books">Books</Link>
+            <GlobalSearchContainer asDialog />
             <Link href="/auth/login">
               {!accessToken ? <Button>Login</Button> : <UserMenuContainer />}
             </Link>

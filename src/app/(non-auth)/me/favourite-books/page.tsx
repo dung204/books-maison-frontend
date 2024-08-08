@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Metadata } from 'next';
 import { cookies } from 'next/headers';
 
-import { BookSearchParams } from '@/app/(non-auth)/search/page';
+import { BookSearchParams } from '@/app/(non-auth)/books/page';
 import { Book } from '@/common/types/api/book.type';
 import { SuccessResponse } from '@/common/types/success-response.type';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';

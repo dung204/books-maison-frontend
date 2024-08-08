@@ -1,9 +1,10 @@
 'use client';
 
 import { Search } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { ComponentProps } from 'react';
 
-import { BookSearchParams } from '@/app/(non-auth)/search/page';
+import { BookSearchParams } from '@/app/(non-auth)/books/page';
 import { Book } from '@/common/types/api/book.type';
 import { Pagination } from '@/common/types/pagination.type';
 import BookCard from '@/components/ui/book-card';
@@ -23,11 +24,25 @@ export default function BookSearchContainer({
   pagination,
   searchParams,
 }: BookSearchContainerProps) {
+  const router = useRouter();
+
+  const handleSearchByTitle = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const title = formData.get('title') as string;
+    const url = new URL(location.href);
+    url.searchParams.set('title', title);
+    router.push(url.toString());
+  };
+
   return (
     <div>
       <section className="flex justify-between">
         <div className="w-1/2">
-          <form className="grid grid-cols-6 gap-4">
+          <form
+            className="grid grid-cols-6 gap-4"
+            onSubmit={handleSearchByTitle}
+          >
             <div className="relative col-span-5">
               <Input
                 type="text"
