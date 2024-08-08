@@ -1,14 +1,24 @@
 import axios from 'axios';
-import Link from 'next/link';
+import { Metadata } from 'next';
 
 import { Author } from '@/common/types/api/author.type';
 import { SuccessResponse } from '@/common/types/success-response.type';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { TabsContent } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 
 interface AuthorBioPageProps {
   params: {
     id: string;
+  };
+}
+
+export async function generateMetadata({
+  params: { id },
+}: AuthorBioPageProps): Promise<Metadata> {
+  const author = await getAuthor(id);
+
+  return {
+    title: `${author.name}'s biography`,
   };
 }
 
@@ -20,29 +30,11 @@ export default async function AuthorBioPage({
   const author = await getAuthor(id);
 
   return (
-    <Tabs className="w-full" defaultValue="bio">
-      <TabsList className="mb-6 grid w-full grid-cols-3">
-        <Link href={`/author/${id}`}>
-          <TabsTrigger value="overview" className="w-full">
-            Overview
-          </TabsTrigger>
-        </Link>
-        <Link href={`/author/${id}/bio`}>
-          <TabsTrigger value="bio" className="w-full">
-            Biography
-          </TabsTrigger>
-        </Link>
-        <Link href={`/author/${id}/books?title=&page=1&pageSize=10`}>
-          <TabsTrigger value="books" className="w-full">
-            Books
-          </TabsTrigger>
-        </Link>
-      </TabsList>
-
+    <TabsContent value={`/author/${id}/bio`}>
       <p className={cn({ 'text-center': !author.biography })}>
         {author.biography || 'No biography available'}
       </p>
-    </Tabs>
+    </TabsContent>
   );
 }
 

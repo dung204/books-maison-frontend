@@ -1,27 +1,16 @@
 import axios from 'axios';
 import { UserPen } from 'lucide-react';
 import { Metadata } from 'next';
-import Link from 'next/link';
-import { PropsWithChildren, ReactNode } from 'react';
+import { PropsWithChildren } from 'react';
 
 import { Author } from '@/common/types/api/author.type';
 import { SuccessResponse } from '@/common/types/success-response.type';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import HomeBanner from '@/components/ui/home-banner';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import TabsContainer from '@/containers/tabs.container';
 
 interface AuthorDetailsLayoutProps extends PropsWithChildren {
   params: { id: string };
-}
-
-export async function generateMetadata({
-  params: { id },
-}: AuthorDetailsLayoutProps): Promise<Metadata> {
-  const author = await getAuthor(id);
-
-  return {
-    title: author.name,
-  };
 }
 
 export default async function AuthorDetailsLayout({
@@ -43,7 +32,17 @@ export default async function AuthorDetailsLayout({
           </Avatar>
           <h2 className="mt-6 text-3xl font-semibold">{author.name}</h2>
         </div>
-        <div className="col-span-9">{children}</div>
+        <div className="col-span-9">
+          <TabsContainer
+            tabs={[
+              { href: `/author/${id}`, label: 'Overview' },
+              { href: `/author/${id}/bio`, label: 'Biography' },
+              { href: `/author/${id}/books`, label: 'Books' },
+            ]}
+          >
+            {children}
+          </TabsContainer>
+        </div>
       </div>
     </>
   );

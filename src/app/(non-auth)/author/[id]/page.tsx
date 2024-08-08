@@ -1,9 +1,7 @@
 import axios from 'axios';
-import Link from 'next/link';
 
 import { Author } from '@/common/types/api/author.type';
 import { SuccessResponse } from '@/common/types/success-response.type';
-import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table,
   TableBody,
@@ -11,7 +9,7 @@ import {
   TableHead,
   TableRow,
 } from '@/components/ui/table';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { TabsContent } from '@/components/ui/tabs';
 
 interface AuthorOverviewPageProps {
   params: {
@@ -37,25 +35,7 @@ export default async function AuthorOverviewPage({
   const author = await getAuthor(id);
 
   return (
-    <Tabs className="w-full" defaultValue="overview">
-      <TabsList className="mb-6 grid w-full grid-cols-3">
-        <Link href={`/author/${id}`}>
-          <TabsTrigger value="overview" className="w-full">
-            Overview
-          </TabsTrigger>
-        </Link>
-        <Link href={`/author/${id}/bio`}>
-          <TabsTrigger value="bio" className="w-full">
-            Biography
-          </TabsTrigger>
-        </Link>
-        <Link href={`/author/${id}/books?title=&page=1&pageSize=10`}>
-          <TabsTrigger value="books" className="w-full">
-            Books
-          </TabsTrigger>
-        </Link>
-      </TabsList>
-
+    <TabsContent value={`/author/${id}`} className="outline-none">
       <Table>
         <TableBody>
           <TableRow>
@@ -76,7 +56,7 @@ export default async function AuthorOverviewPage({
           </TableRow>
         </TableBody>
       </Table>
-    </Tabs>
+    </TabsContent>
   );
 }
 

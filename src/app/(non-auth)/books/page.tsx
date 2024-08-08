@@ -5,7 +5,7 @@ import { Book } from '@/common/types/api/book.type';
 import { CommonSearchParams } from '@/common/types/common-search-params.type';
 import { SuccessResponse } from '@/common/types/success-response.type';
 import HomeBanner from '@/components/ui/home-banner';
-import { BookAdvancedFilterData } from '@/containers/book-filter.container';
+import { BookAdvancedFilterData } from '@/containers/book-advanced-filter.container';
 import BookSearchContainer from '@/containers/book-search.container';
 
 export type BookSearchParams = CommonSearchParams &

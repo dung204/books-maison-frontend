@@ -6,8 +6,6 @@ import { cookies } from 'next/headers';
 import { BookSearchParams } from '@/app/(non-auth)/books/page';
 import { Book } from '@/common/types/api/book.type';
 import { SuccessResponse } from '@/common/types/success-response.type';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
 import BookSearchContainer from '@/containers/book-search.container';
 
 interface FavouriteBooksPageProps {
@@ -57,10 +55,13 @@ async function getFavouriteBooks(
     searchParams.title && url.searchParams.append('title', searchParams.title);
     searchParams.authorName &&
       url.searchParams.append('authorName', searchParams.authorName);
-    searchParams.categoryId &&
-      searchParams.categoryId.forEach(id =>
-        url.searchParams.append('categoryId', id),
-      );
+    if (searchParams.categoryId) {
+      if (Array.isArray(searchParams.categoryId))
+        searchParams.categoryId.forEach(id =>
+          url.searchParams.append('categoryId', id),
+        );
+      else url.searchParams.append('categoryId', searchParams.categoryId);
+    }
     searchParams.publisher &&
       url.searchParams.append('publisher', searchParams.publisher);
     searchParams.publishedYearFrom &&
