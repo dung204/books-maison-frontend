@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, createContext } from 'react';
 
-import { User } from '@/common/types/api/user.type';
+import { User } from '@/common/types/api/user/user.type';
 
 export interface AuthContextValue {
   accessToken: string | undefined;
