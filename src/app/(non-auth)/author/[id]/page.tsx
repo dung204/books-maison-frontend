@@ -1,7 +1,3 @@
-import axios from 'axios';
-
-import { Author } from '@/common/types/api/author.type';
-import { SuccessResponse } from '@/common/types/success-response.type';
 import {
   Table,
   TableBody,
@@ -10,6 +6,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { TabsContent } from '@/components/ui/tabs';
+import { authorHttpClient } from '@/lib/http/author.http';
 
 interface AuthorOverviewPageProps {
   params: {
@@ -22,7 +19,7 @@ export const revalidate = 30;
 export async function generateMetadata({
   params: { id },
 }: AuthorOverviewPageProps) {
-  const author = await getAuthor(id);
+  const { data: author } = await authorHttpClient.getAuthorById(id);
 
   return {
     title: author.name,
@@ -32,7 +29,7 @@ export async function generateMetadata({
 export default async function AuthorOverviewPage({
   params: { id },
 }: AuthorOverviewPageProps) {
-  const author = await getAuthor(id);
+  const { data: author } = await authorHttpClient.getAuthorById(id);
 
   return (
     <TabsContent value={`/author/${id}`} className="outline-none">
@@ -58,12 +55,4 @@ export default async function AuthorOverviewPage({
       </Table>
     </TabsContent>
   );
-}
-
-async function getAuthor(id: string) {
-  const requestUrl = new URL(
-    `${process.env['NEXT_PUBLIC_API_ENDPOINT']}/authors/${id}`,
-  );
-  const res = await axios.get<SuccessResponse<Author>>(requestUrl.href);
-  return res.data.data;
 }

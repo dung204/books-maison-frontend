@@ -1,7 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import axios from 'axios';
+import axios, { HttpStatusCode } from 'axios';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -16,6 +16,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { authHttpClient } from '@/lib/http/auth.http';
 import { LoginSchema, loginSchema } from '@/lib/validators/login.validator';
 
 export default function LoginContainer() {
@@ -31,14 +32,20 @@ export default function LoginContainer() {
   const onSubmit = async (formData: LoginSchema) => {
     try {
       setIsLoggingIn(true);
-      const res = await axios.post(
-        `${process.env['NEXT_PUBLIC_API_ENDPOINT']}/auth/login`,
-        formData,
-      );
-      await axios.post('/api/auth/set-cookie', res.data);
+
+      const res = await authHttpClient.login(formData);
+      await axios.post('/api/auth/set-cookie', res);
       document.location.href = '/';
     } catch (error: any) {
-      toast.error('Log in failed!');
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === HttpStatusCode.Unauthorized) {
+          toast.error('Email or password is incorrect!');
+        } else {
+          toast.error(`Log in failed: ${error.response?.data.message}`);
+        }
+      } else {
+        toast.error(`Log in failed: ${error.message}`);
+      }
     } finally {
       setIsLoggingIn(false);
     }

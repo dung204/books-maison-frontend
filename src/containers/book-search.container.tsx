@@ -2,13 +2,12 @@
 
 import { ComponentProps } from 'react';
 
-import { BookSearchParams } from '@/app/(non-auth)/books/page';
-import { Book } from '@/common/types/api/book.type';
+import { BookAdvancedFilterField } from '@/common/types/api/book/book-advanced-filter-field.type';
+import { BookSearchParams } from '@/common/types/api/book/book-search-params.type';
+import { Book } from '@/common/types/api/book/book.type';
 import { Pagination } from '@/common/types/pagination.type';
 import BookCard from '@/components/ui/book-card';
-import BookFilterContainer, {
-  BookAdvancedFilterHiddenField,
-} from '@/containers/book-advanced-filter.container';
+import BookFilterContainer from '@/containers/book-advanced-filter.container';
 import PaginationContainer from '@/containers/pagination.container';
 import SearchBarContainer from '@/containers/search-bar.container';
 
@@ -16,7 +15,7 @@ interface BookSearchContainerProps extends ComponentProps<'div'> {
   books: Book[];
   pagination: Pagination;
   searchParams: BookSearchParams;
-  advancedFilterHiddenFields?: BookAdvancedFilterHiddenField[];
+  advancedFilterHiddenFields?: BookAdvancedFilterField[];
 }
 
 export default function BookSearchContainer({

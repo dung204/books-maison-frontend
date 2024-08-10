@@ -2,9 +2,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ComponentProps } from 'react';
 
-import { CategorySearchParams } from '@/app/(non-auth)/categories/page';
 import banner from '@/assets/images/library-banner-1.jpg';
-import { Category } from '@/common/types/api/category.type';
+import { CategorySearchParams } from '@/common/types/api/category/category-search-params.type';
+import { Category } from '@/common/types/api/category/category.type';
 import { Pagination } from '@/common/types/pagination.type';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import PaginationContainer from '@/containers/pagination.container';

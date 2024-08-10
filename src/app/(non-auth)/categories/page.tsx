@@ -1,15 +1,9 @@
-import axios from 'axios';
 import { Metadata } from 'next';
 
-import { Category } from '@/common/types/api/category.type';
-import { CommonSearchParams } from '@/common/types/common-search-params.type';
-import { SuccessResponse } from '@/common/types/success-response.type';
+import { CategorySearchParams } from '@/common/types/api/category/category-search-params.type';
 import HomeBanner from '@/components/ui/home-banner';
 import CategorySearchContainer from '@/containers/category-search.container';
-
-export interface CategorySearchParams extends CommonSearchParams {
-  name?: string;
-}
+import { categoryHttpClient } from '@/lib/http/category.http';
 
 interface CategoriesPageProps {
   searchParams: CategorySearchParams;
@@ -24,7 +18,8 @@ export const metadata: Metadata = {
 export default async function CategoriesPage({
   searchParams,
 }: CategoriesPageProps) {
-  const { data: categories, pagination } = await getCategories(searchParams);
+  const { data: categories, pagination } =
+    await categoryHttpClient.getAllCategories(searchParams);
 
   return (
     <>
@@ -38,25 +33,4 @@ export default async function CategoriesPage({
       </div>
     </>
   );
-}
-
-async function getCategories({
-  page,
-  pageSize,
-  orderBy,
-  order,
-  name,
-}: CategorySearchParams) {
-  const requestUrl = new URL(
-    `${process.env['NEXT_PUBLIC_API_ENDPOINT']}/categories`,
-  );
-
-  if (page) requestUrl.searchParams.append('page', `${page}`);
-  if (pageSize) requestUrl.searchParams.append('pageSize', `${pageSize}`);
-  if (orderBy) requestUrl.searchParams.append('orderBy', `${orderBy}`);
-  if (order) requestUrl.searchParams.append('order', `${order}`);
-  if (name) requestUrl.searchParams.append('name', `${name}`);
-
-  const res = await axios.get<SuccessResponse<Category[]>>(requestUrl.href);
-  return res.data;
 }
