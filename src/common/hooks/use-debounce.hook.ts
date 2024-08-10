@@ -18,7 +18,7 @@ export default function useDebounce<TFunc extends (...args: any) => any>(
   ) => {
     clearTimeout(timer);
     timer = setTimeout(() => {
-      func(args);
+      func(...args);
     }, delayMs);
   };
 

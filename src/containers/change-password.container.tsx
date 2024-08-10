@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import axios, { AxiosError, HttpStatusCode } from 'axios';
+import { AxiosError, HttpStatusCode } from 'axios';
 import { Lock } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -25,6 +25,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { userHttpClient } from '@/lib/http/user.http';
 import {
   ChangePasswordSchema,
   changePasswordSchema,
@@ -48,18 +49,10 @@ export default function ChangePasswordContainer() {
   const onSubmit = async ({ password, newPassword }: ChangePasswordSchema) => {
     try {
       setIsUpdating(true);
-      await axios.patch(
-        `${process.env['NEXT_PUBLIC_API_ENDPOINT']}/users/me/password`,
-        {
-          password,
-          newPassword,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
-      );
+      await userHttpClient.changePassword(accessToken!, {
+        password,
+        newPassword,
+      });
       toast.success('Password changed successfully!');
     } catch (error: unknown) {
       if (error instanceof AxiosError) {

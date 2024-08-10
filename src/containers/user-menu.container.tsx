@@ -17,6 +17,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import LoadingIndicator from '@/components/ui/loading-indicator';
+import { authHttpClient } from '@/lib/http/auth.http';
 
 export default function UserMenuContainer() {
   const { user, accessToken } = useAuth();
@@ -24,9 +25,7 @@ export default function UserMenuContainer() {
   const handleLogout = async () => {
     await Promise.all([
       axios.delete(`/api/auth/delete-cookie`),
-      axios.delete(`${process.env['NEXT_PUBLIC_API_ENDPOINT']}/auth/logout`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      }),
+      authHttpClient.logout(accessToken!),
     ]);
     document.location.href = '/';
   };

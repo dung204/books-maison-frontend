@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { ComponentProps } from 'react';
 
 import placeholderImg from '@/assets/images/placeholder-200x300.svg';
-import { Book } from '@/common/types/api/book.type';
+import { Book } from '@/common/types/api/book/book.type';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { cn } from '@/lib/utils';

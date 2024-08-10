@@ -1,13 +1,10 @@
-import axios from 'axios';
 import { UserPen } from 'lucide-react';
-import { Metadata } from 'next';
 import { PropsWithChildren } from 'react';
 
-import { Author } from '@/common/types/api/author.type';
-import { SuccessResponse } from '@/common/types/success-response.type';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import HomeBanner from '@/components/ui/home-banner';
 import TabsContainer from '@/containers/tabs.container';
+import { authorHttpClient } from '@/lib/http/author.http';
 
 interface AuthorDetailsLayoutProps extends PropsWithChildren {
   params: { id: string };
@@ -17,7 +14,7 @@ export default async function AuthorDetailsLayout({
   children,
   params: { id },
 }: AuthorDetailsLayoutProps) {
-  const author = await getAuthor(id);
+  const { data: author } = await authorHttpClient.getAuthorById(id);
 
   return (
     <>
@@ -46,12 +43,4 @@ export default async function AuthorDetailsLayout({
       </div>
     </>
   );
-}
-
-async function getAuthor(id: string) {
-  const requestUrl = new URL(
-    `${process.env['NEXT_PUBLIC_API_ENDPOINT']}/authors/${id}`,
-  );
-  const res = await axios.get<SuccessResponse<Author>>(requestUrl.href);
-  return res.data.data;
 }

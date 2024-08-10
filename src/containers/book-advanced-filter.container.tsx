@@ -1,14 +1,14 @@
 'use client';
 
-import axios from 'axios';
 import { Filter, MoveRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { BookSearchParams } from '@/app/(non-auth)/books/page';
-import { Category } from '@/common/types/api/category.type';
+import { BookAdvancedFilterData } from '@/common/types/api/book/book-advanced-filter-data.type';
+import { BookAdvancedFilterField } from '@/common/types/api/book/book-advanced-filter-field.type';
+import { BookSearchParams } from '@/common/types/api/book/book-search-params.type';
+import { Category } from '@/common/types/api/category/category.type';
 import { CommonSearchParams } from '@/common/types/common-search-params.type';
-import { SuccessResponse } from '@/common/types/success-response.type';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -32,28 +32,11 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-
-export interface BookAdvancedFilterData {
-  publisher: string;
-  authorName: string;
-  publishedYearFrom: string;
-  publishedYearTo: string;
-  minPages: string;
-  maxPages: string;
-  categoryIds: string[];
-}
-
-export type BookAdvancedFilterHiddenField =
-  | Exclude<
-      keyof BookAdvancedFilterData,
-      'publishedYearFrom' | 'publishedYearTo' | 'minPages' | 'maxPages'
-    >
-  | 'publishedYear'
-  | 'pages';
+import { categoryHttpClient } from '@/lib/http/category.http';
 
 interface BookFilterContainerProps {
   searchParams: Omit<BookSearchParams, keyof CommonSearchParams>;
-  hiddenFields?: BookAdvancedFilterHiddenField[];
+  hiddenFields?: BookAdvancedFilterField[];
 }
 
 export default function BookFilterContainer({
@@ -153,11 +136,9 @@ export default function BookFilterContainer({
     (async () => {
       if (!needFetchingCategories) return;
 
-      const response = await axios.get<SuccessResponse<Category[]>>(
-        `${process.env['NEXT_PUBLIC_API_ENDPOINT']}/categories?page=${currentPageCategories}`,
-      );
-
-      const { data, pagination } = response.data;
+      const { data, pagination } = await categoryHttpClient.getAllCategories({
+        page: currentPageCategories.toString(),
+      });
       setCategories([...categories, ...data]);
       setCurrentPageCategories(pagination!.page + 1);
       setNeedFetchingCategories(pagination!.hasNextPage);

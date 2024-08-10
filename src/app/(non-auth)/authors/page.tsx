@@ -1,16 +1,14 @@
-import axios from 'axios';
 import { UserPen } from 'lucide-react';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
-import { Author } from '@/common/types/api/author.type';
 import { CommonSearchParams } from '@/common/types/common-search-params.type';
-import { SuccessResponse } from '@/common/types/success-response.type';
 import { PaginationUtils } from '@/common/utils/pagination.util';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import HomeBanner from '@/components/ui/home-banner';
 import PaginationContainer from '@/containers/pagination.container';
+import { authorHttpClient } from '@/lib/http/author.http';
 
 export const metadata: Metadata = {
   title: 'Authors',
@@ -34,7 +32,7 @@ export default async function AuthorsPage({
     );
   }
 
-  const { data: authors, pagination } = await getAuthors({
+  const { data: authors, pagination } = await authorHttpClient.getAllAuthors({
     page,
     pageSize,
   });
@@ -70,23 +68,4 @@ export default async function AuthorsPage({
       </div>
     </>
   );
-}
-
-async function getAuthors({
-  page,
-  pageSize,
-  orderBy,
-  order,
-}: CommonSearchParams) {
-  const requestUrl = new URL(
-    `${process.env['NEXT_PUBLIC_API_ENDPOINT']}/authors`,
-  );
-
-  if (page) requestUrl.searchParams.append('page', `${page}`);
-  if (pageSize) requestUrl.searchParams.append('pageSize', `${pageSize}`);
-  if (orderBy) requestUrl.searchParams.append('orderBy', `${orderBy}`);
-  if (order) requestUrl.searchParams.append('order', `${order}`);
-
-  const res = await axios.get<SuccessResponse<Author[]>>(requestUrl.href);
-  return res.data;
 }

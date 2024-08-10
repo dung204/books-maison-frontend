@@ -3,8 +3,8 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { Banknote } from 'lucide-react';
 
-import { TransactionMethod } from '@/common/types/api/transaction-method.type';
-import { Transaction } from '@/common/types/api/transaction.type';
+import { TransactionMethod } from '@/common/types/api/transaction/transaction-method.type';
+import { Transaction } from '@/common/types/api/transaction/transaction.type';
 import { StringUtils } from '@/common/utils/string.util';
 import { DataTableHeader } from '@/components/ui/data-table';
 import MomoIcon from '@/components/ui/momo-icon/momo-icon';
