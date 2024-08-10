@@ -1,13 +1,9 @@
-import axios from 'axios';
-import { HandHelping, Heart } from 'lucide-react';
 import { type Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 
 import placeholderImg from '@/assets/images/placeholder-200x300.svg';
-import { Book } from '@/common/types/api/book.type';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import HomeBanner from '@/components/ui/home-banner';
 import {
   Table,
@@ -17,6 +13,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import BookActionsContainer from '@/containers/book-actions.container';
+import { bookHttpClient } from '@/lib/http/book.http';
 import { cn } from '@/lib/utils';
 
 interface BookDetailsPageProps {
@@ -28,7 +25,7 @@ interface BookDetailsPageProps {
 export async function generateMetadata({
   params: { id },
 }: BookDetailsPageProps): Promise<Metadata> {
-  const book = await getBook(id);
+  const { data: book } = await bookHttpClient.getBookById(id);
 
   return {
     title: book.title,
@@ -38,7 +35,7 @@ export async function generateMetadata({
 export default async function BookDetailsPage({
   params: { id },
 }: BookDetailsPageProps) {
-  const book = await getBook(id);
+  const { data: book } = await bookHttpClient.getBookById(id);
 
   return (
     <>
@@ -126,12 +123,4 @@ export default async function BookDetailsPage({
       </div>
     </>
   );
-}
-
-async function getBook(id: string) {
-  const requestUrl = new URL(
-    `${process.env['NEXT_PUBLIC_API_ENDPOINT']}/books/${id}`,
-  );
-  const res = await axios.get<Book>(requestUrl.href);
-  return res.data;
 }

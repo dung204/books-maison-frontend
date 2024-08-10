@@ -1,6 +1,6 @@
 import { ComponentProps } from 'react';
 
-import { CheckoutStatus } from '@/common/types/api/checkout-status.type';
+import { CheckoutStatus } from '@/common/types/api/checkout/checkout-status.type';
 import { Badge } from '@/components/ui/badge';
 import ColoredBadge from '@/components/ui/colored-badge';
 

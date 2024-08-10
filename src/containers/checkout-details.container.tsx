@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { Checkout } from '@/common/types/api/checkout.type';
+import { Checkout } from '@/common/types/api/checkout/checkout.type';
 import CheckoutStatusBadge from '@/components/ui/checkout-status-badge';
 import {
   Dialog,

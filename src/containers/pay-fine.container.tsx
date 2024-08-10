@@ -1,13 +1,11 @@
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 import { Info } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
 import useAuth from '@/common/hooks/use-auth.hook';
-import { Fine } from '@/common/types/api/fine.type';
-import { TransactionMethod } from '@/common/types/api/transaction-method.type';
-import { Transaction } from '@/common/types/api/transaction.type';
-import { SuccessResponse } from '@/common/types/success-response.type';
+import { Fine } from '@/common/types/api/fine/fine.type';
+import { TransactionMethod } from '@/common/types/api/transaction/transaction-method.type';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import {
   AlertDialog,
@@ -31,6 +29,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { fineHttpClient } from '@/lib/http/fine.http';
 
 interface PayFineContainerProps {
   fine: Fine;
@@ -43,19 +42,12 @@ export default function PayFineContainer({ fine }: PayFineContainerProps) {
   const handleRedirectToPurchaseLink = async (method: TransactionMethod) => {
     try {
       setIsCreatingTransaction(true);
-      const {
-        data: { data: transaction },
-      } = await axios.post<SuccessResponse<Transaction>>(
-        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/fines/pay/${fine.id}`,
-        {
-          method,
-          redirectUrl: location.href.replace(location.search, ''),
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
+
+      const { data: transaction } = await fineHttpClient.payFine(
+        accessToken!,
+        fine.id,
+        method,
+        location.href.replace(location.search, ''),
       );
       location.href = transaction.purchaseUrl;
     } catch (error: unknown) {

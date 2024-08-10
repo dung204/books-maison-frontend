@@ -2,6 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -16,12 +17,14 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { authHttpClient } from '@/lib/http/auth.http';
 import {
   RegisterSchema,
   registerSchema,
 } from '@/lib/validators/register.validator';
 
 export default function RegisterContainer() {
+  const router = useRouter();
   const [isRegistering, setIsRegistering] = useState(false);
   const form = useForm<RegisterSchema>({
     resolver: zodResolver(registerSchema),
@@ -34,19 +37,9 @@ export default function RegisterContainer() {
   const onSubmit = async (formData: RegisterSchema) => {
     try {
       setIsRegistering(true);
-      await axios.post(
-        `${process.env['NEXT_PUBLIC_API_ENDPOINT']}/auth/register`,
-        formData,
-      );
-      const res = await axios.post(
-        `${process.env['NEXT_PUBLIC_API_ENDPOINT']}/auth/login`,
-        {
-          email: formData.email,
-          password: formData.password,
-        },
-      );
-      await axios.post('/api/auth/set-cookie', res.data);
-      document.location.href = '/';
+      await authHttpClient.register(formData);
+      router.push('/auth/login');
+      toast.success('Registration successfully! Please log in to continue.');
     } catch (error: any) {
       toast.error(`Registration failed: ${error.response.data.message}`);
     } finally {

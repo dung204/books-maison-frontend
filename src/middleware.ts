@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { secondsToMilliseconds } from 'date-fns';
 import * as jose from 'jose';
 import { NextRequest, NextResponse } from 'next/server';
 import { pathToRegexp } from 'path-to-regexp';
 
 import { RefreshSuccessResponse } from '@/common/types/refresh-success-response.type';
+import { authHttpClient } from '@/lib/http/auth.http';
 
 const privateRoutes = ['/me/:path', '/me'];
 
@@ -32,24 +32,15 @@ export async function middleware(request: NextRequest) {
 
     try {
       await jose.jwtVerify(accessToken, jwtAccessSecret);
-      const { exp } = jose.decodeJwt(accessToken);
-
-      if (secondsToMilliseconds(exp!) < Date.now()) throw new Error();
-
       return NextResponse.next();
     } catch (accessTokenError) {
       try {
         await jose.jwtVerify(refreshToken, jwtRefreshSecret);
-        const response = await axios.post<RefreshSuccessResponse>(
-          `${process.env['NEXT_PUBLIC_API_ENDPOINT']}/auth/refresh`,
-          { refreshToken },
-        );
-        const { exp } = jose.decodeJwt(refreshToken);
 
-        if (secondsToMilliseconds(exp!) < Date.now()) throw new Error();
+        const {
+          data: { refreshToken: newRefreshToken, accessToken: newAccessToken },
+        } = await authHttpClient.refreshToken(refreshToken);
 
-        const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
-          response.data.data;
         return NextResponse.redirect(request.nextUrl, {
           // @ts-ignore
           headers: {

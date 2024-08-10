@@ -1,6 +1,5 @@
 'use client';
 
-import axios from 'axios';
 import { HandHelping, Heart } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -8,10 +7,8 @@ import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 import useAuth from '@/common/hooks/use-auth.hook';
-import { Book } from '@/common/types/api/book.type';
-import { CheckoutStatus } from '@/common/types/api/checkout-status.type';
-import { Checkout } from '@/common/types/api/checkout.type';
-import { SuccessResponse } from '@/common/types/success-response.type';
+import { Book } from '@/common/types/api/book/book.type';
+import { CheckoutStatus } from '@/common/types/api/checkout/checkout-status.type';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -24,6 +21,8 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
+import { checkoutHttpClient } from '@/lib/http/checkout.http';
+import { favouriteBookHttpClient } from '@/lib/http/favourite-book.http';
 
 interface BookActionsContainerProps {
   book: Book;
@@ -45,33 +44,21 @@ export default function BookActionsContainer({
     try {
       if (hasFavored) {
         setRemovingFromFavorites(true);
-        await axios.delete(
-          `${process.env['NEXT_PUBLIC_API_ENDPOINT']}/favourite-books/delete/${book.id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          },
+        await favouriteBookHttpClient.removeBookFromFavourite(
+          accessToken,
+          book.id,
         );
         setRemovingFromFavorites(false);
         setHasFavored(false);
         router.refresh();
-        toast.success('Removed this books from favourites successfully!');
+        toast.success('Removed this book from favourites successfully!');
       } else {
         setAddingToFavorites(true);
-        await axios.post(
-          `${process.env['NEXT_PUBLIC_API_ENDPOINT']}/favourite-books/add/${book.id}`,
-          null,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          },
-        );
+        await favouriteBookHttpClient.addBookToFavourite(accessToken, book.id);
         setAddingToFavorites(false);
         setHasFavored(true);
         router.refresh();
-        toast.success('Added this books from favourites successfully!');
+        toast.success('Added this book from favourites successfully!');
       }
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'An error occurred!');
@@ -85,17 +72,7 @@ export default function BookActionsContainer({
       if (!accessToken) return;
 
       setIsBorrowing(true);
-      await axios.post(
-        `${process.env['NEXT_PUBLIC_API_ENDPOINT']}/checkouts/me`,
-        {
-          bookId: book.id,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
-      );
+      await checkoutHttpClient.createCheckout(accessToken, book.id);
 
       router.refresh();
       toast.success('Borrowed this book successfully!');
@@ -111,79 +88,24 @@ export default function BookActionsContainer({
       (async () => {
         if (typeof hasFavored === 'boolean') return;
 
-        const getFavouriteBookUrl = new URL(
-          `${process.env['NEXT_PUBLIC_API_ENDPOINT']}/favourite-books/me`,
-        );
-        getFavouriteBookUrl.searchParams.append('title', book.title);
-        if (book.publisher)
-          getFavouriteBookUrl.searchParams.append('publisher', book.publisher);
-        if (book.authors)
-          book.authors.forEach(author =>
-            getFavouriteBookUrl.searchParams.append('authorName', author.name),
-          );
-        if (book.categories)
-          book.categories.forEach(category =>
-            getFavouriteBookUrl.searchParams.append(
-              'categoryIds',
-              category.name,
-            ),
-          );
-        if (book.publishedYear) {
-          getFavouriteBookUrl.searchParams.append(
-            'publishedYearFrom',
-            book.publishedYear.toString(),
-          );
-          getFavouriteBookUrl.searchParams.append(
-            'publishedYearTo',
-            book.publishedYear.toString(),
-          );
-        }
-        if (book.numberOfPages) {
-          getFavouriteBookUrl.searchParams.append(
-            'minPages',
-            book.numberOfPages.toString(),
-          );
-          getFavouriteBookUrl.searchParams.append(
-            'maxPages',
-            book.numberOfPages.toString(),
-          );
-        }
-        if (book.language)
-          getFavouriteBookUrl.searchParams.append('language', book.language);
-
-        const res = await axios.get<SuccessResponse<Book[]>>(
-          getFavouriteBookUrl.href,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          },
+        const { data } = await favouriteBookHttpClient.checkHasFavoured(
+          accessToken,
+          book.id,
         );
 
-        setHasFavored(res.data.data.some(favorite => favorite.id === book.id));
+        setHasFavored(data);
       })(),
 
       (async () => {
         if (typeof isBorrowing === 'boolean' || book.quantity === 0) return;
-
-        const latestRentingCheckoutUrl = new URL(
-          `${process.env['NEXT_PUBLIC_API_ENDPOINT']}/checkouts/me`,
-        );
-        latestRentingCheckoutUrl.searchParams.append('bookId', book.id);
-        latestRentingCheckoutUrl.searchParams.append(
-          'status',
-          CheckoutStatus.BORROWING,
-        );
-
-        const res = await axios.get<SuccessResponse<Checkout[]>>(
-          latestRentingCheckoutUrl.href,
+        const { data } = await checkoutHttpClient.getCheckoutsOfCurrentUser(
+          accessToken,
           {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
+            bookId: book.id,
+            status: CheckoutStatus.BORROWING,
           },
         );
-        setIsBorrowing(res.data.data.length > 0);
+        setIsBorrowing(data.length > 0);
       })(),
     ]);
   }, [accessToken, book, hasFavored, isBorrowing]);

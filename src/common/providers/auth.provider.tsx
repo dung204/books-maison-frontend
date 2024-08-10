@@ -1,11 +1,10 @@
 'use client';
 
-import axios from 'axios';
 import { PropsWithChildren, useEffect, useState } from 'react';
 
 import AuthContext, { AuthContextValue } from '@/common/context/auth.context';
-import { User } from '@/common/types/api/user.type';
-import { SuccessResponse } from '@/common/types/success-response.type';
+import { User } from '@/common/types/api/user/user.type';
+import { userHttpClient } from '@/lib/http/user.http';
 
 interface AuthProviderProps extends PropsWithChildren {
   initialTokens: Pick<AuthContextValue, 'accessToken' | 'refreshToken'>;
@@ -26,11 +25,9 @@ export default function AuthProvider({
     if (!user) {
       if (!accessToken) return;
 
-      axios
-        .get<
-          SuccessResponse<User>
-        >(`${process.env['NEXT_PUBLIC_API_ENDPOINT']}/users/me`, { headers: { Authorization: `Bearer ${accessToken}` } })
-        .then(res => setUser(res.data.data));
+      userHttpClient
+        .getUserProfile(accessToken)
+        .then(({ data }) => setUser(data));
     }
   }, [accessToken, user]);
 

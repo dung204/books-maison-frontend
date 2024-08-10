@@ -1,7 +1,6 @@
 'use client';
 
 import { AvatarFallback } from '@radix-ui/react-avatar';
-import axios from 'axios';
 import {
   Book as BookIcon,
   List,
@@ -13,14 +12,13 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ComponentProps, useEffect, useState, useTransition } from 'react';
+import { ComponentProps, useEffect, useState } from 'react';
 
 import placeholderImg from '@/assets/images/placeholder-200x300.svg';
 import useDebounce from '@/common/hooks/use-debounce.hook';
-import { Author } from '@/common/types/api/author.type';
-import { Book } from '@/common/types/api/book.type';
-import { Category } from '@/common/types/api/category.type';
-import { SuccessResponse } from '@/common/types/success-response.type';
+import { Author } from '@/common/types/api/author/author.type';
+import { Book } from '@/common/types/api/book/book.type';
+import { Category } from '@/common/types/api/category/category.type';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import {
   Command,
@@ -39,6 +37,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { authorHttpClient } from '@/lib/http/author.http';
+import { bookHttpClient } from '@/lib/http/book.http';
+import { categoryHttpClient } from '@/lib/http/category.http';
 import { cn } from '@/lib/utils';
 
 interface GlobalSearchContainerProps extends ComponentProps<'div'> {
@@ -109,20 +110,14 @@ function InternalGlobalSearchContainer({
 
   const debouncedSearch = useDebounce(async (value: string) => {
     const [booksRes, authorsRes, categoriesRes] = await Promise.all([
-      axios.get<SuccessResponse<Book[]>>(
-        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/books?title=${value}`,
-      ),
-      axios.get<SuccessResponse<Author[]>>(
-        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/authors?name=${value}`,
-      ),
-      axios.get<SuccessResponse<Category[]>>(
-        `${process.env.NEXT_PUBLIC_API_ENDPOINT}/categories?name=${value}`,
-      ),
+      bookHttpClient.getAllBooks({ title: value }),
+      authorHttpClient.getAllAuthors({ name: value }),
+      categoryHttpClient.getAllCategories({ name: value }),
     ]);
 
-    setSearchedBooks(booksRes.data.data);
-    setSearchedAuthors(authorsRes.data.data);
-    setSearchedCategories(categoriesRes.data.data);
+    setSearchedBooks(booksRes.data);
+    setSearchedAuthors(authorsRes.data);
+    setSearchedCategories(categoriesRes.data);
     setIsSearching(false);
   }, 500);
 

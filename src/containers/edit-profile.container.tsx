@@ -1,15 +1,13 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 import { UserPen } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
 import useAuth from '@/common/hooks/use-auth.hook';
-import { User } from '@/common/types/api/user.type';
-import { SuccessResponse } from '@/common/types/success-response.type';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -29,6 +27,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { userHttpClient } from '@/lib/http/user.http';
 import {
   UpdateProfileSchema,
   updateProfileSchema,
@@ -58,16 +57,12 @@ export default function EditProfileContainer() {
   const onSubmit = async (formData: UpdateProfileSchema) => {
     try {
       setIsUpdating(true);
-      const res = await axios.patch<SuccessResponse<User>>(
-        `${process.env['NEXT_PUBLIC_API_ENDPOINT']}/users/me`,
+
+      const { data: updatedUser } = await userHttpClient.updateProfile(
+        accessToken!,
         formData,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
       );
-      setUser(res.data.data);
+      setUser(updatedUser);
       toast.success('Profile updated successfully!');
     } catch (error) {
       if (error instanceof AxiosError) {
