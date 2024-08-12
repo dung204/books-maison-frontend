@@ -29,6 +29,7 @@ export default function BookCard({ book, className, ...props }: BookCardProps) {
             src={book.imageUrl || placeholderImg}
             alt=""
             className="mx-auto object-contain transition-all duration-300 group-hover:scale-125"
+            fill
           />
         </div>
         <CardHeader>
@@ -39,7 +40,7 @@ export default function BookCard({ book, className, ...props }: BookCardProps) {
             <UserPen className="me-2 inline-block h-4 w-4 -translate-y-[0.1rem]" />
             <span>
               {book.authors.length === 0
-                ? 'Updating...'
+                ? 'N/A'
                 : book.authors.map(author => author.name).join(', ')}
             </span>
           </div>
@@ -47,13 +48,13 @@ export default function BookCard({ book, className, ...props }: BookCardProps) {
             <List className="me-2 inline-block h-4 w-4 -translate-y-[0.1rem]" />
             <span>
               {book.categories.length === 0
-                ? 'Updating...'
+                ? 'N/A'
                 : book.categories.map(category => category.name).join(', ')}
             </span>
           </div>
           <div className="line-clamp-3">
             <Info className="me-2 inline-block h-4 w-4 -translate-y-[0.1rem]" />
-            <span>{book.description || 'Updating...'}</span>
+            <span>{book.description || 'N/A'}</span>
           </div>
         </CardContent>
       </Card>

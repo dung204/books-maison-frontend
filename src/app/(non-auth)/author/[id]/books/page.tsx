@@ -15,7 +15,7 @@ interface AuthorBooksPageProps {
   searchParams: AuthorBooksSearchParams;
 }
 
-export const revalidate = 0;
+export const revalidate = 60;
 
 export async function generateMetadata({
   params: { id },
