@@ -9,7 +9,7 @@ interface SearchPageProps {
   searchParams: BookSearchParams;
 }
 
-export const revalidate = 0;
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: 'Books',

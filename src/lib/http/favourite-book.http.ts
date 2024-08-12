@@ -21,7 +21,7 @@ class FavouriteBookHttpClient extends HttpClient {
   }
 
   public addBookToFavourite(accessToken: string, bookId: string) {
-    return this.post<void>(`/favourite-books/add/${bookId}`, null, {
+    return this.post<void>(`/favourite-books/add/${bookId}`, undefined, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
