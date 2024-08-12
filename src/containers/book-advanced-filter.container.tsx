@@ -1,14 +1,14 @@
 'use client';
 
-import axios from 'axios';
 import { Filter, MoveRight } from 'lucide-react';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { BookSearchParams } from '@/app/(non-auth)/search/page';
-import { Category } from '@/common/types/api/category.type';
-import { PaginationSearchParams } from '@/common/types/pagination-search-params.type';
-import { SuccessResponse } from '@/common/types/success-response.type';
+import { BookAdvancedFilterData } from '@/common/types/api/book/book-advanced-filter-data.type';
+import { BookAdvancedFilterField } from '@/common/types/api/book/book-advanced-filter-field.type';
+import { BookSearchParams } from '@/common/types/api/book/book-search-params.type';
+import { Category } from '@/common/types/api/category/category.type';
+import { CommonSearchParams } from '@/common/types/common-search-params.type';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -32,30 +32,20 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-
-export interface BookAdvancedFilterData {
-  publisher: string;
-  authorName: string;
-  publishedYearFrom: string;
-  publishedYearTo: string;
-  minPages: string;
-  maxPages: string;
-  categoryIds: string[];
-}
+import { categoryHttpClient } from '@/lib/http/category.http';
 
 interface BookFilterContainerProps {
-  searchParams: Omit<BookSearchParams, keyof PaginationSearchParams>;
-  hiddenFields?: (keyof BookAdvancedFilterData)[];
+  searchParams: Omit<BookSearchParams, keyof CommonSearchParams>;
+  hiddenFields?: BookAdvancedFilterField[];
 }
 
 export default function BookFilterContainer({
   searchParams,
   hiddenFields = [],
 }: BookFilterContainerProps) {
-  const pathname = usePathname();
   const router = useRouter();
   const [needFetchingCategories, setNeedFetchingCategories] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPageCategories, setCurrentPageCategories] = useState(1);
   const [categories, setCategories] = useState<Category[]>([]);
   const [filterData, setFilterData] = useState<BookAdvancedFilterData>({
     publisher: searchParams.publisher || '',
@@ -64,7 +54,11 @@ export default function BookFilterContainer({
     publishedYearTo: searchParams.publishedYearTo || '',
     minPages: searchParams.minPages || '',
     maxPages: searchParams.maxPages || '',
-    categoryIds: searchParams.categoryId || [],
+    categoryIds: !searchParams.categoryId
+      ? []
+      : Array.isArray(searchParams.categoryId)
+        ? searchParams.categoryId
+        : [searchParams.categoryId],
   });
 
   const handleToggleCategoryId = (categoryId: string) => {
@@ -82,45 +76,48 @@ export default function BookFilterContainer({
   };
 
   const handleApplyFilter = () => {
-    const searchParams = new URL(document.location.href).searchParams;
+    const url = new URL(document.location.href);
 
-    searchParams.delete('publisher');
-    searchParams.delete('authorName');
-    searchParams.delete('publishedYearFrom');
-    searchParams.delete('publishedYearTo');
-    searchParams.delete('minPages');
-    searchParams.delete('maxPages');
-    searchParams.delete('categoryId');
+    url.searchParams.delete('publisher');
+    url.searchParams.delete('authorName');
+    url.searchParams.delete('publishedYearFrom');
+    url.searchParams.delete('publishedYearTo');
+    url.searchParams.delete('minPages');
+    url.searchParams.delete('maxPages');
+    url.searchParams.delete('categoryId');
 
     if (filterData.publisher) {
-      searchParams.append('publisher', filterData.publisher);
+      url.searchParams.append('publisher', filterData.publisher);
     }
 
     if (filterData.authorName) {
-      searchParams.append('authorName', filterData.authorName);
+      url.searchParams.append('authorName', filterData.authorName);
     }
 
     if (filterData.publishedYearFrom) {
-      searchParams.append('publishedYearFrom', filterData.publishedYearFrom);
+      url.searchParams.append(
+        'publishedYearFrom',
+        filterData.publishedYearFrom,
+      );
     }
 
     if (filterData.publishedYearTo) {
-      searchParams.append('publishedYearTo', filterData.publishedYearTo);
+      url.searchParams.append('publishedYearTo', filterData.publishedYearTo);
     }
 
     if (filterData.minPages) {
-      searchParams.append('minPages', filterData.minPages);
+      url.searchParams.append('minPages', filterData.minPages);
     }
 
     if (filterData.maxPages) {
-      searchParams.append('maxPages', filterData.maxPages);
+      url.searchParams.append('maxPages', filterData.maxPages);
     }
 
     filterData.categoryIds.forEach(categoryId => {
-      searchParams.append('categoryId', categoryId);
+      url.searchParams.append('categoryId', categoryId);
     });
 
-    router.push(`${pathname}?${searchParams.toString()}`);
+    router.push(url.toString());
   };
 
   const handleClearFilter = () => {
@@ -139,16 +136,14 @@ export default function BookFilterContainer({
     (async () => {
       if (!needFetchingCategories) return;
 
-      const response = await axios.get<SuccessResponse<Category[]>>(
-        `${process.env['NEXT_PUBLIC_API_ENDPOINT']}/categories?page=${currentPage}`,
-      );
-
-      const { data, pagination } = response.data;
+      const { data, pagination } = await categoryHttpClient.getAllCategories({
+        page: currentPageCategories.toString(),
+      });
       setCategories([...categories, ...data]);
-      setCurrentPage(pagination!.page + 1);
+      setCurrentPageCategories(pagination!.page + 1);
       setNeedFetchingCategories(pagination!.hasNextPage);
     })();
-  }, [categories, currentPage, needFetchingCategories]);
+  }, [categories, currentPageCategories, needFetchingCategories]);
 
   return (
     <Sheet>
@@ -191,8 +186,7 @@ export default function BookFilterContainer({
               />
             </div>
           )}
-          {(hiddenFields.includes('publishedYearFrom') &&
-            hiddenFields.includes('publishedYearTo')) || (
+          {hiddenFields.includes('publishedYear') || (
             <div>
               <Label>Published year</Label>
               <div className="mt-2 grid grid-cols-12 gap-2">
@@ -264,8 +258,7 @@ export default function BookFilterContainer({
               </div>
             </div>
           )}
-          {(hiddenFields.includes('minPages') &&
-            hiddenFields.includes('maxPages')) || (
+          {hiddenFields.includes('pages') || (
             <div>
               <Label>Number of pages</Label>
               <div className="mt-2 grid grid-cols-12 gap-2">

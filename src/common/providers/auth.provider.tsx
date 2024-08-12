@@ -1,8 +1,10 @@
 'use client';
 
-import { PropsWithChildren, useState } from 'react';
+import { PropsWithChildren, useEffect, useState } from 'react';
 
 import AuthContext, { AuthContextValue } from '@/common/context/auth.context';
+import { User } from '@/common/types/api/user/user.type';
+import { userHttpClient } from '@/lib/http/user.http';
 
 interface AuthProviderProps extends PropsWithChildren {
   initialTokens: Pick<AuthContextValue, 'accessToken' | 'refreshToken'>;
@@ -10,16 +12,30 @@ interface AuthProviderProps extends PropsWithChildren {
 
 export default function AuthProvider({
   children,
-  initialTokens,
+  initialTokens: { accessToken, refreshToken },
 }: AuthProviderProps) {
-  const [accessToken, setAccessToken] = useState(initialTokens.accessToken);
-  const [refreshToken, setRefreshToken] = useState(initialTokens.refreshToken);
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    if (!accessToken && user) {
+      setUser(null);
+      return;
+    }
+
+    if (!user) {
+      if (!accessToken) return;
+
+      userHttpClient
+        .getUserProfile(accessToken)
+        .then(({ data }) => setUser(data));
+    }
+  }, [accessToken, user]);
 
   const value: AuthContextValue = {
     accessToken,
     refreshToken,
-    setAccessToken,
-    setRefreshToken,
+    user,
+    setUser,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

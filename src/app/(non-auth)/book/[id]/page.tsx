@@ -1,13 +1,9 @@
-import axios from 'axios';
-import { HandHelping, Heart } from 'lucide-react';
 import { type Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 
 import placeholderImg from '@/assets/images/placeholder-200x300.svg';
-import { Book } from '@/common/types/api/book.type';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import HomeBanner from '@/components/ui/home-banner';
 import {
   Table,
@@ -17,7 +13,10 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import BookActionsContainer from '@/containers/book-actions.container';
+import { bookHttpClient } from '@/lib/http/book.http';
 import { cn } from '@/lib/utils';
+
+export const revalidate = 60;
 
 interface BookDetailsPageProps {
   params: {
@@ -28,7 +27,7 @@ interface BookDetailsPageProps {
 export async function generateMetadata({
   params: { id },
 }: BookDetailsPageProps): Promise<Metadata> {
-  const book = await getBook(id);
+  const { data: book } = await bookHttpClient.getBookById(id);
 
   return {
     title: book.title,
@@ -38,7 +37,7 @@ export async function generateMetadata({
 export default async function BookDetailsPage({
   params: { id },
 }: BookDetailsPageProps) {
-  const book = await getBook(id);
+  const { data: book } = await bookHttpClient.getBookById(id);
 
   return (
     <>
@@ -71,13 +70,13 @@ export default async function BookDetailsPage({
             <TableBody>
               <TableRow>
                 <TableHead>ISBN:</TableHead>
-                <TableCell>{book.isbn || 'Updating...'}</TableCell>
+                <TableCell>{book.isbn || 'N/A'}</TableCell>
               </TableRow>
               <TableRow>
                 <TableHead>Authors:</TableHead>
                 <TableCell className="flex flex-wrap gap-2">
                   {book.authors.length === 0
-                    ? 'Updating...'
+                    ? 'N/A'
                     : book.authors.map(author => (
                         <Link key={author.id} href={`/author/${author.id}`}>
                           <Badge className="text-base">{author.name}</Badge>
@@ -89,11 +88,11 @@ export default async function BookDetailsPage({
                 <TableHead>Categories:</TableHead>
                 <TableCell className="flex flex-wrap gap-2">
                   {book.categories.length === 0
-                    ? 'Updating...'
+                    ? 'N/A'
                     : book.categories.map(category => (
                         <Link
                           key={category.id}
-                          href={`/search?categoryId=${category.id}`}
+                          href={`/books?categoryId=${category.id}`}
                         >
                           <Badge className="text-base">{category.name}</Badge>
                         </Link>
@@ -102,23 +101,23 @@ export default async function BookDetailsPage({
               </TableRow>
               <TableRow>
                 <TableHead>Published year:</TableHead>
-                <TableCell>{book.publishedYear || 'Updating...'}</TableCell>
+                <TableCell>{book.publishedYear || 'N/A'}</TableCell>
               </TableRow>
               <TableRow>
                 <TableHead>Publisher:</TableHead>
-                <TableCell>{book.publisher || 'Updating...'}</TableCell>
+                <TableCell>{book.publisher || 'N/A'}</TableCell>
               </TableRow>
               <TableRow>
                 <TableHead>Language:</TableHead>
-                <TableCell>{book.language || 'Updating...'}</TableCell>
+                <TableCell>{book.language || 'N/A'}</TableCell>
               </TableRow>
               <TableRow>
                 <TableHead>Number of pages:</TableHead>
-                <TableCell>{book.numberOfPages || 'Updating...'}</TableCell>
+                <TableCell>{book.numberOfPages || 'N/A'}</TableCell>
               </TableRow>
               <TableRow>
                 <TableHead>Description:</TableHead>
-                <TableCell>{book.description || 'Updating...'}</TableCell>
+                <TableCell>{book.description || 'N/A'}</TableCell>
               </TableRow>
             </TableBody>
           </Table>
@@ -126,12 +125,4 @@ export default async function BookDetailsPage({
       </div>
     </>
   );
-}
-
-async function getBook(id: string) {
-  const requestUrl = new URL(
-    `${process.env['NEXT_PUBLIC_API_ENDPOINT']}/books/${id}`,
-  );
-  const res = await axios.get<Book>(requestUrl.href);
-  return res.data;
 }

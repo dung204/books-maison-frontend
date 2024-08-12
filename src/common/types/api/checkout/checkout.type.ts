@@ -1,6 +1,6 @@
-import { Book } from '@/common/types/api/book.type';
-import { CheckoutStatus } from '@/common/types/api/checkout-status.type';
-import { User } from '@/common/types/api/user.type';
+import { Book } from '@/common/types/api/book/book.type';
+import { CheckoutStatus } from '@/common/types/api/checkout/checkout-status.type';
+import { User } from '@/common/types/api/user/user.type';
 
 export interface Checkout {
   id: string;

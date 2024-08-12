@@ -4,8 +4,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { pathToRegexp } from 'path-to-regexp';
 
 import { RefreshSuccessResponse } from '@/common/types/refresh-success-response.type';
+import { authHttpClient } from '@/lib/http/auth.http';
 
-const privateRoutes = ['/me'];
+const privateRoutes = ['/me/:path', '/me'];
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -35,12 +36,11 @@ export async function middleware(request: NextRequest) {
     } catch (accessTokenError) {
       try {
         await jose.jwtVerify(refreshToken, jwtRefreshSecret);
-        const response = await axios.post<RefreshSuccessResponse>(
-          `${process.env['NEXT_PUBLIC_API_ENDPOINT']}/auth/refresh`,
-          { refreshToken },
-        );
-        const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
-          response.data.data;
+
+        const {
+          data: { refreshToken: newRefreshToken, accessToken: newAccessToken },
+        } = await authHttpClient.refreshToken(refreshToken);
+
         return NextResponse.redirect(request.nextUrl, {
           // @ts-ignore
           headers: {
