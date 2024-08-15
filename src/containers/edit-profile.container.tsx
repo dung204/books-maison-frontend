@@ -87,7 +87,7 @@ export default function EditProfileContainer() {
             Edit profile
           </Button>
         </DialogTrigger>
-        <DialogContent>
+        <DialogContent onOpenAutoFocus={e => e.preventDefault()}>
           <DialogTitle>Edit profile</DialogTitle>
           <DialogDescription>
             Click the Save button to save your changes.

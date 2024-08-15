@@ -1,7 +1,8 @@
 'use client';
 
+import { set } from 'date-fns';
 import { useRouter } from 'next/navigation';
-import { ComponentProps } from 'react';
+import { ComponentProps, useEffect, useState } from 'react';
 
 import { Pagination as PaginationDto } from '@/common/types/pagination.type';
 import { PaginationUtils } from '@/common/utils/pagination.util';
@@ -26,26 +27,38 @@ import { cn } from '@/lib/utils';
 
 interface PaginationContainerProps extends ComponentProps<typeof Pagination> {
   pagination: PaginationDto;
+  onStartLoading?: () => void;
+  onEndLoading?: () => void;
 }
 
 export default function PaginationContainer({
   className,
   pagination,
+  onStartLoading,
+  onEndLoading,
   ...props
 }: PaginationContainerProps) {
   const router = useRouter();
 
   const handleChangePageSize = (pageSize: string) => {
+    onStartLoading?.();
     const url = new URL(location.href);
     url.searchParams.set('page', PaginationUtils.DEFAULT_PAGE.toString());
     url.searchParams.set('pageSize', pageSize);
     router.push(url.href, { scroll: false });
+    setTimeout(() => {
+      onEndLoading?.();
+    }, 200);
   };
 
   const handleChangePage = (page: number) => {
+    onStartLoading?.();
     const url = new URL(location.href);
     url.searchParams.set('page', page.toString());
     router.push(url.href, { scroll: false });
+    setTimeout(() => {
+      onEndLoading?.();
+    }, 200);
   };
 
   return (
