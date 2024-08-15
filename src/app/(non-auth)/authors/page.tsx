@@ -1,9 +1,11 @@
+import { randomUUID } from 'crypto';
 import { Metadata } from 'next';
+import { Suspense } from 'react';
 
 import { AuthorSearchParams } from '@/common/types/api/author/author-search-params.type';
+import AuthorsGridLoading from '@/components/ui/authors-grid-loading';
 import HomeBanner from '@/components/ui/home-banner';
-import AuthorSearchContainer from '@/containers/author-search.container';
-import { authorHttpClient } from '@/lib/http/author.http';
+import AuthorFetchContainer from '@/containers/author-fetch.container';
 
 export const revalidate = 0;
 
@@ -15,19 +17,14 @@ interface AuthorsPageProps {
   searchParams: AuthorSearchParams;
 }
 
-export default async function AuthorsPage({ searchParams }: AuthorsPageProps) {
-  const { data: authors, pagination } =
-    await authorHttpClient.getAllAuthors(searchParams);
-
+export default function AuthorsPage({ searchParams }: AuthorsPageProps) {
   return (
     <>
       <HomeBanner className="h-[400px]" bannerTitle="Authors" />
       <div className="container py-10">
-        <AuthorSearchContainer
-          authors={authors}
-          pagination={pagination}
-          searchParams={searchParams}
-        />
+        <Suspense key={randomUUID()} fallback={<AuthorsGridLoading />}>
+          <AuthorFetchContainer searchParams={searchParams} />
+        </Suspense>
       </div>
     </>
   );
