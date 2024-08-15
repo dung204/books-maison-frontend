@@ -2,12 +2,11 @@
 
 import { UserPen } from 'lucide-react';
 import Link from 'next/link';
-import { ComponentProps, useState } from 'react';
+import { ComponentProps } from 'react';
 
 import { AuthorSearchParams } from '@/common/types/api/author/author-search-params.type';
 import { Author } from '@/common/types/api/author/author.type';
 import { Pagination } from '@/common/types/pagination.type';
-import AuthorsGridLoading from '@/components/ui/authors-grid-loading';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import PaginationContainer from '@/containers/pagination.container';
 import SearchBarContainer from '@/containers/search-bar.container';
@@ -23,16 +22,12 @@ export default function AuthorSearchContainer({
   pagination,
   searchParams,
 }: AuthorSearchContainerProps) {
-  const [loading, setLoading] = useState(false);
-
   return (
     <div>
       <section className="w-1/2">
         <SearchBarContainer
           fieldName="name"
           placeholder="Enter a category name to search..."
-          onStartLoading={() => setLoading(true)}
-          onEndLoading={() => setLoading(false)}
         />
       </section>
       {searchParams.name && (
@@ -42,16 +37,10 @@ export default function AuthorSearchContainer({
         </p>
       )}
       <section className="mt-6">
-        <PaginationContainer
-          pagination={pagination!}
-          onStartLoading={() => setLoading(true)}
-          onEndLoading={() => setLoading(false)}
-        />
+        <PaginationContainer pagination={pagination!} />
       </section>
       <section className="mt-10 grid grid-cols-4 gap-8">
-        {loading ? (
-          <AuthorsGridLoading />
-        ) : authors.length === 0 ? (
+        {authors.length === 0 ? (
           <p className="col-span-4 text-center">No books found</p>
         ) : (
           authors.map(({ id, imageUrl, name }) => (

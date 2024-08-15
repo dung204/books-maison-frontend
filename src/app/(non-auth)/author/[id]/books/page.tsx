@@ -1,10 +1,12 @@
+import { randomUUID } from 'crypto';
 import { Metadata } from 'next';
+import { Suspense } from 'react';
 
 import { BookSearchParams } from '@/common/types/api/book/book-search-params.type';
+import BooksGridLoading from '@/components/ui/books-grid-loading';
 import { TabsContent } from '@/components/ui/tabs';
-import BookSearchContainer from '@/containers/book-search.container';
+import AuthorBookFetchContainer from '@/containers/author-book-fetch.container';
 import { authorHttpClient } from '@/lib/http/author.http';
-import { bookHttpClient } from '@/lib/http/book.http';
 
 type AuthorBooksSearchParams = Omit<BookSearchParams, 'authorName'>;
 
@@ -15,7 +17,7 @@ interface AuthorBooksPageProps {
   searchParams: AuthorBooksSearchParams;
 }
 
-export const revalidate = 60;
+export const revalidate = 0;
 
 export async function generateMetadata({
   params: { id },
@@ -31,20 +33,11 @@ export default async function AuthorBooksPage({
   params: { id },
   searchParams,
 }: AuthorBooksPageProps) {
-  const { data: author } = await authorHttpClient.getAuthorById(id);
-  const { data: books, pagination } = await bookHttpClient.getAllBooks({
-    ...searchParams,
-    authorName: author.name,
-  });
-
   return (
     <TabsContent value={`/author/${id}/books`} className="outline-none">
-      <BookSearchContainer
-        books={books}
-        pagination={pagination}
-        searchParams={{ ...searchParams, authorName: author.name }}
-        advancedFilterHiddenFields={['authorName']}
-      />
+      <Suspense key={randomUUID()} fallback={<BooksGridLoading />}>
+        <AuthorBookFetchContainer authorId={id} searchParams={searchParams} />
+      </Suspense>
     </TabsContent>
   );
 }

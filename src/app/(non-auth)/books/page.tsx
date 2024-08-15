@@ -1,13 +1,13 @@
+import { randomUUID } from 'crypto';
 import { type Metadata } from 'next';
-import Link from 'next/link';
 import { Suspense } from 'react';
 
 import { BookSearchParams } from '@/common/types/api/book/book-search-params.type';
+import BooksGridLoading from '@/components/ui/books-grid-loading';
 import HomeBanner from '@/components/ui/home-banner';
-import BookSearchContainer from '@/containers/book-search.container';
-import { bookHttpClient } from '@/lib/http/book.http';
+import GeneralBookFetchContainer from '@/containers/general-book-fetch.container';
 
-interface SearchPageProps {
+interface BooksPageProps {
   searchParams: BookSearchParams;
 }
 
@@ -17,10 +17,7 @@ export const metadata: Metadata = {
   title: 'Books',
 };
 
-export default async function BooksPage({ searchParams }: SearchPageProps) {
-  const { data: books, pagination } =
-    await bookHttpClient.getAllBooks(searchParams);
-
+export default async function BooksPage({ searchParams }: BooksPageProps) {
   return (
     <>
       <HomeBanner
@@ -28,11 +25,9 @@ export default async function BooksPage({ searchParams }: SearchPageProps) {
         bannerTitle="Search for a decent book here at Books Maison"
       />
       <div className="container py-10">
-        <BookSearchContainer
-          books={books}
-          pagination={pagination}
-          searchParams={searchParams}
-        />
+        <Suspense key={randomUUID()} fallback={<BooksGridLoading />}>
+          <GeneralBookFetchContainer searchParams={searchParams} />
+        </Suspense>
       </div>
     </>
   );

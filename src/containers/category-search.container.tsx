@@ -2,14 +2,13 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { ComponentProps, useState } from 'react';
+import { ComponentProps } from 'react';
 
 import banner from '@/assets/images/library-banner-1.jpg';
 import { CategorySearchParams } from '@/common/types/api/category/category-search-params.type';
 import { Category } from '@/common/types/api/category/category.type';
 import { Pagination } from '@/common/types/pagination.type';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
-import CategoriesGridLoading from '@/components/ui/categories-grid-loading';
 import PaginationContainer from '@/containers/pagination.container';
 import SearchBarContainer from '@/containers/search-bar.container';
 
@@ -24,16 +23,12 @@ export default function CategorySearchContainer({
   pagination,
   searchParams,
 }: CategorySearchContainerProps) {
-  const [loading, setLoading] = useState(false);
-
   return (
     <div>
       <section className="w-1/2">
         <SearchBarContainer
           fieldName="name"
           placeholder="Enter a category name to search..."
-          onStartLoading={() => setLoading(true)}
-          onEndLoading={() => setLoading(false)}
         />
       </section>
       {searchParams.name && (
@@ -43,16 +38,10 @@ export default function CategorySearchContainer({
         </p>
       )}
       <section className="mt-6">
-        <PaginationContainer
-          pagination={pagination!}
-          onStartLoading={() => setLoading(true)}
-          onEndLoading={() => setLoading(false)}
-        />
+        <PaginationContainer pagination={pagination!} />
       </section>
       <section className="mt-10 grid grid-cols-3 gap-8">
-        {loading ? (
-          <CategoriesGridLoading />
-        ) : categories.length === 0 ? (
+        {categories.length === 0 ? (
           <p className="col-span-3 text-center">No categories found</p>
         ) : (
           categories.map(({ id, name }) => (
