@@ -10,12 +10,13 @@ import {
 } from '@tanstack/react-table';
 import { ArrowDown, ArrowUp } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { ComponentProps } from 'react';
+import { ComponentProps, useState } from 'react';
 
 import { Pagination } from '@/common/types/pagination.type';
 import { SortingSearchParams } from '@/common/types/sorting-search-params.type';
 import { SortingUtils } from '@/common/utils/sorting.util';
 import { Button } from '@/components/ui/button';
+import DataTableLoading from '@/components/ui/data-table-loading';
 import {
   Table,
   TableBody,
@@ -51,6 +52,8 @@ function DataTable<TData, TValue>({
   className,
   ...props
 }: DataTableProps<TData, TValue>) {
+  const [loading, setLoading] = useState(false);
+
   const table = useReactTable({
     data,
     columns,
@@ -74,57 +77,66 @@ function DataTable<TData, TValue>({
 
   return (
     <>
-      <PaginationContainer pagination={pagination} className="mb-6" />
-      <div className={cn('rounded-md border', className)} {...props}>
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map(headerGroup => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map(header => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map(row => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
-                >
-                  {row.getVisibleCells().map(cell => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
-                  ))}
+      <PaginationContainer
+        pagination={pagination}
+        className="mb-6"
+        onStartLoading={() => setLoading(true)}
+        onEndLoading={() => setLoading(false)}
+      />
+      {loading ? (
+        <DataTableLoading rowCount={table.getFlatHeaders().length} />
+      ) : (
+        <div className={cn('rounded-md border', className)} {...props}>
+          <Table>
+            <TableHeader>
+              {table.getHeaderGroups().map(headerGroup => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map(header => {
+                    return (
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
+                      </TableHead>
+                    );
+                  })}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map(row => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && 'selected'}
+                  >
+                    {row.getVisibleCells().map(cell => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+      )}
     </>
   );
 }

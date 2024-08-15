@@ -1,12 +1,15 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
-import { ComponentProps } from 'react';
+import { ComponentProps, useState } from 'react';
 
 import banner from '@/assets/images/library-banner-1.jpg';
 import { CategorySearchParams } from '@/common/types/api/category/category-search-params.type';
 import { Category } from '@/common/types/api/category/category.type';
 import { Pagination } from '@/common/types/pagination.type';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
+import CategoriesGridLoading from '@/components/ui/categories-grid-loading';
 import PaginationContainer from '@/containers/pagination.container';
 import SearchBarContainer from '@/containers/search-bar.container';
 
@@ -21,12 +24,16 @@ export default function CategorySearchContainer({
   pagination,
   searchParams,
 }: CategorySearchContainerProps) {
+  const [loading, setLoading] = useState(false);
+
   return (
     <div>
       <section className="w-1/2">
         <SearchBarContainer
           fieldName="name"
           placeholder="Enter a category name to search..."
+          onStartLoading={() => setLoading(true)}
+          onEndLoading={() => setLoading(false)}
         />
       </section>
       {searchParams.name && (
@@ -36,29 +43,39 @@ export default function CategorySearchContainer({
         </p>
       )}
       <section className="mt-6">
-        <PaginationContainer pagination={pagination!} />
+        <PaginationContainer
+          pagination={pagination!}
+          onStartLoading={() => setLoading(true)}
+          onEndLoading={() => setLoading(false)}
+        />
       </section>
       <section className="mt-10 grid grid-cols-3 gap-8">
-        {categories.map(({ id, name }) => (
-          <Link
-            href={`/books?categoryId=${encodeURIComponent(id)}`}
-            key={id}
-            className="group"
-          >
-            <Card className="relative h-44 w-full overflow-hidden">
-              <div className="absolute left-0 top-0 z-20 h-full w-full bg-black/50"></div>
-              <Image
-                src={banner}
-                alt="banner"
-                fill
-                className="z-10 object-cover transition-all duration-300 group-hover:scale-110"
-              />
-              <CardHeader className="absolute top-1/2 z-30 w-full -translate-y-1/2 text-white">
-                <CardTitle className="text-center">{name}</CardTitle>
-              </CardHeader>
-            </Card>
-          </Link>
-        ))}
+        {loading ? (
+          <CategoriesGridLoading />
+        ) : categories.length === 0 ? (
+          <p className="col-span-3 text-center">No categories found</p>
+        ) : (
+          categories.map(({ id, name }) => (
+            <Link
+              href={`/books?categoryId=${encodeURIComponent(id)}`}
+              key={id}
+              className="group"
+            >
+              <Card className="relative h-44 w-full overflow-hidden">
+                <div className="absolute left-0 top-0 z-20 h-full w-full bg-black/50"></div>
+                <Image
+                  src={banner}
+                  alt="banner"
+                  fill
+                  className="z-10 object-cover transition-all duration-300 group-hover:scale-110"
+                />
+                <CardHeader className="absolute top-1/2 z-30 w-full -translate-y-1/2 text-white">
+                  <CardTitle className="text-center">{name}</CardTitle>
+                </CardHeader>
+              </Card>
+            </Link>
+          ))
+        )}
       </section>
     </div>
   );

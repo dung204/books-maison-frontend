@@ -5,7 +5,7 @@ import HomeBanner from '@/components/ui/home-banner';
 import AuthorSearchContainer from '@/containers/author-search.container';
 import { authorHttpClient } from '@/lib/http/author.http';
 
-export const revalidate = 60;
+export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: 'Authors',
