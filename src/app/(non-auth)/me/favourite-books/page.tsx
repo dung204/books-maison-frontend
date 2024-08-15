@@ -1,14 +1,17 @@
 import { TabsContent } from '@radix-ui/react-tabs';
+import { randomUUID } from 'crypto';
 import { Metadata } from 'next';
-import { cookies } from 'next/headers';
+import { Suspense } from 'react';
 
 import { BookSearchParams } from '@/common/types/api/book/book-search-params.type';
-import BookSearchContainer from '@/containers/book-search.container';
-import { favouriteBookHttpClient } from '@/lib/http/favourite-book.http';
+import BooksGridLoading from '@/components/ui/books-grid-loading';
+import FavouriteBookFetchContainer from '@/containers/favourite-book-fetch.container';
 
 interface FavouriteBooksPageProps {
   searchParams: BookSearchParams;
 }
+
+export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: 'My favourite books',
@@ -17,21 +20,11 @@ export const metadata: Metadata = {
 export default async function FavouriteBooksPage({
   searchParams,
 }: FavouriteBooksPageProps) {
-  const cookieStore = cookies();
-  const accessToken = cookieStore.get('accessToken')?.value;
-  const { data: books, pagination } =
-    await favouriteBookHttpClient.getAllFavouriteBooksOfCurrentUser(
-      accessToken!,
-      searchParams,
-    );
-
   return (
     <TabsContent value="/me/favourite-books" className="outline-none">
-      <BookSearchContainer
-        books={books}
-        pagination={pagination}
-        searchParams={searchParams}
-      />
+      <Suspense key={randomUUID()} fallback={<BooksGridLoading />}>
+        <FavouriteBookFetchContainer searchParams={searchParams} />
+      </Suspense>
     </TabsContent>
   );
 }

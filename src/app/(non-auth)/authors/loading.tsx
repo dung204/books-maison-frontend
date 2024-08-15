@@ -6,9 +6,7 @@ export default function AuthorsLoading() {
     <>
       <HomeBanner className="h-[400px]" bannerTitle="Authors" />
       <div className="container py-10">
-        <section className="grid grid-cols-4 gap-8">
-          <AuthorsGridLoading />
-        </section>
+        <AuthorsGridLoading />
       </div>
     </>
   );

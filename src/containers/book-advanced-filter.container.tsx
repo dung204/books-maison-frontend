@@ -37,15 +37,11 @@ import { categoryHttpClient } from '@/lib/http/category.http';
 interface BookFilterContainerProps {
   searchParams: Omit<BookSearchParams, keyof CommonSearchParams>;
   hiddenFields?: BookAdvancedFilterField[];
-  onStartLoading?: () => void;
-  onEndLoading?: () => void;
 }
 
 export default function BookAdvancedFilterContainer({
   searchParams,
   hiddenFields = [],
-  onStartLoading,
-  onEndLoading,
 }: BookFilterContainerProps) {
   const router = useRouter();
   const [needFetchingCategories, setNeedFetchingCategories] = useState(true);
@@ -80,7 +76,6 @@ export default function BookAdvancedFilterContainer({
   };
 
   const handleApplyFilter = () => {
-    onStartLoading?.();
     const url = new URL(document.location.href);
 
     url.searchParams.delete('publisher');
@@ -123,9 +118,6 @@ export default function BookAdvancedFilterContainer({
     });
 
     router.push(url.toString(), { scroll: false });
-    setTimeout(() => {
-      onEndLoading?.();
-    }, 200);
   };
 
   const handleClearFilter = () => {

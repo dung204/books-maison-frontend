@@ -1,13 +1,13 @@
+import { randomUUID } from 'crypto';
 import { Info } from 'lucide-react';
 import { Metadata } from 'next';
-import { cookies } from 'next/headers';
+import { Suspense } from 'react';
 
 import { CommonSearchParams } from '@/common/types/common-search-params.type';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { DataTable } from '@/components/ui/data-table';
+import DataTableLoading from '@/components/ui/data-table-loading';
 import { TabsContent } from '@/components/ui/tabs';
-import { userCheckoutTableColumns } from '@/lib/columns/user-checkout-table.column';
-import { checkoutHttpClient } from '@/lib/http/checkout.http';
+import CheckoutFetchContainer from '@/containers/checkout-fetch.container';
 
 export const revalidate = 0;
 
@@ -22,15 +22,6 @@ interface CheckoutsPageProps {
 export default async function CheckoutsPage({
   searchParams,
 }: CheckoutsPageProps) {
-  const cookieStore = cookies();
-  const accessToken = cookieStore.get('accessToken')?.value;
-  const { data: checkouts, pagination } =
-    await checkoutHttpClient.getCheckoutsOfCurrentUser(
-      accessToken!,
-      searchParams,
-    );
-  const { orderBy, order } = searchParams;
-
   return (
     <TabsContent value="/me/checkouts" className="outline-none">
       <Alert className="mb-6 bg-sky-100 text-sky-800">
@@ -40,12 +31,9 @@ export default async function CheckoutsPage({
           book for <b>14 days</b>
         </AlertDescription>
       </Alert>
-      <DataTable
-        columns={userCheckoutTableColumns}
-        data={checkouts}
-        pagination={pagination}
-        sorting={{ orderBy, order }}
-      />
+      <Suspense key={randomUUID()} fallback={<DataTableLoading rowCount={7} />}>
+        <CheckoutFetchContainer searchParams={searchParams} />
+      </Suspense>
     </TabsContent>
   );
 }

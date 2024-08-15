@@ -12,32 +12,24 @@ interface SearchBarContainerProps
   extends Omit<ComponentProps<'form'>, 'onSubmit'> {
   fieldName: string;
   placeholder?: string;
-  onStartLoading?: () => void;
-  onEndLoading?: () => void;
 }
 
 export default function SearchBarContainer({
   className,
   fieldName,
   placeholder,
-  onStartLoading,
-  onEndLoading,
   ...props
 }: SearchBarContainerProps) {
   const router = useRouter();
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onStartLoading?.();
     const formData = new FormData(e.currentTarget);
     const fieldValue = formData.get(fieldName) as string;
     const url = new URL(location.href);
     url.searchParams.set(fieldName, fieldValue);
     url.searchParams.set('page', '1');
     router.push(url.toString(), { scroll: false });
-    setTimeout(() => {
-      onEndLoading?.();
-    }, 200);
   };
 
   return (
