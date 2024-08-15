@@ -1,4 +1,6 @@
 import { type Metadata } from 'next';
+import Link from 'next/link';
+import { Suspense } from 'react';
 
 import { BookSearchParams } from '@/common/types/api/book/book-search-params.type';
 import HomeBanner from '@/components/ui/home-banner';
@@ -9,7 +11,7 @@ interface SearchPageProps {
   searchParams: BookSearchParams;
 }
 
-export const revalidate = 60;
+export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: 'Books',
