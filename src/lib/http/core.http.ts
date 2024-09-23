@@ -3,6 +3,7 @@ import axios, {
   AxiosRequestConfig,
   CreateAxiosDefaults,
 } from 'axios';
+import * as jose from 'jose';
 
 class HttpClient {
   private axiosInstance: AxiosInstance;
@@ -20,7 +21,29 @@ class HttpClient {
       ...otherConfigs,
     });
 
+    this.axiosInstance.interceptors.request.use(async config => {
+      if (config.headers.hasAuthorization(/Bearer (.*)/g)) {
+        const accessToken = config.headers
+          .getAuthorization(/Bearer (.*)/g)?.[0]
+          .replaceAll('Bearer ', '');
+        const jwtAccessSecret = new TextEncoder().encode(
+          process.env['NEXT_PUBLIC_JWT_ACCESS_SECRET']!,
+        );
+        try {
+          await jose.jwtVerify(accessToken!, jwtAccessSecret);
+        } catch (accessTokenError) {
+          console.log(window);
+        }
+      }
+      return config;
+    });
     this.axiosInstance.interceptors.response.use(response => response.data);
+  }
+
+  public setupRequestInterceptors(
+    ...args: Parameters<typeof this.axiosInstance.interceptors.request.use>
+  ) {
+    this.axiosInstance.interceptors.request.use(...args);
   }
 
   public get<T, D = any>(url: string, config?: AxiosRequestConfig<D>) {

@@ -1,4 +1,4 @@
-import { ComponentProps, useState } from 'react';
+import { ComponentProps } from 'react';
 
 import { BookAdvancedFilterField } from '@/common/types/api/book/book-advanced-filter-field.type';
 import { BookSearchParams } from '@/common/types/api/book/book-search-params.type';
