@@ -1,9 +1,7 @@
-import axios from 'axios';
 import * as jose from 'jose';
 import { NextRequest, NextResponse } from 'next/server';
 import { pathToRegexp } from 'path-to-regexp';
 
-import { RefreshSuccessResponse } from '@/common/types/refresh-success-response.type';
 import { authHttpClient } from '@/lib/http/auth.http';
 
 const privateRoutes = ['/me/:path', '/me'];
