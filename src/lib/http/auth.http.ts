@@ -1,5 +1,6 @@
 import { User } from '@/common/types/api/user/user.type';
 import { LoginSuccessResponse } from '@/common/types/login-success-response.type';
+import { RefreshSuccessResponse } from '@/common/types/refresh-success-response.type';
 import { SuccessResponse } from '@/common/types/success-response.type';
 import { HttpClient } from '@/lib/http/core.http';
 import { LoginSchema } from '@/lib/validators/login.validator';
@@ -27,7 +28,7 @@ class AuthHttpClient extends HttpClient {
   }
 
   public refreshToken(refreshToken: string) {
-    return this.post<LoginSuccessResponse>('/auth/refresh', {
+    return this.post<RefreshSuccessResponse>('/auth/refresh', {
       refreshToken,
     });
   }
