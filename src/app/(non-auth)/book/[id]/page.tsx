@@ -1,4 +1,5 @@
 import { type Metadata } from 'next';
+import { cookies } from 'next/headers';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -37,7 +38,9 @@ export async function generateMetadata({
 export default async function BookDetailsPage({
   params: { id },
 }: BookDetailsPageProps) {
-  const { data: book } = await bookHttpClient.getBookById(id);
+  const cookiesStore = cookies();
+  const accessToken = cookiesStore.get('accessToken')?.value;
+  const { data: book } = await bookHttpClient.getBookById(id, accessToken);
 
   return (
     <>

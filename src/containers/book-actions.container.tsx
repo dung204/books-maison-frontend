@@ -3,12 +3,11 @@
 import { HandHelping, Heart } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { ComponentProps, useState } from 'react';
 import { toast } from 'sonner';
 
 import useAuth from '@/common/hooks/use-auth.hook';
 import { Book } from '@/common/types/api/book/book.type';
-import { CheckoutStatus } from '@/common/types/api/checkout/checkout-status.type';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -28,44 +27,42 @@ interface BookActionsContainerProps {
   book: Book;
 }
 
+interface FavouriteButtonProps extends ComponentProps<typeof Button> {
+  book: Book;
+}
+
+interface BorrowDialogProps {
+  book: Book;
+}
+
 export default function BookActionsContainer({
   book,
 }: BookActionsContainerProps) {
   const router = useRouter();
   const { accessToken } = useAuth();
-  const [addingToFavorites, setAddingToFavorites] = useState(false);
-  const [removingFromFavorites, setRemovingFromFavorites] = useState(false);
-  const [hasFavored, setHasFavored] = useState<boolean | undefined>();
-  const [isBorrowing, setIsBorrowing] = useState<boolean | undefined>();
 
-  const handleToggleFavourite = async () => {
-    if (!accessToken) return;
+  return (
+    <div className="mt-6 flex justify-center gap-4">
+      {!accessToken ? (
+        <Link href="/auth/login">
+          <Button>Login to borrow this book</Button>
+        </Link>
+      ) : (
+        <>
+          <BorrowDialog book={book} />
+          <FavouriteButton book={book} />
+        </>
+      )}
+    </div>
+  );
+}
 
-    try {
-      if (hasFavored) {
-        setRemovingFromFavorites(true);
-        await favouriteBookHttpClient.removeBookFromFavourite(
-          accessToken,
-          book.id,
-        );
-        setRemovingFromFavorites(false);
-        setHasFavored(false);
-        router.refresh();
-        toast.success('Removed this book from favourites successfully!');
-      } else {
-        setAddingToFavorites(true);
-        await favouriteBookHttpClient.addBookToFavourite(accessToken, book.id);
-        setAddingToFavorites(false);
-        setHasFavored(true);
-        router.refresh();
-        toast.success('Added this book from favourites successfully!');
-      }
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || 'An error occurred!');
-      setAddingToFavorites(false);
-      setRemovingFromFavorites(false);
-    }
-  };
+function BorrowDialog({ book }: BorrowDialogProps) {
+  const router = useRouter();
+  const { accessToken } = useAuth();
+  const [isBorrowing, setIsBorrowing] = useState<boolean | undefined>(
+    book.userData?.isBorrowing,
+  );
 
   const handleBorrowBook = async () => {
     try {
@@ -82,113 +79,90 @@ export default function BookActionsContainer({
     }
   };
 
-  useEffect(() => {
-    if (!accessToken) return;
-    Promise.all([
-      (async () => {
-        if (typeof hasFavored === 'boolean') return;
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button
+          disabled={book.quantity === 0 || isBorrowing}
+          variant={book.quantity === 0 || isBorrowing ? 'outline' : 'default'}
+        >
+          <HandHelping className="me-2 h-4 w-4" />{' '}
+          {book.quantity === 0
+            ? 'Can not borrow'
+            : isBorrowing
+              ? 'Borrowing'
+              : 'Borrow'}
+        </Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you sure to borrow this book?</AlertDialogTitle>
+          <AlertDialogDescription>
+            You can borrow this book for 14 days. If you do not return it, you
+            will be fined (10.000 VND/day). This action can not be undone.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={handleBorrowBook}>
+            Continue
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}
 
-        const { data } = await favouriteBookHttpClient.checkHasFavoured(
+function FavouriteButton({ book, className, ...props }: FavouriteButtonProps) {
+  const router = useRouter();
+  const { accessToken } = useAuth();
+  const [isHandlingFavourites, setIsHandlingFavourites] = useState(false);
+  const [isFavouring, setIsFavouring] = useState<boolean | undefined>(
+    book.userData?.isFavouring,
+  );
+
+  const handleToggleFavourite = async () => {
+    if (!accessToken) return;
+
+    try {
+      if (isFavouring) {
+        setIsHandlingFavourites(true);
+        await favouriteBookHttpClient.removeBookFromFavourite(
           accessToken,
           book.id,
         );
-
-        setHasFavored(data);
-      })(),
-
-      (async () => {
-        if (typeof isBorrowing === 'boolean' || book.quantity === 0) return;
-        const { data } = await checkoutHttpClient.getCheckoutsOfCurrentUser(
-          accessToken,
-          {
-            bookId: book.id,
-            status: CheckoutStatus.BORROWING,
-          },
-        );
-        setIsBorrowing(data.length > 0);
-      })(),
-    ]);
-  }, [accessToken, book, hasFavored, isBorrowing]);
+        setIsHandlingFavourites(false);
+        setIsFavouring(false);
+        router.refresh();
+        toast.success('Removed this book from favourites successfully!');
+      } else {
+        setIsHandlingFavourites(true);
+        await favouriteBookHttpClient.addBookToFavourite(accessToken, book.id);
+        setIsHandlingFavourites(false);
+        setIsFavouring(true);
+        router.refresh();
+        toast.success('Added this book to favourites successfully!');
+      }
+    } catch (error: any) {
+      toast.error(error.response?.data?.message || 'An error occurred!');
+      setIsHandlingFavourites(false);
+    }
+  };
 
   return (
-    <div className="mt-6 flex justify-center gap-4">
-      {!accessToken ? (
-        <Link href="/auth/login">
-          <Button>Login to borrow this book</Button>
-        </Link>
-      ) : (
-        <>
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button
-                disabled={
-                  book.quantity === 0 ||
-                  typeof isBorrowing === 'undefined' ||
-                  isBorrowing
-                }
-                variant={
-                  book.quantity === 0 ||
-                  typeof isBorrowing === 'undefined' ||
-                  isBorrowing
-                    ? 'outline'
-                    : 'default'
-                }
-              >
-                <HandHelping className="me-2 h-4 w-4" />{' '}
-                {book.quantity === 0
-                  ? 'Can not borrow'
-                  : typeof isBorrowing === 'undefined'
-                    ? 'Checking...'
-                    : isBorrowing
-                      ? 'Borrowing'
-                      : 'Borrow'}
-              </Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>
-                  Are you sure to borrow this book?
-                </AlertDialogTitle>
-                <AlertDialogDescription>
-                  You can borrow this book for 14 days. If you do not return it,
-                  you will be fined (10.000 VND/day). This action can not be
-                  undone.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={handleBorrowBook}>
-                  Continue
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-          <Button
-            variant={
-              typeof hasFavored === 'boolean' && !hasFavored
-                ? 'destructive'
-                : 'outline'
-            }
-            onClick={handleToggleFavourite}
-            disabled={
-              addingToFavorites ||
-              removingFromFavorites ||
-              typeof hasFavored === 'undefined'
-            }
-          >
-            <Heart className="me-2 h-4 w-4" />{' '}
-            {addingToFavorites
-              ? 'Adding to favorites...'
-              : removingFromFavorites
-                ? 'Removing from favorites...'
-                : typeof hasFavored === 'undefined'
-                  ? 'Checking...'
-                  : hasFavored
-                    ? 'Remove from favourites'
-                    : 'Add to favourites'}
-          </Button>
-        </>
-      )}
-    </div>
+    <Button
+      variant={!isFavouring ? 'destructive' : 'outline'}
+      onClick={handleToggleFavourite}
+      disabled={isHandlingFavourites}
+      className={className}
+      {...props}
+    >
+      <Heart className="me-2 h-4 w-4" />{' '}
+      {isHandlingFavourites
+        ? 'Loading...'
+        : isFavouring
+          ? 'Remove from favourites'
+          : 'Add to favourites'}
+    </Button>
   );
 }

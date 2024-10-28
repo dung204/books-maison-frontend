@@ -8,14 +8,25 @@ class BookHttpClient extends HttpClient {
     super();
   }
 
-  public getAllBooks(params?: BookSearchParams) {
+  public getAllBooks(params?: BookSearchParams, accessToken?: string) {
     return this.get<SuccessResponse<Book[]>>('/books', {
       params,
+      headers: {
+        ...(accessToken && {
+          Authorization: `Bearer ${accessToken}`,
+        }),
+      },
     });
   }
 
-  public getBookById(id: string) {
-    return this.get<SuccessResponse<Book>>(`/books/${id}`);
+  public getBookById(id: string, accessToken?: string) {
+    return this.get<SuccessResponse<Book>>(`/books/${id}`, {
+      headers: {
+        ...(accessToken && {
+          Authorization: `Bearer ${accessToken}`,
+        }),
+      },
+    });
   }
 }
 
