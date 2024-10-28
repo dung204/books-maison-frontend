@@ -15,4 +15,8 @@ export interface Book {
   description: string | null;
   quantity: number;
   createdTimestamp: string;
+  userData?: {
+    isFavouring: boolean;
+    isBorrowing: boolean;
+  };
 }
