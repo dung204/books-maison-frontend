@@ -78,7 +78,7 @@ export const userFinesTableColumns: ColumnDef<Fine>[] = [
     },
   },
   {
-    accessorKey: 'id',
+    accessorKey: 'payFineButton',
     enableSorting: false,
     enableMultiSort: false,
     enableHiding: false,

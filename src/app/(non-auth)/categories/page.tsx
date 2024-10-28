@@ -8,7 +8,7 @@ import HomeBanner from '@/components/ui/home-banner';
 import CategoryFetchContainer from '@/containers/category-fetch.container';
 
 interface CategoriesPageProps {
-  searchParams: CategorySearchParams;
+  searchParams: Promise<CategorySearchParams>;
 }
 
 export const revalidate = 0;
@@ -17,9 +17,9 @@ export const metadata: Metadata = {
   title: 'Categories',
 };
 
-export default async function CategoriesPage({
-  searchParams,
-}: CategoriesPageProps) {
+export default async function CategoriesPage(props: CategoriesPageProps) {
+  const searchParams = await props.searchParams;
+
   return (
     <>
       <HomeBanner className="h-[400px]" bannerTitle="Categories" />

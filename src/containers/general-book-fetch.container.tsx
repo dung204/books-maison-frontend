@@ -12,7 +12,7 @@ interface GlobalBookFetchContainerProps extends ComponentProps<'div'> {
 export default async function GeneralBookFetchContainer({
   searchParams,
 }: GlobalBookFetchContainerProps) {
-  const cookiesStore = cookies();
+  const cookiesStore = await cookies();
   const accessToken = cookiesStore.get('accessToken')?.value;
   const { data: books, pagination } = await bookHttpClient.getAllBooks(
     searchParams,

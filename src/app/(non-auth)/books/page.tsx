@@ -8,7 +8,7 @@ import HomeBanner from '@/components/ui/home-banner';
 import GeneralBookFetchContainer from '@/containers/general-book-fetch.container';
 
 interface BooksPageProps {
-  searchParams: BookSearchParams;
+  searchParams: Promise<BookSearchParams>;
 }
 
 export const revalidate = 0;
@@ -17,7 +17,8 @@ export const metadata: Metadata = {
   title: 'Books',
 };
 
-export default async function BooksPage({ searchParams }: BooksPageProps) {
+export default async function BooksPage(props: BooksPageProps) {
+  const searchParams = await props.searchParams;
   return (
     <>
       <HomeBanner
