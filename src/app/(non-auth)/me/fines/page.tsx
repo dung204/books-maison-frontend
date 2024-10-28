@@ -16,10 +16,12 @@ export const metadata: Metadata = {
 };
 
 interface FinesPageProps {
-  searchParams: CommonSearchParams;
+  searchParams: Promise<CommonSearchParams>;
 }
 
-export default async function FinesPage({ searchParams }: FinesPageProps) {
+export default async function FinesPage(props: FinesPageProps) {
+  const searchParams = await props.searchParams;
+
   return (
     <TabsContent value="/me/fines" className="outline-none">
       <Alert className="mb-6 bg-sky-100 text-sky-800">

@@ -14,10 +14,11 @@ export const metadata: Metadata = {
 };
 
 interface AuthorsPageProps {
-  searchParams: AuthorSearchParams;
+  searchParams: Promise<AuthorSearchParams>;
 }
 
-export default function AuthorsPage({ searchParams }: AuthorsPageProps) {
+export default async function AuthorsPage(props: AuthorsPageProps) {
+  const searchParams = await props.searchParams;
   return (
     <>
       <HomeBanner className="h-[400px]" bannerTitle="Authors" />

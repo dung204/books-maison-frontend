@@ -8,7 +8,7 @@ import BooksGridLoading from '@/components/ui/books-grid-loading';
 import FavouriteBookFetchContainer from '@/containers/favourite-book-fetch.container';
 
 interface FavouriteBooksPageProps {
-  searchParams: BookSearchParams;
+  searchParams: Promise<BookSearchParams>;
 }
 
 export const revalidate = 0;
@@ -17,9 +17,11 @@ export const metadata: Metadata = {
   title: 'My favourite books',
 };
 
-export default async function FavouriteBooksPage({
-  searchParams,
-}: FavouriteBooksPageProps) {
+export default async function FavouriteBooksPage(
+  props: FavouriteBooksPageProps,
+) {
+  const searchParams = await props.searchParams;
+
   return (
     <TabsContent value="/me/favourite-books" className="outline-none">
       <Suspense key={randomUUID()} fallback={<BooksGridLoading />}>

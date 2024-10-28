@@ -5,14 +5,15 @@ import { authorHttpClient } from '@/lib/http/author.http';
 import { cn } from '@/lib/utils';
 
 interface AuthorBioPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({
-  params: { id },
+  params,
 }: AuthorBioPageProps): Promise<Metadata> {
+  const { id } = await params;
   const { data: author } = await authorHttpClient.getAuthorById(id);
 
   return {
@@ -22,9 +23,8 @@ export async function generateMetadata({
 
 export const revalidate = 30;
 
-export default async function AuthorBioPage({
-  params: { id },
-}: AuthorBioPageProps) {
+export default async function AuthorBioPage({ params }: AuthorBioPageProps) {
+  const { id } = await params;
   const { data: author } = await authorHttpClient.getAuthorById(id);
 
   return (

@@ -20,14 +20,15 @@ import { cn } from '@/lib/utils';
 export const revalidate = 60;
 
 interface BookDetailsPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({
-  params: { id },
+  params,
 }: BookDetailsPageProps): Promise<Metadata> {
+  const { id } = await params;
   const { data: book } = await bookHttpClient.getBookById(id);
 
   return {
@@ -36,9 +37,10 @@ export async function generateMetadata({
 }
 
 export default async function BookDetailsPage({
-  params: { id },
+  params,
 }: BookDetailsPageProps) {
-  const cookiesStore = cookies();
+  const { id } = await params;
+  const cookiesStore = await cookies();
   const accessToken = cookiesStore.get('accessToken')?.value;
   const { data: book } = await bookHttpClient.getBookById(id, accessToken);
 
