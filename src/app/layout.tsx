@@ -1,3 +1,4 @@
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import { Toaster } from 'sonner';
@@ -34,6 +35,7 @@ export default async function RootLayout({
         </AuthProvider>
         <Toaster richColors closeButton position="top-right" duration={3000} />
         <MoveToTopButton />
+        <SpeedInsights />
       </body>
     </html>
   );
