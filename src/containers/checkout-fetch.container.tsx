@@ -12,14 +12,15 @@ export interface CheckoutFetchContainerProps {
 export default async function CheckoutFetchContainer({
   searchParams,
 }: CheckoutFetchContainerProps) {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
+  const checkoutSearchParams = await searchParams;
   const { data: checkouts, pagination } =
     await checkoutHttpClient.getCheckoutsOfCurrentUser(
       accessToken!,
-      searchParams,
+      checkoutSearchParams,
     );
-  const { orderBy, order } = searchParams;
+  const { orderBy, order } = checkoutSearchParams;
 
   return (
     <DataTable

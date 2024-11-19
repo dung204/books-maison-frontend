@@ -12,7 +12,7 @@ interface FineFetchContainerProps {
 export default async function FineFetchContainer({
   searchParams,
 }: FineFetchContainerProps) {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
 
   const { data: fines, pagination } =

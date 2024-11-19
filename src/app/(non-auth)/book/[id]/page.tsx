@@ -1,4 +1,5 @@
 import { type Metadata } from 'next';
+import { cookies } from 'next/headers';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -19,14 +20,15 @@ import { cn } from '@/lib/utils';
 export const revalidate = 60;
 
 interface BookDetailsPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({
-  params: { id },
+  params,
 }: BookDetailsPageProps): Promise<Metadata> {
+  const { id } = await params;
   const { data: book } = await bookHttpClient.getBookById(id);
 
   return {
@@ -35,9 +37,12 @@ export async function generateMetadata({
 }
 
 export default async function BookDetailsPage({
-  params: { id },
+  params,
 }: BookDetailsPageProps) {
-  const { data: book } = await bookHttpClient.getBookById(id);
+  const { id } = await params;
+  const cookiesStore = await cookies();
+  const accessToken = cookiesStore.get('accessToken')?.value;
+  const { data: book } = await bookHttpClient.getBookById(id, accessToken);
 
   return (
     <>

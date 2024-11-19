@@ -11,17 +11,18 @@ import { authorHttpClient } from '@/lib/http/author.http';
 type AuthorBooksSearchParams = Omit<BookSearchParams, 'authorName'>;
 
 interface AuthorBooksPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
-  searchParams: AuthorBooksSearchParams;
+  }>;
+  searchParams: Promise<AuthorBooksSearchParams>;
 }
 
 export const revalidate = 0;
 
 export async function generateMetadata({
-  params: { id },
+  params,
 }: AuthorBooksPageProps): Promise<Metadata> {
+  const { id } = await params;
   const { data: author } = await authorHttpClient.getAuthorById(id);
 
   return {
@@ -30,13 +31,19 @@ export async function generateMetadata({
 }
 
 export default async function AuthorBooksPage({
-  params: { id },
   searchParams,
+  params,
 }: AuthorBooksPageProps) {
+  const bookSearchParams = await searchParams;
+  const { id } = await params;
+
   return (
     <TabsContent value={`/author/${id}/books`} className="outline-none">
       <Suspense key={randomUUID()} fallback={<BooksGridLoading />}>
-        <AuthorBookFetchContainer authorId={id} searchParams={searchParams} />
+        <AuthorBookFetchContainer
+          authorId={id}
+          searchParams={bookSearchParams}
+        />
       </Suspense>
     </TabsContent>
   );

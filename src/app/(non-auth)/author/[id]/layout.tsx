@@ -7,13 +7,14 @@ import TabsContainer from '@/containers/tabs.container';
 import { authorHttpClient } from '@/lib/http/author.http';
 
 interface AuthorDetailsLayoutProps extends PropsWithChildren {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export default async function AuthorDetailsLayout({
+  params,
   children,
-  params: { id },
 }: AuthorDetailsLayoutProps) {
+  const { id } = await params;
   const { data: author } = await authorHttpClient.getAuthorById(id);
 
   return (

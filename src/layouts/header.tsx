@@ -1,4 +1,3 @@
-import { Search } from 'lucide-react';
 import { cookies } from 'next/headers';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -8,8 +7,8 @@ import { Button } from '@/components/ui/button';
 import GlobalSearchContainer from '@/containers/global-search.container';
 import UserMenuContainer from '@/containers/user-menu.container';
 
-export default function Header() {
-  const cookiesStore = cookies();
+export default async function Header() {
+  const cookiesStore = await cookies();
   const accessToken = cookiesStore.get('accessToken')?.value;
 
   return (

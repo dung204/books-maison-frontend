@@ -12,7 +12,7 @@ class FavouriteBookHttpClient extends HttpClient {
     accessToken: string,
     params: BookSearchParams,
   ) {
-    return this.get<SuccessResponse<Book[]>>('/me/favourite-books', {
+    return this.get<SuccessResponse<Book[]>>('/me/books/favourite', {
       params,
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -21,7 +21,7 @@ class FavouriteBookHttpClient extends HttpClient {
   }
 
   public addBookToFavourite(accessToken: string, bookId: string) {
-    return this.post<void>(`/favourite-books/add/${bookId}`, undefined, {
+    return this.post<void>(`/me/books/favourite/${bookId}`, undefined, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -29,7 +29,7 @@ class FavouriteBookHttpClient extends HttpClient {
   }
 
   public removeBookFromFavourite(accessToken: string, bookId: string) {
-    return this.delete<void>(`/favourite-books/delete/${bookId}`, {
+    return this.delete<void>(`/me/books/favourite/${bookId}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
