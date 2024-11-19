@@ -16,24 +16,25 @@ export const metadata: Metadata = {
   icons: favIcon.src,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const cookiesStore = cookies();
+  const cookiesStore = await cookies();
   const accessToken = cookiesStore.get('accessToken')?.value;
   const refreshToken = cookiesStore.get('refreshToken')?.value;
 
   return (
     <html lang="en">
+      <head />
       <body>
         <AuthProvider initialTokens={{ accessToken, refreshToken }}>
-          {children}
+          <main>{children}</main>
         </AuthProvider>
+        <Toaster richColors closeButton position="top-right" duration={3000} />
         <MoveToTopButton />
       </body>
-      <Toaster richColors closeButton position="top-right" duration={3000} />
     </html>
   );
 }

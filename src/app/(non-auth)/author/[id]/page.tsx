@@ -9,16 +9,15 @@ import { TabsContent } from '@/components/ui/tabs';
 import { authorHttpClient } from '@/lib/http/author.http';
 
 interface AuthorOverviewPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export const revalidate = 30;
 
-export async function generateMetadata({
-  params: { id },
-}: AuthorOverviewPageProps) {
+export async function generateMetadata({ params }: AuthorOverviewPageProps) {
+  const { id } = await params;
   const { data: author } = await authorHttpClient.getAuthorById(id);
 
   return {
@@ -27,8 +26,9 @@ export async function generateMetadata({
 }
 
 export default async function AuthorOverviewPage({
-  params: { id },
+  params,
 }: AuthorOverviewPageProps) {
+  const { id } = await params;
   const { data: author } = await authorHttpClient.getAuthorById(id);
 
   return (

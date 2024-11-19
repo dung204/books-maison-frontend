@@ -3,12 +3,17 @@ import Image from 'next/image';
 
 import homeBanner from '@/assets/images/library-banner-1.jpg';
 import GlobalSearchContainer from '@/containers/global-search.container';
+import { bookHttpClient } from '@/lib/http/book.http';
 
 export const metadata: Metadata = {
   title: 'Home',
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  const {
+    pagination: { total },
+  } = await bookHttpClient.getAllBooks();
+
   return (
     <>
       <div className="relative flex h-screen w-full items-center justify-center">
@@ -24,8 +29,7 @@ export default function HomePage() {
             Your home of knowledge
           </h1>
           <p className="text-2xl text-white drop-shadow-sm">
-            Explore the treasure of human knowledge with more than 123 books
-            here
+            Explore the treasure of human knowledge with {total} books here
           </p>
           <div className="mx-auto w-3/4">
             <GlobalSearchContainer />

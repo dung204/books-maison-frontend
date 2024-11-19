@@ -11,7 +11,7 @@ interface FavouriteBookFetchContainerProps {
 export default async function FavouriteBookFetchContainer({
   searchParams,
 }: FavouriteBookFetchContainerProps) {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
   const { data: books, pagination } =
     await favouriteBookHttpClient.getAllFavouriteBooksOfCurrentUser(

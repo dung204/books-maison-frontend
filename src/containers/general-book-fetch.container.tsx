@@ -1,3 +1,4 @@
+import { cookies } from 'next/headers';
 import { ComponentProps } from 'react';
 
 import { BookSearchParams } from '@/common/types/api/book/book-search-params.type';
@@ -11,8 +12,12 @@ interface GlobalBookFetchContainerProps extends ComponentProps<'div'> {
 export default async function GeneralBookFetchContainer({
   searchParams,
 }: GlobalBookFetchContainerProps) {
-  const { data: books, pagination } =
-    await bookHttpClient.getAllBooks(searchParams);
+  const cookiesStore = await cookies();
+  const accessToken = cookiesStore.get('accessToken')?.value;
+  const { data: books, pagination } = await bookHttpClient.getAllBooks(
+    searchParams,
+    accessToken,
+  );
 
   return (
     <BookSearchContainer

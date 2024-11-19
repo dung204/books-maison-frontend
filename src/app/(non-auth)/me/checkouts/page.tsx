@@ -16,12 +16,12 @@ export const metadata: Metadata = {
 };
 
 interface CheckoutsPageProps {
-  searchParams: CommonSearchParams;
+  searchParams: Promise<CommonSearchParams>;
 }
 
-export default async function CheckoutsPage({
-  searchParams,
-}: CheckoutsPageProps) {
+export default async function CheckoutsPage(props: CheckoutsPageProps) {
+  const searchParams = await props.searchParams;
+
   return (
     <TabsContent value="/me/checkouts" className="outline-none">
       <Alert className="mb-6 bg-sky-100 text-sky-800">

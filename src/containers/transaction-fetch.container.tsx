@@ -12,7 +12,7 @@ interface TransactionFetchContainerProps {
 export default async function TransactionFetchContainer({
   searchParams,
 }: TransactionFetchContainerProps) {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
   const { data: transactions, pagination } =
     await transactionHttpClient.getTransactionsOfCurrentUser(

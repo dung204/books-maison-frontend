@@ -8,7 +8,7 @@ import { TabsContent } from '@/components/ui/tabs';
 import TransactionFetchContainer from '@/containers/transaction-fetch.container';
 
 interface TransactionsPageProps {
-  searchParams: CommonSearchParams;
+  searchParams: Promise<CommonSearchParams>;
 }
 
 export const revalidate = 0;
@@ -17,9 +17,9 @@ export const metadata: Metadata = {
   title: 'My transactions',
 };
 
-export default async function TransactionsPage({
-  searchParams,
-}: TransactionsPageProps) {
+export default async function TransactionsPage(props: TransactionsPageProps) {
+  const searchParams = await props.searchParams;
+
   return (
     <TabsContent value="/me/transactions" className="outline-none">
       <Suspense key={randomUUID()} fallback={<DataTableLoading rowCount={4} />}>
