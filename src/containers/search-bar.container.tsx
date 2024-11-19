@@ -2,7 +2,7 @@
 
 import { Search } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { ComponentProps } from 'react';
+import { ComponentProps, FormEvent } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -22,7 +22,7 @@ export default function SearchBarContainer({
 }: SearchBarContainerProps) {
   const router = useRouter();
 
-  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSearch = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const fieldValue = formData.get(fieldName) as string;
