@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --experimental-https --turbo",
+    "dev": "next dev --turbo",
+    "dev:debug": "NODE_OPTIONS='--inspect' next dev --turbo",
+    "dev:https": "next dev --experimental-https --turbo",
+    "dev:https:debug": "NODE_OPTIONS='--inspect' next dev --experimental-https --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -71,7 +74,6 @@
     "tailwindcss": "^3.4.1",
     "typescript": "*"
   },
-  "packageManager": "yarn@1.22.22",
   "lint-staged": {
     "*.{ts,tsx,js,jsx,mjs,cjs}": [
       "eslint --fix",
