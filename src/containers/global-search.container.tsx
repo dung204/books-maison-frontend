@@ -12,13 +12,13 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ComponentProps, useEffect, useState } from 'react';
+import { type ComponentProps, useEffect, useState } from 'react';
 
 import placeholderImg from '@/assets/images/placeholder-200x300.svg';
 import { useDebounce } from '@/common/hooks';
-import { Author } from '@/common/types/api/author';
-import { Book } from '@/common/types/api/book';
-import { Category } from '@/common/types/api/category';
+import type { Author } from '@/common/types/api/author';
+import type { Book } from '@/common/types/api/book';
+import type { Category } from '@/common/types/api/category';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import {
   Command,

@@ -1,7 +1,7 @@
 import axios, {
-  AxiosInstance,
-  AxiosRequestConfig,
-  CreateAxiosDefaults,
+  type AxiosInstance,
+  type AxiosRequestConfig,
+  type CreateAxiosDefaults,
 } from 'axios';
 import * as jose from 'jose';
 

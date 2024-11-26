@@ -2,11 +2,14 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { ComponentProps } from 'react';
+import type { ComponentProps } from 'react';
 
 import banner from '@/assets/images/library-banner-1.jpg';
-import { Pagination } from '@/common/types';
-import { Category, CategorySearchParams } from '@/common/types/api/category';
+import type { Pagination } from '@/common/types';
+import type {
+  Category,
+  CategorySearchParams,
+} from '@/common/types/api/category';
 import { Card, CardHeader, CardTitle } from '@/components/ui/cards';
 import { PaginationContainer } from '@/containers';
 import { SearchBarContainer } from '@/containers';

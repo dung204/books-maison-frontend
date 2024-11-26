@@ -1,5 +1,5 @@
-import { CommonSearchParams, SuccessResponse } from '@/common/types';
-import { Transaction } from '@/common/types/api/transaction';
+import type { CommonSearchParams, SuccessResponse } from '@/common/types';
+import type { Transaction } from '@/common/types/api/transaction';
 import { HttpClient } from '@/lib/http';
 
 class TransactionHttpClient extends HttpClient {

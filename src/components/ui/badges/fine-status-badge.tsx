@@ -1,4 +1,4 @@
-import { ComponentProps } from 'react';
+import type { ComponentProps } from 'react';
 
 import { FineStatus } from '@/common/types/api/fine';
 import { Badge, ColoredBadge } from '@/components/ui/badges';

@@ -3,11 +3,11 @@
 import { HandHelping, Heart } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ComponentProps, useState } from 'react';
+import { type ComponentProps, useState } from 'react';
 import { toast } from 'sonner';
 
 import { useAuth } from '@/common/hooks';
-import { Book } from '@/common/types/api/book';
+import type { Book } from '@/common/types/api/book';
 import { Button } from '@/components/ui/buttons';
 import {
   AlertDialog,

@@ -18,7 +18,7 @@ import {
   Input,
 } from '@/components/ui/form';
 import { authHttpClient } from '@/lib/http';
-import { RegisterSchema, registerSchema } from '@/lib/validators';
+import { type RegisterSchema, registerSchema } from '@/lib/validators';
 
 export function RegisterContainer() {
   const router = useRouter();

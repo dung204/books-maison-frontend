@@ -1,4 +1,4 @@
-import { CSSProperties, ComponentProps } from 'react';
+import type { CSSProperties, ComponentProps } from 'react';
 
 import { Badge } from '@/components/ui/badges';
 import { cn } from '@/lib/cn';

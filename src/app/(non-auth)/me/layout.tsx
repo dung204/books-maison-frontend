@@ -1,4 +1,4 @@
-import { PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
 
 import { TabsContainer } from '@/containers';
 import { UserProfileContainer } from '@/containers/user';

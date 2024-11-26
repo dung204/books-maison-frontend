@@ -1,6 +1,6 @@
 'use client';
 
-import { ComponentProps, useId } from 'react';
+import { type ComponentProps, useId } from 'react';
 
 import { Skeleton } from '@/components/ui/skeletons';
 import {

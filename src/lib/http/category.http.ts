@@ -1,5 +1,8 @@
-import { SuccessResponse } from '@/common/types';
-import { Category, CategorySearchParams } from '@/common/types/api/category';
+import type { SuccessResponse } from '@/common/types';
+import type {
+  Category,
+  CategorySearchParams,
+} from '@/common/types/api/category';
 import { HttpClient } from '@/lib/http';
 
 class CategoryHttpClient extends HttpClient {

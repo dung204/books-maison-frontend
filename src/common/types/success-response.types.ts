@@ -1,4 +1,4 @@
-import { Pagination } from '@/common/types';
+import type { Pagination } from '@/common/types';
 
 import { Role } from './role.type';
 

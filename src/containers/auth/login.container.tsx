@@ -17,7 +17,7 @@ import {
   Input,
 } from '@/components/ui/form';
 import { authHttpClient } from '@/lib/http';
-import { LoginSchema, loginSchema } from '@/lib/validators';
+import { type LoginSchema, loginSchema } from '@/lib/validators';
 
 export function LoginContainer() {
   const [isLoggingIn, setIsLoggingIn] = useState(false);

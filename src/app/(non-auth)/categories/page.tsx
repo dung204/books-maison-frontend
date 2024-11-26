@@ -1,8 +1,8 @@
 import { randomUUID } from 'crypto';
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { Suspense } from 'react';
 
-import { CategorySearchParams } from '@/common/types/api/category';
+import type { CategorySearchParams } from '@/common/types/api/category';
 import HomeBanner from '@/components/ui/home-banner';
 import { CategoriesGridSkeleton } from '@/components/ui/skeletons';
 import { CategorySearchContainer } from '@/containers/category';

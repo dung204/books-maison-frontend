@@ -1,10 +1,10 @@
 import { Info, List, UserPen } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ComponentProps } from 'react';
+import type { ComponentProps } from 'react';
 
 import placeholderImg from '@/assets/images/placeholder-200x300.svg';
-import { Book } from '@/common/types/api/book';
+import type { Book } from '@/common/types/api/book';
 import { Button } from '@/components/ui/buttons';
 import {
   Card,

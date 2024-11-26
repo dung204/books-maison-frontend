@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 
 import { useAuth } from '@/common/hooks';
-import { Fine } from '@/common/types/api/fine';
+import type { Fine } from '@/common/types/api/fine';
 import { TransactionMethod } from '@/common/types/api/transaction';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/buttons';

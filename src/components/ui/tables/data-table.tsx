@@ -1,19 +1,19 @@
 'use client';
 
 import {
-  Column,
-  ColumnDef,
-  SortDirection,
+  type Column,
+  type ColumnDef,
+  type SortDirection,
   flexRender,
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
 import { ArrowDown, ArrowUp } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { ComponentProps } from 'react';
+import type { ComponentProps } from 'react';
 
-import { Pagination } from '@/common/types';
-import { SortingSearchParams } from '@/common/types';
+import type { Pagination } from '@/common/types';
+import type { SortingSearchParams } from '@/common/types';
 import { SortingUtils } from '@/common/utils';
 import { Button } from '@/components/ui/buttons';
 import {

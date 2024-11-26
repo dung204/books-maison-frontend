@@ -1,11 +1,11 @@
-import {
+import type {
   LoginSuccessResponse,
   RefreshSuccessResponse,
   SuccessResponse,
 } from '@/common/types';
-import { User } from '@/common/types/api/user';
+import type { User } from '@/common/types/api/user';
 import { HttpClient } from '@/lib/http';
-import { LoginSchema, RegisterSchema } from '@/lib/validators';
+import type { LoginSchema, RegisterSchema } from '@/lib/validators';
 
 class AuthHttpClient extends HttpClient {
   constructor() {

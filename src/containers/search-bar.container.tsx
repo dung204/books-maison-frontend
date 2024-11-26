@@ -2,7 +2,7 @@
 
 import { Search } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { ComponentProps, FormEvent } from 'react';
+import type { ComponentProps, FormEvent } from 'react';
 
 import { Button } from '@/components/ui/buttons';
 import { Input } from '@/components/ui/form';

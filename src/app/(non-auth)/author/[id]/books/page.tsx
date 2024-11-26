@@ -1,8 +1,8 @@
 import { randomUUID } from 'crypto';
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { Suspense } from 'react';
 
-import { BookSearchParams } from '@/common/types/api/book';
+import type { BookSearchParams } from '@/common/types/api/book';
 import { BooksGridSkeleton } from '@/components/ui/skeletons';
 import { TabsContent } from '@/components/ui/tabs';
 import { BookSearchContainer } from '@/containers/book';

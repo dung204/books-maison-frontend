@@ -1,8 +1,8 @@
 import { randomUUID } from 'crypto';
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { Suspense } from 'react';
 
-import { AuthorSearchParams } from '@/common/types/api/author';
+import type { AuthorSearchParams } from '@/common/types/api/author';
 import HomeBanner from '@/components/ui/home-banner';
 import { AuthorsGridSkeleton } from '@/components/ui/skeletons';
 import { AuthorSearchContainer } from '@/containers/author';

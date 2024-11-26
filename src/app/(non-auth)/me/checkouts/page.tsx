@@ -1,10 +1,10 @@
 import { randomUUID } from 'crypto';
 import { Info } from 'lucide-react';
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import { Suspense } from 'react';
 
-import { CheckoutSearchParams } from '@/common/types/api/checkout';
+import type { CheckoutSearchParams } from '@/common/types/api/checkout';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { DataTableSkeleton } from '@/components/ui/skeletons';
 import { DataTable } from '@/components/ui/tables';

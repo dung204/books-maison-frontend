@@ -2,10 +2,10 @@
 
 import { UserPen } from 'lucide-react';
 import Link from 'next/link';
-import { ComponentProps } from 'react';
+import type { ComponentProps } from 'react';
 
-import { Pagination } from '@/common/types';
-import { Author, AuthorSearchParams } from '@/common/types/api/author';
+import type { Pagination } from '@/common/types';
+import type { Author, AuthorSearchParams } from '@/common/types/api/author';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { PaginationContainer } from '@/containers';
 import { SearchBarContainer } from '@/containers';

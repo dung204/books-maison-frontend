@@ -1,5 +1,5 @@
 import { UserPen } from 'lucide-react';
-import { PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import HomeBanner from '@/components/ui/home-banner';

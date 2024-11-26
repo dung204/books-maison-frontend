@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 
 import { TabsContent } from '@/components/ui/tabs';
 import { cn } from '@/lib/cn';

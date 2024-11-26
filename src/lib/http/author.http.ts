@@ -1,5 +1,5 @@
-import { SuccessResponse } from '@/common/types';
-import { Author, AuthorSearchParams } from '@/common/types/api/author';
+import type { SuccessResponse } from '@/common/types';
+import type { Author, AuthorSearchParams } from '@/common/types/api/author';
 import { HttpClient } from '@/lib/http';
 
 class AuthorHttpClient extends HttpClient {
