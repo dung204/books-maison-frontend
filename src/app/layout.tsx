@@ -4,8 +4,8 @@ import { cookies } from 'next/headers';
 import { Toaster } from 'sonner';
 
 import favIcon from '@/assets/images/favicon.ico';
-import AuthProvider from '@/common/providers/auth.provider';
-import MoveToTopButton from '@/components/ui/move-to-top-button';
+import { AuthProvider } from '@/common/providers';
+import { MoveToTopButton } from '@/components/ui/buttons';
 import '@/styles/globals.css';
 
 export const metadata: Metadata = {

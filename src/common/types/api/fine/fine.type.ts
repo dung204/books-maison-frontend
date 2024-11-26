@@ -1,5 +1,5 @@
-import { Checkout } from '@/common/types/api/checkout/checkout.type';
-import { FineStatus } from '@/common/types/api/fine/fine-status.type';
+import { Checkout } from '@/common/types/api/checkout';
+import { FineStatus } from '@/common/types/api/fine';
 
 export interface Fine {
   id: string;

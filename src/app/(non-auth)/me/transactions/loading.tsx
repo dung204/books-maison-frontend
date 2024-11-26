@@ -1,5 +1,5 @@
-import DataTableLoading from '@/components/ui/data-table-loading';
+import { DataTableSkeleton } from '@/components/ui/skeletons';
 
 export default function TransactionsLoading() {
-  return <DataTableLoading rowCount={4} />;
+  return <DataTableSkeleton rowCount={4} />;
 }

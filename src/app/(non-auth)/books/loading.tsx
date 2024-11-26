@@ -1,5 +1,5 @@
-import BooksGridLoading from '@/components/ui/books-grid-loading';
 import HomeBanner from '@/components/ui/home-banner';
+import { BooksGridSkeleton } from '@/components/ui/skeletons';
 
 export default function BooksLoading() {
   return (
@@ -9,7 +9,7 @@ export default function BooksLoading() {
         bannerTitle="Search for a decent book here at Books Maison"
       />
       <div className="container py-10">
-        <BooksGridLoading />
+        <BooksGridSkeleton />
       </div>
     </>
   );

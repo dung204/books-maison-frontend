@@ -1,8 +1,9 @@
 import * as jose from 'jose';
+import { NextURL } from 'next/dist/server/web/next-url';
 import { NextRequest, NextResponse } from 'next/server';
 import { pathToRegexp } from 'path-to-regexp';
 
-import { authHttpClient } from '@/lib/http/auth.http';
+import { authHttpClient } from '@/lib/http';
 
 const privateRoutes = ['/me/:path', '/me'];
 
@@ -23,13 +24,14 @@ export async function middleware(request: NextRequest) {
   );
 
   if (accessToken && refreshToken) {
-    if (isAuthRoute) {
-      redirectUrl.pathname = '/';
-      return NextResponse.redirect(redirectUrl);
-    }
-
     try {
       await jose.jwtVerify(accessToken, jwtAccessSecret);
+
+      if (isAuthRoute) {
+        redirectUrl.pathname = '/';
+        return NextResponse.redirect(redirectUrl);
+      }
+
       return NextResponse.next();
     } catch (accessTokenError) {
       try {
@@ -39,41 +41,26 @@ export async function middleware(request: NextRequest) {
           data: { refreshToken: newRefreshToken, accessToken: newAccessToken },
         } = await authHttpClient.refreshToken(refreshToken);
 
-        return NextResponse.redirect(request.nextUrl, {
-          // @ts-ignore
-          headers: {
-            'Set-Cookie': [
-              `accessToken=${newAccessToken}; Path=/; Secure; Max-Age=31536000; HttpOnly; SameSite=Lax`,
-              `refreshToken=${newRefreshToken}; Path=/; Secure; Max-Age=31536000; HttpOnly; SameSite=Lax`,
-            ],
-          },
-        });
+        if (isAuthRoute) {
+          redirectUrl.pathname = '/';
+          return NextResponse.redirect(redirectUrl);
+        }
+
+        return setTokens(request.nextUrl, newAccessToken, newRefreshToken);
       } catch (refreshTokenError) {
-        redirectUrl.pathname = '/auth/login';
-        return NextResponse.redirect(redirectUrl, {
-          // @ts-ignore
-          headers: {
-            'Set-Cookie': [
-              `accessToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT`,
-              `refreshToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT`,
-            ],
-          },
-        });
+        if (isPrivateRoute) {
+          redirectUrl.pathname = '/auth/login';
+          return deleteTokens(redirectUrl);
+        }
+
+        return deleteTokens(request.nextUrl);
       }
     }
   }
 
   if (isPrivateRoute) {
     redirectUrl.pathname = '/auth/login';
-    return NextResponse.redirect(redirectUrl, {
-      // @ts-ignore
-      headers: {
-        'Set-Cookie': [
-          `accessToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT`,
-          `refreshToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT`,
-        ],
-      },
-    });
+    return deleteTokens(redirectUrl);
   }
 
   return NextResponse.next();
@@ -82,3 +69,27 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: '/((?!api|_next/static|_next/image|favicon.ico).*)',
 };
+
+function setTokens(url: NextURL, accessToken: string, refreshToken: string) {
+  return NextResponse.redirect(url, {
+    // @ts-expect-error
+    headers: {
+      'Set-Cookie': [
+        `accessToken=${accessToken}; Path=/; Secure; Max-Age=31536000; HttpOnly; SameSite=Lax`,
+        `refreshToken=${refreshToken}; Path=/; Secure; Max-Age=31536000; HttpOnly; SameSite=Lax`,
+      ],
+    },
+  });
+}
+
+function deleteTokens(url: NextURL) {
+  return NextResponse.redirect(url, {
+    // @ts-ignore
+    headers: {
+      'Set-Cookie': [
+        `accessToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT`,
+        `refreshToken=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT`,
+      ],
+    },
+  });
+}

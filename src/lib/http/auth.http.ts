@@ -1,10 +1,11 @@
-import { User } from '@/common/types/api/user/user.type';
-import { LoginSuccessResponse } from '@/common/types/login-success-response.type';
-import { RefreshSuccessResponse } from '@/common/types/refresh-success-response.type';
-import { SuccessResponse } from '@/common/types/success-response.type';
-import { HttpClient } from '@/lib/http/core.http';
-import { LoginSchema } from '@/lib/validators/login.validator';
-import { RegisterSchema } from '@/lib/validators/register.validator';
+import {
+  LoginSuccessResponse,
+  RefreshSuccessResponse,
+  SuccessResponse,
+} from '@/common/types';
+import { User } from '@/common/types/api/user';
+import { HttpClient } from '@/lib/http';
+import { LoginSchema, RegisterSchema } from '@/lib/validators';
 
 class AuthHttpClient extends HttpClient {
   constructor() {

@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import placeholderImg from '@/assets/images/placeholder-200x300.svg';
-import { Badge } from '@/components/ui/badge';
+import { Badge } from '@/components/ui/badges';
 import HomeBanner from '@/components/ui/home-banner';
 import {
   Table,
@@ -12,10 +12,10 @@ import {
   TableCell,
   TableHead,
   TableRow,
-} from '@/components/ui/table';
-import BookActionsContainer from '@/containers/book-actions.container';
-import { bookHttpClient } from '@/lib/http/book.http';
-import { cn } from '@/lib/utils';
+} from '@/components/ui/tables';
+import { BookActionsContainer } from '@/containers/book';
+import { cn } from '@/lib/cn';
+import { bookHttpClient } from '@/lib/http';
 
 export const revalidate = 60;
 

@@ -3,8 +3,16 @@
 import { useRouter } from 'next/navigation';
 import { ComponentProps } from 'react';
 
-import { Pagination as PaginationDto } from '@/common/types/pagination.type';
-import { PaginationUtils } from '@/common/utils/pagination.util';
+import { Pagination as PaginationDto } from '@/common/types';
+import { PaginationUtils } from '@/common/utils';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/form';
 import {
   Pagination,
   PaginationContent,
@@ -14,21 +22,13 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/cn';
 
 interface PaginationContainerProps extends ComponentProps<typeof Pagination> {
   pagination: PaginationDto;
 }
 
-export default function PaginationContainer({
+export function PaginationContainer({
   className,
   pagination,
   ...props

@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
 
 import { TabsContent } from '@/components/ui/tabs';
-import { authorHttpClient } from '@/lib/http/author.http';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/cn';
+import { authorHttpClient } from '@/lib/http';
 
 interface AuthorBioPageProps {
   params: Promise<{

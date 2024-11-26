@@ -4,24 +4,23 @@ import axios, { InternalAxiosRequestConfig } from 'axios';
 import * as jose from 'jose';
 import { PropsWithChildren, useEffect, useState } from 'react';
 
-import AuthContext, { AuthContextValue } from '@/common/context/auth.context';
-import { User } from '@/common/types/api/user/user.type';
-import { LoginSuccessResponse } from '@/common/types/login-success-response.type';
-import { authHttpClient } from '@/lib/http/auth.http';
-import { checkoutHttpClient } from '@/lib/http/checkout.http';
-import { favouriteBookHttpClient } from '@/lib/http/favourite-book.http';
-import { fineHttpClient } from '@/lib/http/fine.http';
-import { transactionHttpClient } from '@/lib/http/transaction.http';
-import { userHttpClient } from '@/lib/http/user.http';
+import { AuthContext, AuthContextValue } from '@/common/contexts/auth.context';
+import { LoginSuccessResponse } from '@/common/types';
+import { User } from '@/common/types/api/user';
+import {
+  authHttpClient,
+  checkoutHttpClient,
+  favouriteBookHttpClient,
+  fineHttpClient,
+  transactionHttpClient,
+  userHttpClient,
+} from '@/lib/http';
 
 interface AuthProviderProps extends PropsWithChildren {
   initialTokens: Pick<AuthContextValue, 'accessToken' | 'refreshToken'>;
 }
 
-export default function AuthProvider({
-  children,
-  initialTokens,
-}: AuthProviderProps) {
+export function AuthProvider({ children, initialTokens }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
   const [accessToken, setAccessToken] = useState(initialTokens.accessToken);
   const [refreshToken, setRefreshToken] = useState(initialTokens.refreshToken);
