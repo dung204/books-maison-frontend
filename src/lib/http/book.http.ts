@@ -1,5 +1,5 @@
-import { SuccessResponse } from '@/common/types';
-import { Book, BookSearchParams } from '@/common/types/api/book';
+import type { SuccessResponse } from '@/common/types';
+import type { Book, BookSearchParams } from '@/common/types/api/book';
 import { HttpClient } from '@/lib/http';
 
 class BookHttpClient extends HttpClient {

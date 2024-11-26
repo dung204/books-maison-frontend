@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { ComponentProps } from 'react';
+import type { ComponentProps } from 'react';
 
 import bannerImg from '@/assets/images/library-banner-1.jpg';
 import { cn } from '@/lib/cn';

@@ -1,11 +1,11 @@
 import Image from 'next/image';
 
-import { IconProps } from '@/common/types';
+import type { IconProps } from '@/common/types';
 
-import instagramIcon from './assets/youtube-icon.svg';
+import youtubeIcon from './assets/youtube-icon.svg';
 
-interface InstagramIconProps extends IconProps {}
+interface YoutubeIconProps extends IconProps {}
 
-export function YoutubeIcon(props: InstagramIconProps) {
-  return <Image src={instagramIcon} alt="Instagram icon" {...props} />;
+export function YoutubeIcon(props: YoutubeIconProps) {
+  return <Image src={youtubeIcon} alt="Youtube icon" {...props} />;
 }

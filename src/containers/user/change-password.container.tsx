@@ -28,7 +28,10 @@ import {
   Input,
 } from '@/components/ui/form';
 import { userHttpClient } from '@/lib/http';
-import { ChangePasswordSchema, changePasswordSchema } from '@/lib/validators';
+import {
+  type ChangePasswordSchema,
+  changePasswordSchema,
+} from '@/lib/validators';
 
 const defaultValues = {
   password: '',

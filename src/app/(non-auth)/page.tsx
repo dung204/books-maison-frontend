@@ -1,4 +1,4 @@
-import { type Metadata } from 'next';
+import type { Metadata } from 'next';
 import Image from 'next/image';
 
 import homeBanner from '@/assets/images/library-banner-1.jpg';

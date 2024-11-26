@@ -1,10 +1,10 @@
 import { TabsContent } from '@radix-ui/react-tabs';
 import { randomUUID } from 'crypto';
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import { Suspense } from 'react';
 
-import { BookSearchParams } from '@/common/types/api/book';
+import type { BookSearchParams } from '@/common/types/api/book';
 import { BooksGridSkeleton } from '@/components/ui/skeletons';
 import { BookSearchContainer } from '@/containers/book';
 import { favouriteBookHttpClient } from '@/lib/http';

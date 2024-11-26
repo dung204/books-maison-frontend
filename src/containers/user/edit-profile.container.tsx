@@ -28,7 +28,10 @@ import {
   Input,
 } from '@/components/ui/form';
 import { userHttpClient } from '@/lib/http';
-import { UpdateProfileSchema, updateProfileSchema } from '@/lib/validators';
+import {
+  type UpdateProfileSchema,
+  updateProfileSchema,
+} from '@/lib/validators';
 
 export function EditProfileContainer() {
   const { user, setUser, accessToken } = useAuth();

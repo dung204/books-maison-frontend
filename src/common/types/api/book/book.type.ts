@@ -1,5 +1,5 @@
-import { Author } from '@/common/types/api/author';
-import { Category } from '@/common/types/api/category';
+import type { Author } from '@/common/types/api/author';
+import type { Category } from '@/common/types/api/category';
 
 export interface Book {
   id: string;

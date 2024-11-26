@@ -4,13 +4,13 @@ import { Filter, MoveRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-import { CommonSearchParams } from '@/common/types';
-import {
+import type { CommonSearchParams } from '@/common/types';
+import type {
   BookAdvancedFilterData,
   BookAdvancedFilterField,
   BookSearchParams,
 } from '@/common/types/api/book';
-import { Category } from '@/common/types/api/category';
+import type { Category } from '@/common/types/api/category';
 import { Badge } from '@/components/ui/badges';
 import { Button } from '@/components/ui/buttons';
 import {

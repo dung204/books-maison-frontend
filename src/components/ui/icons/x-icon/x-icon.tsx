@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import { IconProps } from '@/common/types';
+import type { IconProps } from '@/common/types';
 
 import xIcon from './assets/x-icon.svg';
 

@@ -1,6 +1,6 @@
 import { HttpStatusCode } from 'axios';
 
-import { LoginSuccessResponse } from '@/common/types';
+import type { LoginSuccessResponse } from '@/common/types';
 
 export async function POST(request: Request) {
   const res = (await request.json()) as LoginSuccessResponse;

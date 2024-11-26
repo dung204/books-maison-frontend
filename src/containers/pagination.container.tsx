@@ -1,9 +1,9 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { ComponentProps } from 'react';
+import { type ComponentProps } from 'react';
 
-import { Pagination as PaginationDto } from '@/common/types';
+import type { Pagination as PaginationDto } from '@/common/types';
 import { PaginationUtils } from '@/common/utils';
 import {
   Select,

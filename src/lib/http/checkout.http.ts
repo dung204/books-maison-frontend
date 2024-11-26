@@ -1,5 +1,8 @@
-import { SuccessResponse } from '@/common/types';
-import { Checkout, CheckoutSearchParams } from '@/common/types/api/checkout';
+import type { SuccessResponse } from '@/common/types';
+import type {
+  Checkout,
+  CheckoutSearchParams,
+} from '@/common/types/api/checkout';
 import { HttpClient } from '@/lib/http';
 
 class CheckoutHttpClient extends HttpClient {

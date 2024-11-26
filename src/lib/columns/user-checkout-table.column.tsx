@@ -1,10 +1,10 @@
 'use client';
 
-import { ColumnDef } from '@tanstack/react-table';
+import type { ColumnDef } from '@tanstack/react-table';
 import Link from 'next/link';
 
-import { Book } from '@/common/types/api/book';
-import { Checkout, CheckoutStatus } from '@/common/types/api/checkout';
+import type { Book } from '@/common/types/api/book';
+import { type Checkout, CheckoutStatus } from '@/common/types/api/checkout';
 import { CheckoutStatusBadge } from '@/components/ui/badges';
 import { DataTableHeader } from '@/components/ui/tables';
 

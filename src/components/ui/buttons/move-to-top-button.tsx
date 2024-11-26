@@ -1,7 +1,7 @@
 'use client';
 
 import { ChevronUp } from 'lucide-react';
-import { ComponentProps, useEffect, useRef } from 'react';
+import { type ComponentProps, useEffect, useRef } from 'react';
 
 import { Button } from '@/components/ui/buttons';
 import { cn } from '@/lib/cn';

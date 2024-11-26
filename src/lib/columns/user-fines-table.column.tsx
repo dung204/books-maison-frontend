@@ -1,9 +1,9 @@
 'use client';
 
-import { ColumnDef } from '@tanstack/react-table';
+import type { ColumnDef } from '@tanstack/react-table';
 
-import { Checkout } from '@/common/types/api/checkout';
-import { Fine, FineStatus } from '@/common/types/api/fine';
+import type { Checkout } from '@/common/types/api/checkout';
+import { type Fine, FineStatus } from '@/common/types/api/fine';
 import { FineStatusBadge } from '@/components/ui/badges';
 import { DataTableHeader } from '@/components/ui/tables';
 import { CheckoutDetailsContainer } from '@/containers/checkout';

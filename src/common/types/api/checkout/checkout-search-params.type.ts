@@ -1,4 +1,4 @@
-import { CommonSearchParams } from '@/common/types';
+import type { CommonSearchParams } from '@/common/types';
 import { CheckoutStatus } from '@/common/types/api/checkout';
 
 export interface CheckoutSearchParams extends CommonSearchParams {

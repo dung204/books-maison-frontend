@@ -3,7 +3,7 @@ import { type Metadata } from 'next';
 import { cookies } from 'next/headers';
 import { Suspense } from 'react';
 
-import { BookSearchParams } from '@/common/types/api/book';
+import type { BookSearchParams } from '@/common/types/api/book';
 import HomeBanner from '@/components/ui/home-banner';
 import { BooksGridSkeleton } from '@/components/ui/skeletons';
 import { BookSearchContainer } from '@/containers/book';

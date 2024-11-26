@@ -1,7 +1,7 @@
-import { ComponentProps } from 'react';
+import type { ComponentProps } from 'react';
 
-import { Pagination } from '@/common/types';
-import {
+import type { Pagination } from '@/common/types';
+import type {
   Book,
   BookAdvancedFilterField,
   BookSearchParams,

@@ -1,4 +1,4 @@
-import { Checkout } from '@/common/types/api/checkout';
+import type { Checkout } from '@/common/types/api/checkout';
 import { FineStatus } from '@/common/types/api/fine';
 
 export interface Fine {

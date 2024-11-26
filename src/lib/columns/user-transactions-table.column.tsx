@@ -1,9 +1,12 @@
 'use client';
 
-import { ColumnDef } from '@tanstack/react-table';
+import type { ColumnDef } from '@tanstack/react-table';
 import { Banknote } from 'lucide-react';
 
-import { Transaction, TransactionMethod } from '@/common/types/api/transaction';
+import {
+  type Transaction,
+  TransactionMethod,
+} from '@/common/types/api/transaction';
 import { StringUtils } from '@/common/utils';
 import { MomoIcon } from '@/components/ui/icons';
 import { DataTableHeader } from '@/components/ui/tables';

@@ -1,12 +1,15 @@
 'use client';
 
-import axios, { InternalAxiosRequestConfig } from 'axios';
+import axios, { type InternalAxiosRequestConfig } from 'axios';
 import * as jose from 'jose';
-import { PropsWithChildren, useEffect, useState } from 'react';
+import { type PropsWithChildren, useEffect, useState } from 'react';
 
-import { AuthContext, AuthContextValue } from '@/common/contexts/auth.context';
-import { LoginSuccessResponse } from '@/common/types';
-import { User } from '@/common/types/api/user';
+import {
+  AuthContext,
+  type AuthContextValue,
+} from '@/common/contexts/auth.context';
+import type { LoginSuccessResponse } from '@/common/types';
+import type { User } from '@/common/types/api/user';
 import {
   authHttpClient,
   checkoutHttpClient,
