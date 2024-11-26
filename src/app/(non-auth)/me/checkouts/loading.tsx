@@ -1,7 +1,7 @@
 import { Info } from 'lucide-react';
 
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import DataTableLoading from '@/components/ui/data-table-loading';
+import { DataTableSkeleton } from '@/components/ui/skeletons';
 
 export default function CheckoutsLoading() {
   return (
@@ -13,7 +13,7 @@ export default function CheckoutsLoading() {
           book for <b>14 days</b>
         </AlertDescription>
       </Alert>
-      <DataTableLoading rowCount={7} />
+      <DataTableSkeleton rowCount={7} />
     </div>
   );
 }

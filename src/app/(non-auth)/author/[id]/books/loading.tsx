@@ -1,5 +1,5 @@
-import BooksGridLoading from '@/components/ui/books-grid-loading';
+import { BooksGridSkeleton } from '@/components/ui/skeletons';
 
 export default function AuthorBooksLoading() {
-  return <BooksGridLoading />;
+  return <BooksGridSkeleton />;
 }

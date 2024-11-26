@@ -1,5 +1,5 @@
-import { CheckoutStatus } from '@/common/types/api/checkout/checkout-status.type';
-import { CommonSearchParams } from '@/common/types/common-search-params.type';
+import { CommonSearchParams } from '@/common/types';
+import { CheckoutStatus } from '@/common/types/api/checkout';
 
 export interface CheckoutSearchParams extends CommonSearchParams {
   bookId?: string;

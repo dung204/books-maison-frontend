@@ -1,4 +1,4 @@
-import { CommonSearchParams } from '@/common/types/common-search-params.type';
+import { CommonSearchParams } from '@/common/types';
 
 export interface AuthorSearchParams extends CommonSearchParams {
   name?: string;

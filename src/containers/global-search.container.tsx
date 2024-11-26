@@ -15,10 +15,10 @@ import { useRouter } from 'next/navigation';
 import { ComponentProps, useEffect, useState } from 'react';
 
 import placeholderImg from '@/assets/images/placeholder-200x300.svg';
-import useDebounce from '@/common/hooks/use-debounce.hook';
-import { Author } from '@/common/types/api/author/author.type';
-import { Book } from '@/common/types/api/book/book.type';
-import { Category } from '@/common/types/api/category/category.type';
+import { useDebounce } from '@/common/hooks';
+import { Author } from '@/common/types/api/author';
+import { Book } from '@/common/types/api/book';
+import { Category } from '@/common/types/api/category';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import {
   Command,
@@ -37,10 +37,12 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { authorHttpClient } from '@/lib/http/author.http';
-import { bookHttpClient } from '@/lib/http/book.http';
-import { categoryHttpClient } from '@/lib/http/category.http';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib/cn';
+import {
+  authorHttpClient,
+  bookHttpClient,
+  categoryHttpClient,
+} from '@/lib/http';
 
 interface GlobalSearchContainerProps extends ComponentProps<'div'> {
   asDialog?: boolean;
@@ -50,7 +52,7 @@ interface InternalGlobalSearchContainerProps extends ComponentProps<'div'> {
   onItemClick?: () => void;
 }
 
-export default function GlobalSearchContainer({
+export function GlobalSearchContainer({
   asDialog = false,
 }: GlobalSearchContainerProps) {
   const [dialogOpen, setDialogOpen] = useState(false);

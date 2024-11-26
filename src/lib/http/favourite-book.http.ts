@@ -1,7 +1,6 @@
-import { BookSearchParams } from '@/common/types/api/book/book-search-params.type';
-import { Book } from '@/common/types/api/book/book.type';
-import { SuccessResponse } from '@/common/types/success-response.type';
-import { HttpClient } from '@/lib/http/core.http';
+import { SuccessResponse } from '@/common/types';
+import { Book, BookSearchParams } from '@/common/types/api/book';
+import { HttpClient } from '@/lib/http';
 
 class FavouriteBookHttpClient extends HttpClient {
   constructor() {

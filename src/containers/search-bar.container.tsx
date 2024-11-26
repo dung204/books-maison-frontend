@@ -4,9 +4,9 @@ import { Search } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { ComponentProps, FormEvent } from 'react';
 
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/buttons';
+import { Input } from '@/components/ui/form';
+import { cn } from '@/lib/cn';
 
 interface SearchBarContainerProps
   extends Omit<ComponentProps<'form'>, 'onSubmit'> {
@@ -14,7 +14,7 @@ interface SearchBarContainerProps
   placeholder?: string;
 }
 
-export default function SearchBarContainer({
+export function SearchBarContainer({
   className,
   fieldName,
   placeholder,

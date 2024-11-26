@@ -1,7 +1,7 @@
 import { Info } from 'lucide-react';
 
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import DataTableLoading from '@/components/ui/data-table-loading';
+import { DataTableSkeleton } from '@/components/ui/skeletons';
 
 export default function FinesLoading() {
   return (
@@ -19,7 +19,7 @@ export default function FinesLoading() {
           </b>
         </AlertDescription>
       </Alert>
-      <DataTableLoading rowCount={6} />
+      <DataTableSkeleton rowCount={6} />
     </div>
   );
 }

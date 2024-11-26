@@ -1,7 +1,6 @@
-import { AuthorSearchParams } from '@/common/types/api/author/author-search-params.type';
-import { Author } from '@/common/types/api/author/author.type';
-import { SuccessResponse } from '@/common/types/success-response.type';
-import { HttpClient } from '@/lib/http/core.http';
+import { SuccessResponse } from '@/common/types';
+import { Author, AuthorSearchParams } from '@/common/types/api/author';
+import { HttpClient } from '@/lib/http';
 
 class AuthorHttpClient extends HttpClient {
   constructor() {

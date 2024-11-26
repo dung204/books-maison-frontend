@@ -1,7 +1,7 @@
 import { type Metadata } from 'next';
 import Link from 'next/link';
 
-import RegisterContainer from '@/containers/register.container';
+import { RegisterContainer } from '@/containers/auth';
 
 export const metadata: Metadata = {
   title: 'Register',
