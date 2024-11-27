@@ -1,12 +1,17 @@
 import axios, {
+  AxiosError,
   type AxiosInstance,
   type AxiosRequestConfig,
+  type AxiosResponse,
   type CreateAxiosDefaults,
+  HttpStatusCode,
 } from 'axios';
 import * as jose from 'jose';
 
+import { TokenUtils } from '@/common/utils';
+
 class HttpClient {
-  private axiosInstance: AxiosInstance;
+  protected axiosInstance: AxiosInstance;
 
   constructor(
     baseURL: string = process.env.NEXT_PUBLIC_API_ENDPOINT!,
@@ -21,29 +26,31 @@ class HttpClient {
       ...otherConfigs,
     });
 
-    this.axiosInstance.interceptors.request.use(async config => {
-      if (config.headers.hasAuthorization(/Bearer (.*)/g)) {
-        const accessToken = config.headers
-          .getAuthorization(/Bearer (.*)/g)?.[0]
-          .replaceAll('Bearer ', '');
-        const jwtAccessSecret = new TextEncoder().encode(
-          process.env['NEXT_PUBLIC_JWT_ACCESS_SECRET']!,
-        );
-        try {
-          await jose.jwtVerify(accessToken!, jwtAccessSecret);
-        } catch (accessTokenError) {
-          console.log(window);
-        }
-      }
-      return config;
-    });
-    this.axiosInstance.interceptors.response.use(response => response.data);
+    this.axiosInstance.interceptors.response.use(
+      this.onResponseSuccess,
+      this.onResponseFailed,
+    );
   }
 
   public setupRequestInterceptors(
     ...args: Parameters<typeof this.axiosInstance.interceptors.request.use>
   ) {
     this.axiosInstance.interceptors.request.use(...args);
+  }
+
+  protected onResponseSuccess(response: AxiosResponse) {
+    return response.data;
+  }
+
+  protected async onResponseFailed(error: AxiosError) {
+    if (
+      (!error.status || error.status === HttpStatusCode.InternalServerError) &&
+      typeof window !== 'undefined'
+    ) {
+      const { toast } = await import('sonner');
+      toast.error('Unexpected error happened!');
+      console.error(error);
+    }
   }
 
   public get<T, D = any>(url: string, config?: AxiosRequestConfig<D>) {

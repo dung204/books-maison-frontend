@@ -1,3 +1,5 @@
+import { type AxiosError, HttpStatusCode } from 'axios';
+
 import type {
   LoginSuccessResponse,
   RefreshSuccessResponse,
@@ -10,6 +12,29 @@ import type { LoginSchema, RegisterSchema } from '@/lib/validators';
 class AuthHttpClient extends HttpClient {
   constructor() {
     super();
+    this.axiosInstance.interceptors.response.clear();
+    this.axiosInstance.interceptors.response.use(
+      this.onResponseSuccess,
+      this.onResponseFailed,
+    );
+  }
+
+  protected async onResponseFailed(error: AxiosError) {
+    await super.onResponseFailed(error);
+
+    if (typeof window !== 'undefined') {
+      const { toast } = await import('sonner');
+
+      switch (error.status) {
+        case HttpStatusCode.Unauthorized:
+          toast.error('Email or password is incorrect!');
+          break;
+
+        case HttpStatusCode.Conflict:
+          toast.error('Email already taken!');
+          break;
+      }
+    }
   }
 
   public login(data: LoginSchema) {

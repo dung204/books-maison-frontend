@@ -1,7 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import axios, { HttpStatusCode } from 'axios';
+import axios, { AxiosError, HttpStatusCode } from 'axios';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -30,25 +30,14 @@ export function LoginContainer() {
   });
 
   const onSubmit = async (formData: LoginSchema) => {
-    try {
-      setIsLoggingIn(true);
+    setIsLoggingIn(true);
 
-      const res = await authHttpClient.login(formData);
+    const res = await authHttpClient.login(formData);
+    if (res) {
       await axios.post('/api/auth/set-cookie', res);
       document.location.href = '/';
-    } catch (error: any) {
-      if (axios.isAxiosError(error)) {
-        if (error.response?.status === HttpStatusCode.Unauthorized) {
-          toast.error('Email or password is incorrect!');
-        } else {
-          toast.error(`Log in failed: ${error.response?.data.message}`);
-        }
-      } else {
-        toast.error(`Log in failed: ${error.message}`);
-      }
-    } finally {
-      setIsLoggingIn(false);
     }
+    setIsLoggingIn(false);
   };
 
   return (
