@@ -10,6 +10,7 @@ import {
 } from '@/common/contexts/auth.context';
 import type { LoginSuccessResponse } from '@/common/types';
 import type { User } from '@/common/types/api/user';
+import { TokenUtils } from '@/common/utils';
 import {
   authHttpClient,
   checkoutHttpClient,
@@ -36,9 +37,7 @@ export function AuthProvider({ children, initialTokens }: AuthProviderProps) {
         const accessToken = config.headers
           .getAuthorization(/Bearer(.*)/g)?.[0]
           .replaceAll('Bearer ', '');
-        const jwtAccessSecret = new TextEncoder().encode(
-          process.env['NEXT_PUBLIC_JWT_ACCESS_SECRET']!,
-        );
+        const jwtAccessSecret = TokenUtils.getJwtAccessSecret();
 
         try {
           await jose.jwtVerify(accessToken!, jwtAccessSecret);

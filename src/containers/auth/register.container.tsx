@@ -1,7 +1,6 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -28,20 +27,20 @@ export function RegisterContainer() {
     defaultValues: {
       email: '',
       password: '',
+      address: '',
+      firstName: '',
+      lastName: '',
     },
   });
 
   const onSubmit = async (formData: RegisterSchema) => {
-    try {
-      setIsRegistering(true);
-      await authHttpClient.register(formData);
+    setIsRegistering(true);
+    const res = await authHttpClient.register(formData);
+    if (res) {
       router.push('/auth/login');
       toast.success('Registration successfully! Please log in to continue.');
-    } catch (error: any) {
-      toast.error(`Registration failed: ${error.response.data.message}`);
-    } finally {
-      setIsRegistering(false);
     }
+    setIsRegistering(false);
   };
 
   return (

@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { pathToRegexp } from 'path-to-regexp';
 
 import type { RefreshSuccessResponse } from '@/common/types';
+import { TokenUtils } from '@/common/utils';
 
 const privateRoutes = ['/me/:path', '/me'];
 
@@ -17,12 +18,8 @@ export async function middleware(request: NextRequest) {
   const isPrivateRoute = privateRoutes.some(route =>
     pathToRegexp(route).test(pathname),
   );
-  const jwtAccessSecret = new TextEncoder().encode(
-    process.env['NEXT_PUBLIC_JWT_ACCESS_SECRET']!,
-  );
-  const jwtRefreshSecret = new TextEncoder().encode(
-    process.env['NEXT_PUBLIC_JWT_REFRESH_SECRET']!,
-  );
+  const jwtAccessSecret = TokenUtils.getJwtAccessSecret();
+  const jwtRefreshSecret = TokenUtils.getJwtRefreshSecret();
 
   if (accessToken && refreshToken) {
     try {
