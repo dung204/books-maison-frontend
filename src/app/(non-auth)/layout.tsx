@@ -1,7 +1,6 @@
-import { type PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
 
-import Footer from '@/layouts/footer';
-import Header from '@/layouts/header';
+import { Footer, Header } from '@/layouts';
 
 export default async function NonAuthLayout({ children }: PropsWithChildren) {
   return (

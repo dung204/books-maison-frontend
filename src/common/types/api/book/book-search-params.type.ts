@@ -1,5 +1,5 @@
-import { BookAdvancedFilterData } from '@/common/types/api/book/book-advanced-filter-data.type';
-import { CommonSearchParams } from '@/common/types/common-search-params.type';
+import type { CommonSearchParams } from '@/common/types';
+import type { BookAdvancedFilterData } from '@/common/types/api/book';
 
 export type BookSearchParams = CommonSearchParams &
   Partial<Omit<BookAdvancedFilterData, 'categoryIds'>> & {

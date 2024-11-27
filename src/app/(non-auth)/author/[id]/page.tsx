@@ -4,9 +4,9 @@ import {
   TableCell,
   TableHead,
   TableRow,
-} from '@/components/ui/table';
+} from '@/components/ui/tables';
 import { TabsContent } from '@/components/ui/tabs';
-import { authorHttpClient } from '@/lib/http/author.http';
+import { authorHttpClient } from '@/lib/http';
 
 interface AuthorOverviewPageProps {
   params: Promise<{

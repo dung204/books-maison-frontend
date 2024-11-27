@@ -1,4 +1,4 @@
-import { BookAdvancedFilterData } from '@/common/types/api/book/book-advanced-filter-data.type';
+import type { BookAdvancedFilterData } from '@/common/types/api/book';
 
 export type BookAdvancedFilterField =
   | Exclude<

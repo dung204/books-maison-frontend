@@ -1,7 +1,6 @@
-import { Transaction } from '@/common/types/api/transaction/transaction.type';
-import { CommonSearchParams } from '@/common/types/common-search-params.type';
-import { SuccessResponse } from '@/common/types/success-response.type';
-import { HttpClient } from '@/lib/http/core.http';
+import type { CommonSearchParams, SuccessResponse } from '@/common/types';
+import type { Transaction } from '@/common/types/api/transaction';
+import { HttpClient } from '@/lib/http';
 
 class TransactionHttpClient extends HttpClient {
   constructor() {

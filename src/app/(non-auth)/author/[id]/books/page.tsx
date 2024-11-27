@@ -1,12 +1,12 @@
 import { randomUUID } from 'crypto';
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { Suspense } from 'react';
 
-import { BookSearchParams } from '@/common/types/api/book/book-search-params.type';
-import BooksGridLoading from '@/components/ui/books-grid-loading';
+import type { BookSearchParams } from '@/common/types/api/book';
+import { BooksSearchContainerSkeleton } from '@/components/ui/skeletons';
 import { TabsContent } from '@/components/ui/tabs';
-import AuthorBookFetchContainer from '@/containers/author-book-fetch.container';
-import { authorHttpClient } from '@/lib/http/author.http';
+import { BookSearchContainer } from '@/containers/book';
+import { authorHttpClient, bookHttpClient } from '@/lib/http';
 
 type AuthorBooksSearchParams = Omit<BookSearchParams, 'authorName'>;
 
@@ -15,6 +15,11 @@ interface AuthorBooksPageProps {
     id: string;
   }>;
   searchParams: Promise<AuthorBooksSearchParams>;
+}
+
+interface AuthorBookFetchProps {
+  authorId: string;
+  searchParams: BookSearchParams;
 }
 
 export const revalidate = 0;
@@ -39,12 +44,29 @@ export default async function AuthorBooksPage({
 
   return (
     <TabsContent value={`/author/${id}/books`} className="outline-none">
-      <Suspense key={randomUUID()} fallback={<BooksGridLoading />}>
-        <AuthorBookFetchContainer
-          authorId={id}
-          searchParams={bookSearchParams}
-        />
+      <Suspense key={randomUUID()} fallback={<BooksSearchContainerSkeleton />}>
+        <AuthorBookFetch authorId={id} searchParams={bookSearchParams} />
       </Suspense>
     </TabsContent>
+  );
+}
+
+async function AuthorBookFetch({
+  authorId,
+  searchParams,
+}: AuthorBookFetchProps) {
+  const { data: author } = await authorHttpClient.getAuthorById(authorId);
+  const { data: books, pagination } = await bookHttpClient.getAllBooks({
+    ...searchParams,
+    authorName: author.name,
+  });
+
+  return (
+    <BookSearchContainer
+      books={books}
+      pagination={pagination}
+      searchParams={{ ...searchParams, authorName: author.name }}
+      advancedFilterHiddenFields={['authorName']}
+    />
   );
 }

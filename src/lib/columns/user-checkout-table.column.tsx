@@ -1,13 +1,12 @@
 'use client';
 
-import { ColumnDef } from '@tanstack/react-table';
+import type { ColumnDef } from '@tanstack/react-table';
 import Link from 'next/link';
 
-import { Book } from '@/common/types/api/book/book.type';
-import { CheckoutStatus } from '@/common/types/api/checkout/checkout-status.type';
-import { Checkout } from '@/common/types/api/checkout/checkout.type';
-import CheckoutStatusBadge from '@/components/ui/checkout-status-badge';
-import { DataTableHeader } from '@/components/ui/data-table';
+import type { Book } from '@/common/types/api/book';
+import { type Checkout, CheckoutStatus } from '@/common/types/api/checkout';
+import { CheckoutStatusBadge } from '@/components/ui/badges';
+import { DataTableHeader } from '@/components/ui/tables';
 
 export const userCheckoutTableColumns: ColumnDef<Checkout>[] = [
   {

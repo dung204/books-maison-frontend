@@ -2,12 +2,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import brandLogo from '@/assets/images/books-maison-logo-light.svg';
-import FacebookIcon from '@/components/ui/facebook-icon';
-import InstagramIcon from '@/components/ui/instagram-icon';
-import XIcon from '@/components/ui/x-icon/x-icon';
-import YoutubeIcon from '@/components/ui/youtube-icon';
+import {
+  FacebookIcon,
+  InstagramIcon,
+  XIcon,
+  YoutubeIcon,
+} from '@/components/ui/icons';
 
-export default function Footer() {
+export function Footer() {
   return (
     <footer className="bg-black/85 py-16 text-white">
       <div className="container grid grid-cols-12">

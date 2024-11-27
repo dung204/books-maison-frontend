@@ -1,6 +1,8 @@
+'use client';
+
 import { useLayoutEffect, useMemo, useRef } from 'react';
 
-export default function useDebounce<TFunc extends (...args: any) => any>(
+export function useDebounce<TFunc extends (...args: any) => any>(
   callback: TFunc,
   delayMs: number,
 ) {

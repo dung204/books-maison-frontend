@@ -1,7 +1,9 @@
-import { CheckoutSearchParams } from '@/common/types/api/checkout/checkout-search-params.type';
-import { Checkout } from '@/common/types/api/checkout/checkout.type';
-import { SuccessResponse } from '@/common/types/success-response.type';
-import { HttpClient } from '@/lib/http/core.http';
+import type { SuccessResponse } from '@/common/types';
+import type {
+  Checkout,
+  CheckoutSearchParams,
+} from '@/common/types/api/checkout';
+import { HttpClient } from '@/lib/http';
 
 class CheckoutHttpClient extends HttpClient {
   public getCheckoutsOfCurrentUser(

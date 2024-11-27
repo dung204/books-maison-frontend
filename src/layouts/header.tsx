@@ -3,11 +3,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import brandLogo from '@/assets/images/books-maison-logo-dark.svg';
-import { Button } from '@/components/ui/button';
-import GlobalSearchContainer from '@/containers/global-search.container';
-import UserMenuContainer from '@/containers/user-menu.container';
+import { Button } from '@/components/ui/buttons';
+import { GlobalSearchContainer } from '@/containers';
+import { UserMenuContainer } from '@/containers/user';
 
-export default async function Header() {
+export async function Header() {
   const cookiesStore = await cookies();
   const accessToken = cookiesStore.get('accessToken')?.value;
 

@@ -1,13 +1,16 @@
 import { randomUUID } from 'crypto';
 import { Info } from 'lucide-react';
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
+import { cookies } from 'next/headers';
 import { Suspense } from 'react';
 
-import { CommonSearchParams } from '@/common/types/common-search-params.type';
+import type { CheckoutSearchParams } from '@/common/types/api/checkout';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import DataTableLoading from '@/components/ui/data-table-loading';
+import { DataTableSkeleton } from '@/components/ui/skeletons';
+import { DataTable } from '@/components/ui/tables';
 import { TabsContent } from '@/components/ui/tabs';
-import CheckoutFetchContainer from '@/containers/checkout-fetch.container';
+import { userCheckoutTableColumns } from '@/lib/columns';
+import { checkoutHttpClient } from '@/lib/http';
 
 export const revalidate = 0;
 
@@ -16,7 +19,11 @@ export const metadata: Metadata = {
 };
 
 interface CheckoutsPageProps {
-  searchParams: Promise<CommonSearchParams>;
+  searchParams: Promise<CheckoutSearchParams>;
+}
+
+interface CheckoutFetchProps {
+  searchParams: CheckoutSearchParams;
 }
 
 export default async function CheckoutsPage(props: CheckoutsPageProps) {
@@ -31,9 +38,32 @@ export default async function CheckoutsPage(props: CheckoutsPageProps) {
           book for <b>14 days</b>
         </AlertDescription>
       </Alert>
-      <Suspense key={randomUUID()} fallback={<DataTableLoading rowCount={7} />}>
-        <CheckoutFetchContainer searchParams={searchParams} />
+      <Suspense
+        key={randomUUID()}
+        fallback={<DataTableSkeleton rowCount={7} />}
+      >
+        <CheckoutFetch searchParams={searchParams} />
       </Suspense>
     </TabsContent>
+  );
+}
+
+async function CheckoutFetch({ searchParams }: CheckoutFetchProps) {
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get('accessToken')?.value;
+  const { data: checkouts, pagination } =
+    await checkoutHttpClient.getCheckoutsOfCurrentUser(
+      accessToken!,
+      searchParams,
+    );
+  const { orderBy, order } = searchParams;
+
+  return (
+    <DataTable
+      columns={userCheckoutTableColumns}
+      data={checkouts}
+      pagination={pagination}
+      sorting={{ orderBy, order }}
+    />
   );
 }

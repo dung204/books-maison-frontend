@@ -1,5 +1,5 @@
-import { TransactionMethod } from '@/common/types/api/transaction/transaction-method.type';
-import { User } from '@/common/types/api/user/user.type';
+import { TransactionMethod } from '@/common/types/api/transaction';
+import type { User } from '@/common/types/api/user';
 
 export interface Transaction {
   id: string;
