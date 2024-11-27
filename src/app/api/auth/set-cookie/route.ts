@@ -16,7 +16,7 @@ export async function POST(request: Request) {
     { res },
     {
       status: HttpStatusCode.Ok,
-      // @ts-ignore
+      // @ts-expect-error
       headers: {
         'Set-Cookie': [
           `accessToken=${accessToken}; Path=/; Secure; Max-Age=31536000; HttpOnly; SameSite=Lax`,
