@@ -5,7 +5,7 @@ import { Suspense } from 'react';
 
 import type { BookSearchParams } from '@/common/types/api/book';
 import HomeBanner from '@/components/ui/home-banner';
-import { BooksGridSkeleton } from '@/components/ui/skeletons';
+import { BooksSearchContainerSkeleton } from '@/components/ui/skeletons';
 import { BookSearchContainer } from '@/containers/book';
 import { bookHttpClient } from '@/lib/http';
 
@@ -32,7 +32,10 @@ export default async function BooksPage(props: BooksPageProps) {
         bannerTitle="Search for a decent book here at Books Maison"
       />
       <div className="container py-10">
-        <Suspense key={randomUUID()} fallback={<BooksGridSkeleton />}>
+        <Suspense
+          key={randomUUID()}
+          fallback={<BooksSearchContainerSkeleton />}
+        >
           <BookFetch searchParams={searchParams} />
         </Suspense>
       </div>
