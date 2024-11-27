@@ -4,7 +4,7 @@ import { Suspense } from 'react';
 
 import type { AuthorSearchParams } from '@/common/types/api/author';
 import HomeBanner from '@/components/ui/home-banner';
-import { AuthorsGridSkeleton } from '@/components/ui/skeletons';
+import { AuthorsSearchContainerSkeleton } from '@/components/ui/skeletons';
 import { AuthorSearchContainer } from '@/containers/author';
 import { authorHttpClient } from '@/lib/http';
 
@@ -28,7 +28,10 @@ export default async function AuthorsPage(props: AuthorsPageProps) {
     <>
       <HomeBanner className="h-[400px]" bannerTitle="Authors" />
       <div className="container py-10">
-        <Suspense key={randomUUID()} fallback={<AuthorsGridSkeleton />}>
+        <Suspense
+          key={randomUUID()}
+          fallback={<AuthorsSearchContainerSkeleton />}
+        >
           <AuthorFetch searchParams={searchParams} />
         </Suspense>
       </div>
