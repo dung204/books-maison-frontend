@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { Suspense } from 'react';
 
 import type { BookSearchParams } from '@/common/types/api/book';
-import { BooksGridSkeleton } from '@/components/ui/skeletons';
+import { BooksSearchContainerSkeleton } from '@/components/ui/skeletons';
 import { TabsContent } from '@/components/ui/tabs';
 import { BookSearchContainer } from '@/containers/book';
 import { authorHttpClient, bookHttpClient } from '@/lib/http';
@@ -44,7 +44,7 @@ export default async function AuthorBooksPage({
 
   return (
     <TabsContent value={`/author/${id}/books`} className="outline-none">
-      <Suspense key={randomUUID()} fallback={<BooksGridSkeleton />}>
+      <Suspense key={randomUUID()} fallback={<BooksSearchContainerSkeleton />}>
         <AuthorBookFetch authorId={id} searchParams={bookSearchParams} />
       </Suspense>
     </TabsContent>

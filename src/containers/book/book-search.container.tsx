@@ -25,7 +25,7 @@ export function BookSearchContainer({
   advancedFilterHiddenFields,
 }: BookSearchContainerProps) {
   return (
-    <div>
+    <>
       <section className="flex justify-between">
         <div className="w-1/2">
           <SearchBarContainer
@@ -56,6 +56,6 @@ export function BookSearchContainer({
           books.map(book => <BookCard key={book.id} book={book} />)
         )}
       </section>
-    </div>
+    </>
   );
 }

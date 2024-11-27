@@ -5,7 +5,7 @@ import { cookies } from 'next/headers';
 import { Suspense } from 'react';
 
 import type { BookSearchParams } from '@/common/types/api/book';
-import { BooksGridSkeleton } from '@/components/ui/skeletons';
+import { BooksSearchContainerSkeleton } from '@/components/ui/skeletons';
 import { BookSearchContainer } from '@/containers/book';
 import { favouriteBookHttpClient } from '@/lib/http';
 
@@ -30,7 +30,7 @@ export default async function FavouriteBooksPage(
 
   return (
     <TabsContent value="/me/favourite-books" className="outline-none">
-      <Suspense key={randomUUID()} fallback={<BooksGridSkeleton />}>
+      <Suspense key={randomUUID()} fallback={<BooksSearchContainerSkeleton />}>
         <FavouriteBookFetch searchParams={searchParams} />
       </Suspense>
     </TabsContent>
