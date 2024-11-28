@@ -4,7 +4,7 @@ import { Suspense } from 'react';
 
 import type { CategorySearchParams } from '@/common/types/api/category';
 import HomeBanner from '@/components/ui/home-banner';
-import { CategoriesGridSkeleton } from '@/components/ui/skeletons';
+import { CategoriesSearchContainerSkeleton } from '@/components/ui/skeletons';
 import { CategorySearchContainer } from '@/containers/category';
 import { categoryHttpClient } from '@/lib/http';
 
@@ -29,7 +29,10 @@ export default async function CategoriesPage(props: CategoriesPageProps) {
     <>
       <HomeBanner className="h-[400px]" bannerTitle="Categories" />
       <div className="container py-10">
-        <Suspense key={randomUUID()} fallback={<CategoriesGridSkeleton />}>
+        <Suspense
+          key={randomUUID()}
+          fallback={<CategoriesSearchContainerSkeleton />}
+        >
           <CategoryFetch searchParams={searchParams} />
         </Suspense>
       </div>
