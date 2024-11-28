@@ -1,8 +1,10 @@
-import { User } from '@/common/types/api/user/user.type';
-import { SuccessResponse } from '@/common/types/success-response.type';
-import { HttpClient } from '@/lib/http/core.http';
-import { ChangePasswordSchema } from '@/lib/validators/change-password.validator';
-import { UpdateProfileSchema } from '@/lib/validators/update-profile.validator';
+import type { SuccessResponse } from '@/common/types';
+import type { User } from '@/common/types/api/user';
+import { HttpClient } from '@/lib/http';
+import type {
+  ChangePasswordSchema,
+  UpdateProfileSchema,
+} from '@/lib/validators';
 
 class UserHttpClient extends HttpClient {
   constructor() {

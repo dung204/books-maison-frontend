@@ -1,14 +1,40 @@
-import { User } from '@/common/types/api/user/user.type';
-import { LoginSuccessResponse } from '@/common/types/login-success-response.type';
-import { RefreshSuccessResponse } from '@/common/types/refresh-success-response.type';
-import { SuccessResponse } from '@/common/types/success-response.type';
-import { HttpClient } from '@/lib/http/core.http';
-import { LoginSchema } from '@/lib/validators/login.validator';
-import { RegisterSchema } from '@/lib/validators/register.validator';
+import { type AxiosError, HttpStatusCode } from 'axios';
+
+import type {
+  LoginSuccessResponse,
+  RefreshSuccessResponse,
+  SuccessResponse,
+} from '@/common/types';
+import type { User } from '@/common/types/api/user';
+import { HttpClient } from '@/lib/http';
+import type { LoginSchema, RegisterSchema } from '@/lib/validators';
 
 class AuthHttpClient extends HttpClient {
   constructor() {
     super();
+    this.axiosInstance.interceptors.response.clear();
+    this.axiosInstance.interceptors.response.use(
+      this.onResponseSuccess,
+      this.onResponseFailed,
+    );
+  }
+
+  protected async onResponseFailed(error: AxiosError) {
+    await super.onResponseFailed(error);
+
+    if (typeof window !== 'undefined') {
+      const { toast } = await import('sonner');
+
+      switch (error.status) {
+        case HttpStatusCode.Unauthorized:
+          toast.error('Email or password is incorrect!');
+          break;
+
+        case HttpStatusCode.Conflict:
+          toast.error('Email already taken!');
+          break;
+      }
+    }
   }
 
   public login(data: LoginSchema) {

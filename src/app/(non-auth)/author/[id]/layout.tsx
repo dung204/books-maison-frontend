@@ -1,10 +1,10 @@
 import { UserPen } from 'lucide-react';
-import { PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import HomeBanner from '@/components/ui/home-banner';
-import TabsContainer from '@/containers/tabs.container';
-import { authorHttpClient } from '@/lib/http/author.http';
+import { TabsContainer } from '@/containers';
+import { authorHttpClient } from '@/lib/http';
 
 interface AuthorDetailsLayoutProps extends PropsWithChildren {
   params: Promise<{ id: string }>;

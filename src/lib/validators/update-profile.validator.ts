@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { registerSchema } from '@/lib/validators/register.validator';
+import { registerSchema } from '@/lib/validators';
 
 export const updateProfileSchema = registerSchema.omit({
   password: true,

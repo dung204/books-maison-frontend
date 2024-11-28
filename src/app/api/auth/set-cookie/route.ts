@@ -1,6 +1,6 @@
 import { HttpStatusCode } from 'axios';
 
-import { LoginSuccessResponse } from '@/common/types/login-success-response.type';
+import type { LoginSuccessResponse } from '@/common/types';
 
 export async function POST(request: Request) {
   const res = (await request.json()) as LoginSuccessResponse;
@@ -16,7 +16,7 @@ export async function POST(request: Request) {
     { res },
     {
       status: HttpStatusCode.Ok,
-      // @ts-ignore
+      // @ts-expect-error
       headers: {
         'Set-Cookie': [
           `accessToken=${accessToken}; Path=/; Secure; Max-Age=31536000; HttpOnly; SameSite=Lax`,

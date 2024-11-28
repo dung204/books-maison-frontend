@@ -1,14 +1,19 @@
 import { randomUUID } from 'crypto';
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { Suspense } from 'react';
 
-import { CategorySearchParams } from '@/common/types/api/category/category-search-params.type';
-import CategoriesGridLoading from '@/components/ui/categories-grid-loading';
+import type { CategorySearchParams } from '@/common/types/api/category';
 import HomeBanner from '@/components/ui/home-banner';
-import CategoryFetchContainer from '@/containers/category-fetch.container';
+import { CategoriesSearchContainerSkeleton } from '@/components/ui/skeletons';
+import { CategorySearchContainer } from '@/containers/category';
+import { categoryHttpClient } from '@/lib/http';
 
 interface CategoriesPageProps {
   searchParams: Promise<CategorySearchParams>;
+}
+
+interface CategoryFetchContainerProps {
+  searchParams: CategorySearchParams;
 }
 
 export const revalidate = 0;
@@ -24,10 +29,26 @@ export default async function CategoriesPage(props: CategoriesPageProps) {
     <>
       <HomeBanner className="h-[400px]" bannerTitle="Categories" />
       <div className="container py-10">
-        <Suspense key={randomUUID()} fallback={<CategoriesGridLoading />}>
-          <CategoryFetchContainer searchParams={searchParams} />
+        <Suspense
+          key={randomUUID()}
+          fallback={<CategoriesSearchContainerSkeleton />}
+        >
+          <CategoryFetch searchParams={searchParams} />
         </Suspense>
       </div>
     </>
+  );
+}
+
+async function CategoryFetch({ searchParams }: CategoryFetchContainerProps) {
+  const { data: categories, pagination } =
+    await categoryHttpClient.getAllCategories(searchParams);
+
+  return (
+    <CategorySearchContainer
+      categories={categories}
+      pagination={pagination}
+      searchParams={searchParams}
+    />
   );
 }

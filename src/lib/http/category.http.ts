@@ -1,7 +1,9 @@
-import { CategorySearchParams } from '@/common/types/api/category/category-search-params.type';
-import { Category } from '@/common/types/api/category/category.type';
-import { SuccessResponse } from '@/common/types/success-response.type';
-import { HttpClient } from '@/lib/http/core.http';
+import type { SuccessResponse } from '@/common/types';
+import type {
+  Category,
+  CategorySearchParams,
+} from '@/common/types/api/category';
+import { HttpClient } from '@/lib/http';
 
 class CategoryHttpClient extends HttpClient {
   constructor() {

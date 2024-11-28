@@ -1,14 +1,13 @@
 'use client';
 
-import { ColumnDef } from '@tanstack/react-table';
+import type { ColumnDef } from '@tanstack/react-table';
 
-import { Checkout } from '@/common/types/api/checkout/checkout.type';
-import { FineStatus } from '@/common/types/api/fine/fine-status.type';
-import { Fine } from '@/common/types/api/fine/fine.type';
-import { DataTableHeader } from '@/components/ui/data-table';
-import FineStatusBadge from '@/components/ui/fine-status-badge';
-import CheckoutDetailsContainer from '@/containers/checkout-details.container';
-import PayFineContainer from '@/containers/pay-fine.container';
+import type { Checkout } from '@/common/types/api/checkout';
+import { type Fine, FineStatus } from '@/common/types/api/fine';
+import { FineStatusBadge } from '@/components/ui/badges';
+import { DataTableHeader } from '@/components/ui/tables';
+import { CheckoutDetailsContainer } from '@/containers/checkout';
+import { PayFineContainer } from '@/containers/fine';
 
 export const userFinesTableColumns: ColumnDef<Fine>[] = [
   {

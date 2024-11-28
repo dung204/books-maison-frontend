@@ -1,7 +1,7 @@
-import { PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
 
-import TabsContainer from '@/containers/tabs.container';
-import UserProfileContainer from '@/containers/user-profile.container';
+import { TabsContainer } from '@/containers';
+import { UserProfileContainer } from '@/containers/user';
 
 export default async function UserLayout({ children }: PropsWithChildren) {
   return (

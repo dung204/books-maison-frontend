@@ -1,4 +1,4 @@
-import { CommonSearchParams } from '@/common/types/common-search-params.type';
+import type { CommonSearchParams } from '@/common/types';
 
 export interface CategorySearchParams extends CommonSearchParams {
   name?: string;

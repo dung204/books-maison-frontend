@@ -1,9 +1,9 @@
-import { type Metadata } from 'next';
+import type { Metadata } from 'next';
 import Image from 'next/image';
 
 import homeBanner from '@/assets/images/library-banner-1.jpg';
-import GlobalSearchContainer from '@/containers/global-search.container';
-import { bookHttpClient } from '@/lib/http/book.http';
+import { GlobalSearchContainer } from '@/containers';
+import { bookHttpClient } from '@/lib/http';
 
 export const metadata: Metadata = {
   title: 'Home',

@@ -1,7 +1,7 @@
-import { type Metadata } from 'next';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 
-import LoginContainer from '@/containers/login.container';
+import { LoginContainer } from '@/containers/auth';
 
 export const metadata: Metadata = {
   title: 'Login',

@@ -1,10 +1,11 @@
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata } from 'next';
 import { cookies } from 'next/headers';
 import { Toaster } from 'sonner';
 
 import favIcon from '@/assets/images/favicon.ico';
-import AuthProvider from '@/common/providers/auth.provider';
-import MoveToTopButton from '@/components/ui/move-to-top-button';
+import { AuthProvider } from '@/common/providers';
+import { MoveToTopButton } from '@/components/ui/buttons';
 import '@/styles/globals.css';
 
 export const metadata: Metadata = {
@@ -34,6 +35,7 @@ export default async function RootLayout({
         </AuthProvider>
         <Toaster richColors closeButton position="top-right" duration={3000} />
         <MoveToTopButton />
+        <SpeedInsights />
       </body>
     </html>
   );
