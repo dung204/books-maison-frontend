@@ -1,4 +1,3 @@
-import { HttpStatusCode } from 'axios';
 import * as jose from 'jose';
 import { NextURL } from 'next/dist/server/web/next-url';
 import { NextRequest, NextResponse } from 'next/server';
@@ -82,7 +81,6 @@ async function handleRefreshToken(refreshToken: string) {
 
 function setTokens(url: NextURL, accessToken: string, refreshToken: string) {
   return NextResponse.redirect(url, {
-    status: HttpStatusCode.Ok,
     // @ts-expect-error
     headers: {
       'Set-Cookie': [
@@ -95,7 +93,6 @@ function setTokens(url: NextURL, accessToken: string, refreshToken: string) {
 
 function deleteTokens(url: NextURL) {
   return NextResponse.redirect(url, {
-    status: HttpStatusCode.NoContent,
     // @ts-expect-error
     headers: {
       'Set-Cookie': [

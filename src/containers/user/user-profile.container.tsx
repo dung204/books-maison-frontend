@@ -15,6 +15,7 @@ import {
 import {
   ChangePasswordContainer,
   EditProfileContainer,
+  UploadAvatarContainer,
 } from '@/containers/user';
 
 export function UserProfileContainer() {
@@ -24,15 +25,20 @@ export function UserProfileContainer() {
   return (
     <>
       <div className="flex flex-col items-center">
-        <Avatar className="h-72 w-72">
-          <AvatarFallback className="text-6xl">
-            {!user ? (
-              <Skeleton className="h-full w-full" />
-            ) : (
-              StringUtils.getFirstLettersUpperCase(`${fullName}`)
-            )}
-          </AvatarFallback>
-        </Avatar>
+        <div className="relative">
+          <Avatar className="h-72 w-72">
+            <AvatarFallback className="text-6xl">
+              {!user ? (
+                <Skeleton className="h-full w-full" />
+              ) : (
+                StringUtils.getFirstLettersUpperCase(`${fullName}`)
+              )}
+            </AvatarFallback>
+          </Avatar>
+          {user && (
+            <UploadAvatarContainer className="absolute bottom-[15%] right-0" />
+          )}
+        </div>
         {!user ? (
           <Skeleton className="mb-2 mt-6 h-10 w-full" />
         ) : (
