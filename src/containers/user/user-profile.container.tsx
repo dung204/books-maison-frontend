@@ -22,28 +22,65 @@ export function UserProfileContainer() {
   const { user } = useAuth();
   const fullName = `${user?.firstName} ${user?.lastName}`;
 
+  if (!user) {
+    return (
+      <>
+        <div className="flex flex-col items-center">
+          <div className="relative">
+            <Avatar className="h-72 w-72">
+              <AvatarFallback className="text-6xl">
+                <Skeleton className="h-full w-full" />
+              </AvatarFallback>
+            </Avatar>
+          </div>
+          <Skeleton className="mb-2 mt-6 h-10 w-full" />
+        </div>
+        <div className="mt-4">
+          <div className="grid grid-cols-8 items-center">
+            <div className="col-span-1">
+              <Mail className="h-4 w-4" />
+            </div>
+            <span className="col-span-7">
+              <Skeleton className="h-4 w-full" />
+            </span>
+          </div>
+          <div className="mt-4 grid grid-cols-8 items-center">
+            <div className="col-span-1">
+              <House className="h-4 w-4" />
+            </div>
+            <span className="col-span-7">
+              <Skeleton className="h-4 w-full" />
+            </span>
+          </div>
+          <div className="mt-4 grid grid-cols-8 items-center">
+            <div className="col-span-1">
+              <Clock className="h-4 w-4" />
+            </div>
+            <span className="col-span-7">
+              <Skeleton className="h-4 w-full" />
+            </span>
+          </div>
+        </div>
+        <div className="mt-8 flex justify-center gap-4">
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-10 w-full" />
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
       <div className="flex flex-col items-center">
         <div className="relative">
           <Avatar className="h-72 w-72">
             <AvatarFallback className="text-6xl">
-              {!user ? (
-                <Skeleton className="h-full w-full" />
-              ) : (
-                StringUtils.getFirstLettersUpperCase(`${fullName}`)
-              )}
+              {StringUtils.getFirstLettersUpperCase(`${fullName}`)}
             </AvatarFallback>
           </Avatar>
-          {user && (
-            <UploadAvatarContainer className="absolute bottom-[15%] right-0" />
-          )}
+          <UploadAvatarContainer className="absolute bottom-[15%] right-0" />
         </div>
-        {!user ? (
-          <Skeleton className="mb-2 mt-6 h-10 w-full" />
-        ) : (
-          <h2 className="mb-2 mt-6 text-3xl font-semibold">{fullName}</h2>
-        )}
+        <h2 className="mb-2 mt-6 text-3xl font-semibold">{fullName}</h2>
       </div>
       <div className="mt-4">
         <div className="grid grid-cols-8 items-center">
@@ -57,9 +94,7 @@ export function UserProfileContainer() {
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
-          <span className="col-span-7">
-            {!user ? <Skeleton className="h-4 w-full" /> : user.email}
-          </span>
+          <span className="col-span-7">{user.email}</span>
         </div>
         <div className="mt-4 grid grid-cols-8 items-center">
           <TooltipProvider>
@@ -72,9 +107,7 @@ export function UserProfileContainer() {
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
-          <span className="col-span-7">
-            {!user ? <Skeleton className="h-4 w-full" /> : user.address}
-          </span>
+          <span className="col-span-7">{user.address}</span>
         </div>
         <div className="mt-4 grid grid-cols-8 items-center">
           <TooltipProvider>
@@ -88,12 +121,8 @@ export function UserProfileContainer() {
             </Tooltip>
           </TooltipProvider>
           <span className="col-span-7">
-            {!user ? (
-              <Skeleton className="h-4 w-full" />
-            ) : (
-              new Intl.DateTimeFormat('en-US', { dateStyle: 'long' }).format(
-                new Date(user.createdTimestamp),
-              )
+            {new Intl.DateTimeFormat('en-US', { dateStyle: 'long' }).format(
+              new Date(user.createdTimestamp),
             )}
           </span>
         </div>
