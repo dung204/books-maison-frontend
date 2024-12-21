@@ -1,5 +1,3 @@
-import { HttpStatusCode } from 'axios';
-
 import type { LoginSuccessResponse } from '@/common/types';
 
 export async function POST(request: Request) {
@@ -9,13 +7,13 @@ export async function POST(request: Request) {
   if (!accessToken)
     return Response.json(
       { message: 'Access token not available.' },
-      { status: HttpStatusCode.BadRequest },
+      { status: 400 },
     );
 
   return Response.json(
     { res },
     {
-      status: HttpStatusCode.Ok,
+      status: 200,
       // @ts-expect-error
       headers: {
         'Set-Cookie': [

@@ -3,13 +3,14 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError, HttpStatusCode } from 'axios';
 import { Lock } from 'lucide-react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
 import { useAuth } from '@/common/hooks';
 import { Button } from '@/components/ui/buttons';
 import {
+  ConfirmDiscardChangesDialog,
   Dialog,
   DialogClose,
   DialogContent,
@@ -40,8 +41,12 @@ const defaultValues = {
 };
 
 export function ChangePasswordContainer() {
-  const { user, accessToken } = useAuth();
+  const { accessToken } = useAuth();
   const [isUpdating, setIsUpdating] = useState(false);
+  const [isDiscardChangesDialogOpen, setIsDiscardChangesDialogOpen] =
+    useState(false);
+  const [open, setOpen] = useState(false);
+  const saveButtonRef = useRef<HTMLButtonElement>(null);
 
   const form = useForm<ChangePasswordSchema>({
     resolver: zodResolver(changePasswordSchema),
@@ -74,15 +79,27 @@ export function ChangePasswordContainer() {
     setIsUpdating(false);
   };
 
-  const handleResetForm = (open: boolean) => {
+  const handleResetChangePasswordForm = (open: boolean) => {
     if (!open) {
+      if (isUpdating) {
+        setOpen(true);
+        return;
+      }
+
+      if (!saveButtonRef.current?.disabled) {
+        setOpen(true);
+        setIsDiscardChangesDialogOpen(true);
+        return;
+      }
+
       form.reset(defaultValues);
     }
+    setOpen(open);
   };
 
   return (
-    !user || (
-      <Dialog onOpenChange={handleResetForm}>
+    <>
+      <Dialog open={open} onOpenChange={handleResetChangePasswordForm}>
         <DialogTrigger asChild>
           <Button type="button" variant="secondary">
             <Lock className="mr-2 h-4 w-4" />
@@ -141,7 +158,6 @@ export function ChangePasswordContainer() {
                   </FormItem>
                 )}
               />
-
               <DialogFooter className="col-span-2">
                 <DialogClose asChild>
                   <Button
@@ -153,10 +169,13 @@ export function ChangePasswordContainer() {
                   </Button>
                 </DialogClose>
                 <Button
+                  ref={saveButtonRef}
                   type="submit"
                   disabled={
-                    JSON.stringify(form.watch()) ===
-                      JSON.stringify(defaultValues) || isUpdating
+                    form.watch('password') === '' ||
+                    form.watch('newPassword') === '' ||
+                    form.watch('confirmPassword') === '' ||
+                    isUpdating
                   }
                 >
                   Save
@@ -166,6 +185,15 @@ export function ChangePasswordContainer() {
           </Form>
         </DialogContent>
       </Dialog>
-    )
+      <ConfirmDiscardChangesDialog
+        open={isDiscardChangesDialogOpen}
+        onOpenChange={setIsDiscardChangesDialogOpen}
+        onDiscard={() => {
+          setIsDiscardChangesDialogOpen(false);
+          setOpen(false);
+          form.reset(defaultValues);
+        }}
+      />
+    </>
   );
 }

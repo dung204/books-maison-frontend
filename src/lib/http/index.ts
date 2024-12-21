@@ -8,3 +8,4 @@ export * from './favourite-book.http';
 export * from './fine.http';
 export * from './transaction.http';
 export * from './user.http';
+export * from './media.http';

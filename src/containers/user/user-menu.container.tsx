@@ -17,6 +17,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/form';
 import LoadingIndicator from '@/components/ui/loading-indicator';
+import { Skeleton } from '@/components/ui/skeletons';
+import { UserAvatar } from '@/components/ui/user-avatar';
 import { authHttpClient } from '@/lib/http';
 
 export function UserMenuContainer() {
@@ -30,18 +32,14 @@ export function UserMenuContainer() {
     document.location.href = '/';
   };
 
-  return !user ? (
-    <LoadingIndicator />
-  ) : (
+  if (!user) {
+    return <Skeleton className="h-10 w-10 rounded-full" />;
+  }
+
+  return (
     <DropdownMenu>
       <DropdownMenuTrigger className="outline-none">
-        <Avatar>
-          <AvatarFallback>
-            {StringUtils.getFirstLettersUpperCase(
-              `${user.firstName} ${user.lastName}`,
-            )}
-          </AvatarFallback>
-        </Avatar>
+        <UserAvatar height={40} />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
         <Link href="/me/checkouts">

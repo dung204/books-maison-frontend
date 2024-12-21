@@ -3,13 +3,14 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AxiosError } from 'axios';
 import { UserPen } from 'lucide-react';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
 import { useAuth } from '@/common/hooks';
 import { Button } from '@/components/ui/buttons';
 import {
+  ConfirmDiscardChangesDialog,
   Dialog,
   DialogClose,
   DialogContent,
@@ -36,6 +37,10 @@ import {
 export function EditProfileContainer() {
   const { user, setUser, accessToken } = useAuth();
   const [isUpdating, setIsUpdating] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [isDiscardChangesDialogOpen, setIsDiscardChangesDialogOpen] =
+    useState(false);
+  const saveButtonRef = useRef<HTMLButtonElement>(null);
 
   const initialData = {
     firstName: !user ? '' : user.firstName,
@@ -74,13 +79,25 @@ export function EditProfileContainer() {
 
   const handleResetEditProfileForm = (open: boolean) => {
     if (!open) {
+      if (isUpdating) {
+        setOpen(true);
+        return;
+      }
+
+      if (!saveButtonRef.current?.disabled) {
+        setOpen(true);
+        setIsDiscardChangesDialogOpen(true);
+        return;
+      }
+
       form.reset(initialData);
     }
+    setOpen(open);
   };
 
   return (
-    !user || (
-      <Dialog onOpenChange={handleResetEditProfileForm}>
+    <>
+      <Dialog open={open} onOpenChange={handleResetEditProfileForm}>
         <DialogTrigger asChild>
           <Button type="button">
             <UserPen className="mr-2 h-4 w-4" />
@@ -164,6 +181,7 @@ export function EditProfileContainer() {
                   </Button>
                 </DialogClose>
                 <Button
+                  ref={saveButtonRef}
                   type="submit"
                   disabled={
                     JSON.stringify(form.watch()) ==
@@ -177,6 +195,15 @@ export function EditProfileContainer() {
           </Form>
         </DialogContent>
       </Dialog>
-    )
+      <ConfirmDiscardChangesDialog
+        open={isDiscardChangesDialogOpen}
+        onOpenChange={setIsDiscardChangesDialogOpen}
+        onDiscard={() => {
+          setIsDiscardChangesDialogOpen(false);
+          setOpen(false);
+          form.reset(initialData);
+        }}
+      />
+    </>
   );
 }

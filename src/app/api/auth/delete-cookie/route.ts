@@ -1,8 +1,6 @@
-import { HttpStatusCode } from 'axios';
-
 export async function DELETE(_: Request) {
   return new Response(null, {
-    status: HttpStatusCode.NoContent,
+    status: 204,
     // @ts-expect-error
     headers: {
       'Set-Cookie': [
