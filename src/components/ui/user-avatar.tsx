@@ -24,10 +24,10 @@ export function UserAvatar({ height, fallbackFontSize }: AvatarProps) {
             console.log('UserAvatar height: ', e.currentTarget.height);
           }}
           style={{
-            minHeight: `${user.avatar.baseHeight}px`,
-            minWidth: `${user.avatar.baseHeight}px`,
-            height: `${user.avatar.baseHeight}px`,
-            width: `${user.avatar.baseHeight}px`,
+            minHeight: `${user.avatar.baseDimension}px`,
+            minWidth: `${user.avatar.baseDimension}px`,
+            height: `${user.avatar.baseDimension}px`,
+            width: `${user.avatar.baseDimension}px`,
             scale:
               (user.avatar.zoom * height) / (ImageUtils.CROPPER_RADIUS * 2),
             translate: `${(user.avatar.offsetX * height) / (ImageUtils.CROPPER_RADIUS * 2)}px ${(user.avatar.offsetY * height) / (ImageUtils.CROPPER_RADIUS * 2)}px`,

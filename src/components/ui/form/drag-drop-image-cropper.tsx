@@ -37,7 +37,7 @@ interface DragDropImageInputProps extends ComponentProps<'input'> {
     image: File,
     position: ImagePosition,
     scale: number,
-    baseHeight: number,
+    baseDimension: number,
   ) => void | Promise<void>;
 }
 
@@ -57,7 +57,7 @@ function InternalDragDropImageCropper(
     offsetX: 0,
     offsetY: 0,
   });
-  const [baseHeight, setBaseHeight] = useState<number>();
+  const [baseDimension, setBaseDimension] = useState<number>();
   const [isMovingImage, setIsMovingImage] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -133,14 +133,14 @@ function InternalDragDropImageCropper(
   };
 
   const handlePreviewLoad: ReactEventHandler<HTMLImageElement> = e => {
-    const { height } = e.currentTarget;
-    const scale = (ImageUtils.CROPPER_RADIUS * 2) / height;
+    const { height, width } = e.currentTarget;
+    const scale = (ImageUtils.CROPPER_RADIUS * 2) / Math.min(height, width);
     setImageScale({
       min: scale,
       max: scale * ImageUtils.MAX_ZOOM_RATIO,
       current: scale,
     });
-    setBaseHeight(height);
+    setBaseDimension(height);
   };
 
   const handleStartMoveImage: MouseEventHandler<HTMLImageElement> = e => {
@@ -198,7 +198,7 @@ function InternalDragDropImageCropper(
       currentImage.file,
       imagePosition,
       imageScale!.current,
-      baseHeight!,
+      baseDimension!,
     );
     setIsSaving(false);
   };
@@ -319,8 +319,8 @@ function InternalDragDropImageCropper(
           style={{
             scale: imageScale?.current,
             translate: `${imagePosition.offsetX}px ${imagePosition.offsetY}px`,
-            minWidth: `${ImageUtils.CROPPER_RADIUS}px`,
-            width: `${ImageUtils.CROPPER_RADIUS}px`,
+            minWidth: `${ImageUtils.CROPPER_RADIUS * 2}px`,
+            width: `${ImageUtils.CROPPER_RADIUS * 2}px`,
           }}
           onLoad={handlePreviewLoad}
           onMouseDown={handleStartMoveImage}

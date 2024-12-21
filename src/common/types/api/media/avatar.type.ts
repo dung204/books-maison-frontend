@@ -3,5 +3,5 @@ export type Avatar = {
   offsetX: number;
   offsetY: number;
   zoom: number;
-  baseHeight: number;
+  baseDimension: number;
 };

@@ -44,7 +44,7 @@ class UserHttpClient extends HttpClient {
     file: File,
     position: ImagePosition,
     scale: number,
-    baseHeight: number,
+    baseDimension: number,
   ) {
     const {
       data: { name: id },
@@ -58,7 +58,7 @@ class UserHttpClient extends HttpClient {
         offsetX,
         offsetY,
         zoom: scale,
-        baseHeight,
+        baseDimension,
       },
       {
         headers: {
