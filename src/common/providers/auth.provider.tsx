@@ -16,6 +16,7 @@ import {
   checkoutHttpClient,
   favouriteBookHttpClient,
   fineHttpClient,
+  mediaHttpClient,
   transactionHttpClient,
   userHttpClient,
 } from '@/lib/http';
@@ -72,6 +73,7 @@ export function AuthProvider({ children, initialTokens }: AuthProviderProps) {
     fineHttpClient.setupRequestInterceptors(handleRefreshToken);
     transactionHttpClient.setupRequestInterceptors(handleRefreshToken);
     userHttpClient.setupRequestInterceptors(handleRefreshToken);
+    mediaHttpClient.setupRequestInterceptors(handleRefreshToken);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

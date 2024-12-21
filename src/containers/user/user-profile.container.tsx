@@ -3,7 +3,6 @@
 import { Clock, House, Mail } from 'lucide-react';
 
 import { useAuth } from '@/common/hooks';
-import { StringUtils } from '@/common/utils';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeletons';
 import {
@@ -12,6 +11,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { UserAvatar } from '@/components/ui/user-avatar';
 import {
   ChangePasswordContainer,
   EditProfileContainer,
@@ -20,7 +20,6 @@ import {
 
 export function UserProfileContainer() {
   const { user } = useAuth();
-  const fullName = `${user?.firstName} ${user?.lastName}`;
 
   if (!user) {
     return (
@@ -28,7 +27,7 @@ export function UserProfileContainer() {
         <div className="flex flex-col items-center">
           <div className="relative">
             <Avatar className="h-72 w-72">
-              <AvatarFallback className="text-6xl">
+              <AvatarFallback>
                 <Skeleton className="h-full w-full" />
               </AvatarFallback>
             </Avatar>
@@ -69,15 +68,13 @@ export function UserProfileContainer() {
     );
   }
 
+  const fullName = `${user.firstName} ${user.lastName}`;
+
   return (
     <>
       <div className="flex flex-col items-center">
         <div className="relative">
-          <Avatar className="h-72 w-72">
-            <AvatarFallback className="text-6xl">
-              {StringUtils.getFirstLettersUpperCase(`${fullName}`)}
-            </AvatarFallback>
-          </Avatar>
+          <UserAvatar height={288} fallbackFontSize={62} />
           <UploadAvatarContainer className="absolute bottom-[15%] right-0" />
         </div>
         <h2 className="mb-2 mt-6 text-3xl font-semibold">{fullName}</h2>

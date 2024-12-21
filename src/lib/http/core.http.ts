@@ -53,36 +53,24 @@ class HttpClient {
     }
   }
 
-  public get<T, D = any>(url: string, config?: AxiosRequestConfig<D>) {
-    return this.axiosInstance.get<T, T, D>(url, config);
+  public get<T>(url: string, config?: AxiosRequestConfig) {
+    return this.axiosInstance.get<T, T>(url, config);
   }
 
-  public post<T, D = any>(
-    url: string,
-    data?: D,
-    config?: AxiosRequestConfig<D>,
-  ) {
-    return this.axiosInstance.post<T, T, D>(url, data, config);
+  public post<T>(url: string, data?: any, config?: AxiosRequestConfig) {
+    return this.axiosInstance.post<T, T>(url, data, config);
   }
 
-  public patch<T, D = any>(
-    url: string,
-    data?: D,
-    config?: AxiosRequestConfig<D>,
-  ) {
-    return this.axiosInstance.patch<T, T, D>(url, data, config);
+  public patch<T>(url: string, data?: any, config?: AxiosRequestConfig) {
+    return this.axiosInstance.patch<T, T>(url, data, config);
   }
 
-  public put<T, D = any>(
-    url: string,
-    data?: D,
-    config?: AxiosRequestConfig<D>,
-  ) {
-    return this.axiosInstance.put<T, T, D>(url, data, config);
+  public put<T>(url: string, data?: any, config?: AxiosRequestConfig) {
+    return this.axiosInstance.put<T, T>(url, data, config);
   }
 
-  public delete<T, D = any>(url: string, config?: AxiosRequestConfig<D>) {
-    return this.axiosInstance.delete<T, T, D>(url, config);
+  public delete<T>(url: string, config?: AxiosRequestConfig) {
+    return this.axiosInstance.delete<T, T>(url, config);
   }
 }
 

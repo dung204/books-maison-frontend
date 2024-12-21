@@ -4,6 +4,8 @@ import { Image as ImageIcon } from 'lucide-react';
 import { type ComponentRef, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
+import { useAuth } from '@/common/hooks';
+import type { ImagePosition } from '@/common/types/api/media';
 import { Button } from '@/components/ui/buttons';
 import {
   ConfirmDiscardChangesDialog,
@@ -13,7 +15,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialogs';
-import { DragDropImageCropper, type ImagePosition } from '@/components/ui/form';
+import { DragDropImageCropper } from '@/components/ui/form';
 import {
   Tooltip,
   TooltipContent,
@@ -21,6 +23,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { cn } from '@/lib/cn';
+import { userHttpClient } from '@/lib/http';
 
 interface UploadAvatarContainerProps {
   className?: string;
@@ -29,18 +32,28 @@ interface UploadAvatarContainerProps {
 export function UploadAvatarContainer({
   className,
 }: UploadAvatarContainerProps) {
+  const { accessToken, setUser, user } = useAuth();
   const [open, setOpen] = useState(false);
   const [discardDialogOpen, setDiscardDialogOpen] = useState(false);
   const imageCropperRef =
     useRef<ComponentRef<typeof DragDropImageCropper>>(null);
 
-  const handleUploadImageAndCloseDialog = (
+  const handleUploadImageAndCloseDialog = async (
     image: File,
     position: ImagePosition,
     scale: number,
+    baseHeight: number,
   ) => {
-    toast.success('Avatar is saved successfully!');
+    const { data: avatar } = await userHttpClient.setAvatar(
+      accessToken!,
+      image,
+      position,
+      scale,
+      baseHeight,
+    );
     setOpen(false);
+    setUser({ ...user!, avatar });
+    toast.success('Avatar is saved successfully!');
   };
 
   const handleOpenChange = (open: boolean) => {

@@ -1,6 +1,7 @@
 import type { SuccessResponse } from '@/common/types';
+import type { Avatar, ImagePosition } from '@/common/types/api/media';
 import type { User } from '@/common/types/api/user';
-import { HttpClient } from '@/lib/http';
+import { HttpClient, mediaHttpClient } from '@/lib/http';
 import type {
   ChangePasswordSchema,
   UpdateProfileSchema,
@@ -36,6 +37,35 @@ class UserHttpClient extends HttpClient {
         Authorization: `Bearer ${accessToken}`,
       },
     });
+  }
+
+  public async setAvatar(
+    accessToken: string,
+    file: File,
+    position: ImagePosition,
+    scale: number,
+    baseHeight: number,
+  ) {
+    const {
+      data: { name: id },
+    } = await mediaHttpClient.upload(accessToken, file, 'avatars');
+    const { offsetX, offsetY } = position;
+
+    return this.patch<SuccessResponse<Avatar>>(
+      '/me/avatar',
+      {
+        id: id.replaceAll('avatars/', ''),
+        offsetX,
+        offsetY,
+        zoom: scale,
+        baseHeight,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      },
+    );
   }
 }
 

@@ -21,6 +21,11 @@ import {
 } from 'react';
 import { toast } from 'sonner';
 
+import type {
+  ImagePayload,
+  ImagePosition,
+  ImageScale,
+} from '@/common/types/api/media';
 import { ImageUtils } from '@/common/utils';
 import { Button } from '@/components/ui/buttons';
 import { Slider } from '@/components/ui/form/slider';
@@ -32,23 +37,8 @@ interface DragDropImageInputProps extends ComponentProps<'input'> {
     image: File,
     position: ImagePosition,
     scale: number,
+    baseHeight: number,
   ) => void | Promise<void>;
-}
-
-export interface ImagePayload {
-  file: File;
-  previewUrl: string;
-}
-
-export interface ImageScale {
-  min: number;
-  max: number;
-  current: number;
-}
-
-export interface ImagePosition {
-  x: number;
-  y: number;
 }
 
 interface DragDropImageCropperRef {
@@ -63,11 +53,11 @@ function InternalDragDropImageCropper(
   const [isLoadingFromLocal, setIsUploadingFromLocal] = useState(false);
   const [currentImage, setCurrentImage] = useState<ImagePayload>();
   const [imageScale, setImageScale] = useState<ImageScale>();
-  const [imageWidth, setImageWidth] = useState<number>(150);
   const [imagePosition, setImagePosition] = useState<ImagePosition>({
-    x: 0,
-    y: 0,
+    offsetX: 0,
+    offsetY: 0,
   });
+  const [baseHeight, setBaseHeight] = useState<number>();
   const [isMovingImage, setIsMovingImage] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -143,14 +133,14 @@ function InternalDragDropImageCropper(
   };
 
   const handlePreviewLoad: ReactEventHandler<HTMLImageElement> = e => {
-    const { height, width } = e.currentTarget;
+    const { height } = e.currentTarget;
     const scale = (ImageUtils.CROPPER_RADIUS * 2) / height;
-    setImageWidth(width);
     setImageScale({
       min: scale,
       max: scale * ImageUtils.MAX_ZOOM_RATIO,
       current: scale,
     });
+    setBaseHeight(height);
   };
 
   const handleStartMoveImage: MouseEventHandler<HTMLImageElement> = e => {
@@ -171,20 +161,20 @@ function InternalDragDropImageCropper(
     let newPositionY: number;
 
     if (movementX > 0) {
-      newPositionX = Math.min(imagePosition.x + movementX, maxOffsetX);
+      newPositionX = Math.min(imagePosition.offsetX + movementX, maxOffsetX);
     } else {
-      newPositionX = Math.max(imagePosition.x + movementX, -maxOffsetX);
+      newPositionX = Math.max(imagePosition.offsetX + movementX, -maxOffsetX);
     }
 
     if (movementY > 0) {
-      newPositionY = Math.min(imagePosition.y + movementY, maxOffsetY);
+      newPositionY = Math.min(imagePosition.offsetY + movementY, maxOffsetY);
     } else {
-      newPositionY = Math.max(imagePosition.y + movementY, -maxOffsetY);
+      newPositionY = Math.max(imagePosition.offsetY + movementY, -maxOffsetY);
     }
 
     setImagePosition({
-      x: newPositionX,
-      y: newPositionY,
+      offsetX: newPositionX,
+      offsetY: newPositionY,
     });
   };
 
@@ -196,7 +186,7 @@ function InternalDragDropImageCropper(
   const handleResetAll = () => {
     setCurrentImage(undefined);
     setImageScale(undefined);
-    setImagePosition({ x: 0, y: 0 });
+    setImagePosition({ offsetX: 0, offsetY: 0 });
   };
 
   const handleSave = async () => {
@@ -204,7 +194,12 @@ function InternalDragDropImageCropper(
 
     setIsSaving(true);
     await new Promise(resolve => setTimeout(resolve, 4000));
-    await onSave?.(currentImage.file, imagePosition, imageScale!.current);
+    await onSave?.(
+      currentImage.file,
+      imagePosition,
+      imageScale!.current,
+      baseHeight!,
+    );
     setIsSaving(false);
   };
 
@@ -218,24 +213,24 @@ function InternalDragDropImageCropper(
       const newMaxOffsetX = newImageWidth / 2 - ImageUtils.CROPPER_RADIUS;
       const newMaxOffsetY = newImageHeight / 2 - ImageUtils.CROPPER_RADIUS;
       const newPosition: ImagePosition = {
-        x: imagePosition.x,
-        y: imagePosition.y,
+        offsetX: imagePosition.offsetX,
+        offsetY: imagePosition.offsetY,
       };
 
-      if (imagePosition.x > newMaxOffsetX) {
-        newPosition.x = newMaxOffsetX;
+      if (imagePosition.offsetX > newMaxOffsetX) {
+        newPosition.offsetX = newMaxOffsetX;
       }
 
-      if (imagePosition.x < -newMaxOffsetX) {
-        newPosition.x = -newMaxOffsetX;
+      if (imagePosition.offsetX < -newMaxOffsetX) {
+        newPosition.offsetX = -newMaxOffsetX;
       }
 
-      if (imagePosition.y > newMaxOffsetY) {
-        newPosition.y = newMaxOffsetY;
+      if (imagePosition.offsetY > newMaxOffsetY) {
+        newPosition.offsetY = newMaxOffsetY;
       }
 
-      if (imagePosition.y < -newMaxOffsetY) {
-        newPosition.y = -newMaxOffsetY;
+      if (imagePosition.offsetY < -newMaxOffsetY) {
+        newPosition.offsetY = -newMaxOffsetY;
       }
 
       setImageScale({ ...imageScale, current: value });
@@ -323,9 +318,9 @@ function InternalDragDropImageCropper(
           })}
           style={{
             scale: imageScale?.current,
-            translate: `${imagePosition.x}px ${imagePosition.y}px`,
-            minWidth: `${imageWidth}px`,
-            width: `${imageWidth}px`,
+            translate: `${imagePosition.offsetX}px ${imagePosition.offsetY}px`,
+            minWidth: `${ImageUtils.CROPPER_RADIUS}px`,
+            width: `${ImageUtils.CROPPER_RADIUS}px`,
           }}
           onLoad={handlePreviewLoad}
           onMouseDown={handleStartMoveImage}
@@ -375,7 +370,7 @@ function InternalDragDropImageCropper(
           Remove
         </Button>
         <Button
-          onClick={() => setImagePosition({ x: 0, y: 0 })}
+          onClick={() => setImagePosition({ offsetX: 0, offsetY: 0 })}
           disabled={isSaving}
         >
           Reset to center
