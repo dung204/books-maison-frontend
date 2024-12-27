@@ -74,7 +74,7 @@ export function UserProfileContainer() {
     <>
       <div className="flex flex-col items-center">
         <div className="relative">
-          <UserAvatar height={288} fallbackFontSize={62} />
+          <UserAvatar user={user} height={288} fallbackFontSize={62} />
           <UploadAvatarContainer className="absolute bottom-[15%] right-0" />
         </div>
         <h2 className="mb-2 mt-6 text-3xl font-semibold">{fullName}</h2>

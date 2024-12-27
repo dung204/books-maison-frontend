@@ -39,7 +39,7 @@ export function UserMenuContainer() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="outline-none">
-        <UserAvatar height={40} />
+        <UserAvatar user={user} height={40} />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
         <Link href="/me/checkouts">

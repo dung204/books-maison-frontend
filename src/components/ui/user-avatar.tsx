@@ -1,6 +1,6 @@
 'use client';
 
-import { useAuth } from '@/common/hooks';
+import type { User } from '@/common/types/api/user';
 import { ImageUtils, StringUtils } from '@/common/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeletons';
@@ -8,11 +8,10 @@ import { Skeleton } from '@/components/ui/skeletons';
 interface AvatarProps {
   height: number;
   fallbackFontSize?: number;
+  user?: User;
 }
 
-export function UserAvatar({ height, fallbackFontSize }: AvatarProps) {
-  const { user } = useAuth();
-
+export function UserAvatar({ height, fallbackFontSize, user }: AvatarProps) {
   return (
     <Avatar style={{ height, width: height }}>
       {user?.avatar && (

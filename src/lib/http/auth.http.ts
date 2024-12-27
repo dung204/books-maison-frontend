@@ -5,6 +5,7 @@ import type {
   RefreshSuccessResponse,
   SuccessResponse,
 } from '@/common/types';
+import type { OAuthAction } from '@/common/types/api/auth';
 import type { User } from '@/common/types/api/user';
 import { HttpClient } from '@/lib/http';
 import type { LoginSchema, RegisterSchema } from '@/lib/validators';
@@ -27,13 +28,19 @@ class AuthHttpClient extends HttpClient {
 
       switch (error.status) {
         case HttpStatusCode.Unauthorized:
-          toast.error('Email or password is incorrect!');
-          break;
+          if (error.config?.url === '/auth/login') {
+            toast.error('Email or password is incorrect!');
+            return;
+          }
 
         case HttpStatusCode.Conflict:
-          toast.error('Email already taken!');
-          break;
+          if (error.config?.url === '/auth/login') {
+            toast.error('Email already taken!');
+            return;
+          }
       }
+
+      return Promise.reject(error);
     }
   }
 
@@ -56,6 +63,13 @@ class AuthHttpClient extends HttpClient {
   public refreshToken(refreshToken: string) {
     return this.post<RefreshSuccessResponse>('/auth/refresh', {
       refreshToken,
+    });
+  }
+
+  public googleAuth(code: string, action: OAuthAction) {
+    return this.post<LoginSuccessResponse>('/auth/google', {
+      code,
+      action,
     });
   }
 }

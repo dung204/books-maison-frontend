@@ -70,7 +70,7 @@ export default async function BookDetailsPage({
           <BookActionsContainer book={book} />
         </div>
         <div className="col-span-8">
-          <h2 className="text-4xl font-bold">{book.title}</h2>
+          <h1 className="text-4xl font-bold">{book.title}</h1>
           <Table className="mt-6 text-base">
             <TableBody>
               <TableRow>
