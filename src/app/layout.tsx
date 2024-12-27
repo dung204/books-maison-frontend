@@ -4,6 +4,7 @@ import { Toaster } from 'sonner';
 
 import favIcon from '@/assets/images/favicon.ico';
 import { MoveToTopButton } from '@/components/ui/buttons';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import '@/styles/globals.css';
 
 export const metadata: Metadata = {
@@ -24,9 +25,11 @@ export default async function RootLayout({
     <html lang="en">
       <head />
       <body>
-        {children}
+        <ScrollArea className="relative h-screen w-full">
+          {children}
+          <MoveToTopButton />
+        </ScrollArea>
         <Toaster richColors closeButton position="top-right" duration={3000} />
-        <MoveToTopButton />
         <SpeedInsights />
       </body>
     </html>
