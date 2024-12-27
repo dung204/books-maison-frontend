@@ -13,8 +13,11 @@ export function MoveToTopButton({
   const buttonRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
-    document.onscroll = () => {
-      if (document.documentElement.scrollTop > 0) {
+    const scrollArea = document.querySelector<HTMLDivElement>(
+      '[data-radix-scroll-area-viewport]',
+    );
+    scrollArea!.onscroll = () => {
+      if (scrollArea!.scrollTop > 0) {
         buttonRef.current?.classList.add('opacity-100');
         buttonRef.current?.classList.remove('cursor-default');
       } else {
@@ -25,11 +28,13 @@ export function MoveToTopButton({
   }, []);
 
   const handleMoveToTop = () => {
-    document.documentElement.scrollTo({
-      behavior: 'smooth',
-      left: 0,
-      top: 0,
-    });
+    document
+      .querySelector<HTMLDivElement>('[data-radix-scroll-area-viewport]')!
+      .scrollTo({
+        behavior: 'smooth',
+        left: 0,
+        top: 0,
+      });
   };
 
   return (
