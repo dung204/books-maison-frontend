@@ -1,36 +1,87 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<p align="center">
+  <a href="http://api.books-maison.live/api-docs" target="blank"><img src="src/assets/images/books-maison-logo-dark.svg" width="400" alt="Nest Logo" /></a>
+</p>
 
-## Getting Started
+<p align="center">The User Interface for Books Maison - an online library web application</p>
 
-First, run the development server:
+Live URL: [https://books-maison.live](https://books-maison.live)
+
+## Table of Contents
+
+- [1. Primary Features](#1-primary-features)
+- [2. Technology used](#2-technology-used)
+- [3. Getting started](#3-getting-started)
+  - [3.1. Prerequisites](#31-prerequisites)
+  - [3.2. Installation](#32-installation)
+- [4. License](#4-license)
+
+## 1. Primary Features
+
+- CRUD (Create, Read, Update, Delete) users, books, authors, checkouts, fines
+- User authentication and authorization using JWT (JSON Web Token) & Google OAuth2
+- Allowing users to borrow and return books
+- Calculating fines for late returns
+- Allowing users to pay fines using [Momo E-wallet](https://www.momo.vn/)
+
+> **Note**:
+>
+> - Whenever a user borrows a book, a checkout record is created with a due date.
+> - If the user returns the book after the due date, a fine is calculated based on the number of days the book is overdue.
+
+## 2. Technology used
+
+- [React.js](https://react.dev/): A JavaScript library for building user interfaces
+- [Next.js](https://nextjs.org/): The React Framework for the Web
+- [Tailwind CSS](https://tailwindcss.com/): A utility-first CSS framework
+- [shadcn/ui](https://ui.shadcn.com/): A library of beautifully designed components that you can copy and paste into your apps. Made with Tailwind CSS. Open source.
+
+## 3. Getting started
+
+## 3.1. Prerequisites
+
+You need to have the following installed on your machine:
+
+- [Node.js 22.3.0+](https://nodejs.org/en/download/)
+- [pnpm](https://pnpm.io/installation)
+- [Git](https://git-scm.com/downloads)
+
+You also need to setup and run the [Books Maison API](https://github.com/dung204/books-maison-backend?tab=readme-ov-file#3-getting-started) locally
+
+## 3.2. Installation
+
+1. Clone the repository:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/dung204/books-maison-frontend.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Change into the project directory:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+cd books-maison-frontend
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+3. Install the dependencies:
 
-## Learn More
+```bash
+pnpm install --frozen-lockfile
+```
 
-To learn more about Next.js, take a look at the following resources:
+4. Create a `.env` file in the root of the project. The `.env` **must** contains all variables in the [`.env.example`](.env.example) file.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+> **Note**:
+>
+> - The `NEXT_PUBLIC_JWT_ACCESS_SECRET` and `NEXT_PUBLIC_JWT_REFRESH_SECRET` should be the same as the [`JWT_ACCESS_SECRET` and `JWT_REFRESH_SECRET` in the Books Maison API](https://github.com/dung204/books-maison-backend/blob/b7a0b298f6da27a18e9113ea122a5f078a2149c3/.env.example#L13C1-L13C18), respectively.
+> - The `NEXT_PUBLIC_API_ENDPOINT` should be the URL of the Books Maison API, suffixed with `/api/v1`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+5. Run the following command to start the development server:
 
-## Deploy on Vercel
+```bash
+pnpm dev
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+6. The application should be running at `http://localhost:<APP_PORT>`, where `<APP_PORT>` is `3000` by default.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## 4. License
+
+This project is licensed under the Unlicense - see the [LICENSE](LICENSE) file for details.
