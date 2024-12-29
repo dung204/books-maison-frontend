@@ -5,8 +5,6 @@ import { BookText, CircleDollarSign, Gavel, Heart, LogOut } from 'lucide-react';
 import Link from 'next/link';
 
 import { useAuth } from '@/common/hooks';
-import { StringUtils } from '@/common/utils';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,7 +14,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/form';
-import LoadingIndicator from '@/components/ui/loading-indicator';
 import { Skeleton } from '@/components/ui/skeletons';
 import { UserAvatar } from '@/components/ui/user-avatar';
 import { authHttpClient } from '@/lib/http';
@@ -41,7 +38,7 @@ export function UserMenuContainer() {
       <DropdownMenuTrigger className="outline-none">
         <UserAvatar user={user} height={40} />
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56">
+      <DropdownMenuContent align="end" className="w-48 sm:w-56">
         <Link href="/me/checkouts">
           <DropdownMenuLabel>
             {user.firstName} {user.lastName}
