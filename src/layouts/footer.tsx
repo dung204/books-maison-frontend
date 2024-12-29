@@ -12,8 +12,8 @@ import {
 export function Footer() {
   return (
     <footer className="bg-black/85 py-16 text-white">
-      <div className="container grid grid-cols-12">
-        <div className="col-span-6 flex flex-col gap-5">
+      <div className="container grid grid-cols-12 max-lg:gap-y-16">
+        <div className="col-span-6 flex flex-col gap-5 max-lg:order-3 max-lg:col-span-12 max-lg:items-center max-lg:text-center">
           <Image src={brandLogo} alt="Brand logo" width="289" height="72" />
           <p className="text-sm">
             Address: 3 Phu Xa Street, Phu Thuong Ward, Tay Ho District, Hanoi
@@ -35,7 +35,7 @@ export function Footer() {
             </Link>
           </div>
         </div>
-        <div className="col-span-3">
+        <div className="col-span-3 max-lg:order-1 max-lg:col-span-6 max-lg:text-center max-sm:col-span-12">
           <h2 className="mb-6 text-2xl font-semibold">Links</h2>
           <div className="flex flex-col gap-3 text-sm">
             <Link href="#">About Books Maison</Link>
@@ -46,7 +46,7 @@ export function Footer() {
             <Link href="#">Privacy policy</Link>
           </div>
         </div>
-        <div className="col-span-3">
+        <div className="col-span-3 max-lg:order-2 max-lg:col-span-6 max-lg:text-center max-sm:col-span-12">
           <h2 className="mb-6 text-2xl font-semibold">Working hours</h2>
           <div className="flex flex-col gap-3 text-sm">
             <p>Monday - Sunday, excluding holidays</p>
