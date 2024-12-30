@@ -15,7 +15,7 @@ export default async function HomePage() {
   } = await bookHttpClient.getAllBooks();
 
   return (
-    <div className="relative flex h-screen w-full items-center justify-center">
+    <div className="relative flex h-dvh w-full items-center justify-center">
       <div className="absolute left-0 top-0 z-20 h-full w-full bg-black/50"></div>
       <Image
         src={homeBanner}

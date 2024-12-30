@@ -25,7 +25,7 @@ export default async function RootLayout({
     <html lang="en">
       <head />
       <body>
-        <ScrollArea className="relative h-screen w-full">
+        <ScrollArea className="relative h-dvh w-full">
           {children}
           <MoveToTopButton />
         </ScrollArea>

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function LoginPage() {
   return (
     <>
-      <h1 className="text-center text-3xl">Login to Books Maison</h1>
+      <h1 className="text-center text-2xl font-light">Login to Books Maison</h1>
       <LoginContainer />
       <p className="text-center">
         Don&apos;t have an account?{' '}

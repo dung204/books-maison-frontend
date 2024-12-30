@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function RegisterPage() {
   return (
     <>
-      <h1 className="text-center text-3xl">Create an account</h1>
+      <h1 className="text-center text-2xl font-light">Create an account</h1>
       <RegisterContainer />
       <p className="text-center">
         Already had an account? <Link href="/auth/login">Login</Link>

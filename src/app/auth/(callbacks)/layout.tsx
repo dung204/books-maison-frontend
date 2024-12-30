@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function CallbackLayout({ children }: PropsWithChildren) {
   return (
     <>
-      <main className="flex h-screen flex-col items-center justify-between py-10">
+      <main className="flex h-dvh flex-col items-center justify-between py-10">
         <Image src={brandLogo} alt="Brand logo" />
         <div className="flex flex-col items-center justify-center gap-4">
           {children}

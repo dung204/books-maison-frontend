@@ -47,7 +47,7 @@ export function RegisterContainer() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="grid grid-cols-2 gap-10"
+        className="grid grid-cols-2 gap-6"
       >
         <FormField
           control={form.control}
