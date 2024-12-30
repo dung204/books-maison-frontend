@@ -22,8 +22,8 @@ export async function Header() {
     <header className="fixed top-0 z-50 w-full border-b-[1px] border-b-black/20 bg-white py-2">
       <div className="container flex items-center justify-between">
         <Link href="/">
-          <BrandIcon height="58" className="max-md:hidden" />
-          <BrandIconMobile height="48" className="md:hidden" />
+          <BrandIcon height="58" className="max-lg:hidden" />
+          <BrandIconMobile height="48" className="lg:hidden" />
         </Link>
         <nav>
           <ul className="flex items-center gap-8 sm:gap-12 lg:gap-16">

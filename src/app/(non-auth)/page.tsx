@@ -23,14 +23,14 @@ export default async function HomePage() {
         fill
         className="z-10 select-none object-cover"
       />
-      <div className="z-40 mt-[74px] flex w-1/2 flex-col items-center justify-center gap-10">
-        <h1 className="text-6xl font-extrabold text-white shadow drop-shadow-lg">
+      <div className="z-40 mt-[74px] flex flex-col items-center justify-center gap-10 text-center lg:w-1/2">
+        <h1 className="text-4xl font-extrabold text-white shadow drop-shadow-lg sm:text-5xl lg:text-6xl">
           Your home of knowledge
         </h1>
-        <p className="text-2xl text-white drop-shadow-sm">
+        <p className="text-xl text-white drop-shadow-sm max-md:w-4/5 lg:text-2xl">
           Explore the treasure of human knowledge with {total} books here
         </p>
-        <div className="mx-auto w-3/4">
+        <div className="mx-auto w-4/5 md:w-3/4">
           <GlobalSearchContainer />
         </div>
       </div>
