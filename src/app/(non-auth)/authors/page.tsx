@@ -26,7 +26,7 @@ export default async function AuthorsPage(props: AuthorsPageProps) {
   const searchParams = await props.searchParams;
   return (
     <>
-      <HomeBanner className="h-[400px]" bannerTitle="Authors" />
+      <HomeBanner bannerTitle="Authors" />
       <div className="container py-10">
         <Suspense
           key={randomUUID()}

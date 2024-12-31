@@ -46,7 +46,7 @@ export default async function BookDetailsPage({
 
   return (
     <>
-      <HomeBanner className="h-[400px]" bannerTitle="Book details" />
+      <HomeBanner bannerTitle="Book details" />
       <div className="container grid grid-cols-12 gap-10 py-10">
         <div className="col-span-4">
           <div className="relative h-[600px] w-full">

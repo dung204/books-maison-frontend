@@ -16,7 +16,7 @@ export default function HomeBanner({
   return (
     <section
       className={cn(
-        'relative flex w-full items-center justify-center',
+        'relative flex h-[300px] w-full items-center justify-center xs:h-[350px] md:h-[400px]',
         className,
       )}
       {...props}
@@ -28,7 +28,7 @@ export default function HomeBanner({
         fill
         className="z-10 select-none object-cover"
       />
-      <div className="z-40 mt-[74px] text-center text-white">
+      <div className="z-40 mt-[64px] text-center text-white lg:mt-[74px]">
         <h1 className="text-3xl font-extrabold xs:text-4xl md:text-5xl">
           {bannerTitle}
         </h1>

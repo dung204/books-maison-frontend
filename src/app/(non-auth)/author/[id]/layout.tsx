@@ -19,7 +19,7 @@ export default async function AuthorDetailsLayout({
 
   return (
     <>
-      <HomeBanner className="h-[400px]" bannerTitle="Author details" />
+      <HomeBanner bannerTitle="Author details" />
       <div className="container grid grid-cols-12 gap-20 py-10">
         <div className="col-span-3 flex flex-col items-center">
           <Avatar className="h-72 w-72">

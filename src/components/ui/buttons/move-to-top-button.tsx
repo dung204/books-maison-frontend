@@ -38,12 +38,12 @@ export function MoveToTopButton({
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed bottom-6 right-6 z-50 max-xs:bottom-3 max-xs:right-3">
       <Button
         ref={buttonRef}
         variant="secondary"
         className={cn(
-          'h-14 w-14 cursor-default rounded-full opacity-0 shadow-xl transition-all',
+          'h-14 w-14 cursor-default rounded-full opacity-0 shadow-xl transition-all max-xs:h-12 max-xs:w-12',
           className,
         )}
         onClick={handleMoveToTop}

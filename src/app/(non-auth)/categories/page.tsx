@@ -27,7 +27,7 @@ export default async function CategoriesPage(props: CategoriesPageProps) {
 
   return (
     <>
-      <HomeBanner className="h-[400px]" bannerTitle="Categories" />
+      <HomeBanner bannerTitle="Categories" />
       <div className="container py-10">
         <Suspense
           key={randomUUID()}
