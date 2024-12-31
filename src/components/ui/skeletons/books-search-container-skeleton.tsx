@@ -16,19 +16,22 @@ import {
 export function BooksSearchContainerSkeleton() {
   return (
     <>
-      <section className="flex justify-between">
-        <div className="w-1/2">
+      <section className="flex justify-between gap-y-6 max-md:flex-col">
+        <div className="w-full md:w-2/3 xl:w-1/2">
           <SearchBarSkeleton />
         </div>
         <div>
-          <Button disabled className="relative bg-transparent text-transparent">
+          <Button
+            disabled
+            className="relative w-full bg-transparent text-transparent"
+          >
             <Skeleton className="absolute inset-0 h-full w-full" />
             <Filter className="me-2 h-4 w-4" /> Advanced Filter
           </Button>
         </div>
       </section>
       <PaginationContainerSkeleton className="mt-6" />
-      <section className="mt-10 grid grid-cols-3 gap-8">
+      <section className="mt-10 grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
         {Array.from({ length: 9 }).map((_, index) => (
           <Card key={index} className="overflow-hidden">
             <div className="relative h-[300px] overflow-hidden">

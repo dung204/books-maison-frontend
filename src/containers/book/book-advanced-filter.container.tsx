@@ -154,7 +154,7 @@ export function BookAdvancedFilterContainer({
           <Filter className="me-2 h-4 w-4" /> Advanced Filter
         </Button>
       </SheetTrigger>
-      <SheetContent className="max-w-[600px]">
+      <SheetContent className="w-[600px] max-md:w-screen">
         <SheetHeader>
           <SheetTitle>Advanced Filter</SheetTitle>
           <SheetDescription>

@@ -10,9 +10,9 @@ export function SearchBarSkeleton({
   ...props
 }: SearchBarSkeletonProps) {
   return (
-    <div className={cn('grid grid-cols-6 gap-4', className)} {...props}>
-      <Skeleton className="col-span-5 h-10 rounded-full border border-input px-3 py-2" />
-      <Skeleton className="col-span-1 h-10" />
+    <div className={cn('grid grid-cols-12 gap-4', className)} {...props}>
+      <Skeleton className="col-span-8 h-10 rounded-full border border-input px-3 py-2 xs:col-span-9 sm:col-span-10" />
+      <Skeleton className="col-span-4 h-10 xs:col-span-3 sm:col-span-2" />
     </div>
   );
 }

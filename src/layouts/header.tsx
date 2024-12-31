@@ -36,21 +36,15 @@ export async function Header() {
               <DropdownMenuTrigger className="sm:hidden">
                 <Menu />
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
+              <DropdownMenuContent>
                 <Link href="/categories">
-                  <DropdownMenuItem className="justify-end">
-                    Categories
-                  </DropdownMenuItem>
+                  <DropdownMenuItem>Categories</DropdownMenuItem>
                 </Link>
                 <Link href="/authors">
-                  <DropdownMenuItem className="justify-end">
-                    Authors
-                  </DropdownMenuItem>
+                  <DropdownMenuItem>Authors</DropdownMenuItem>
                 </Link>
                 <Link href="/books">
-                  <DropdownMenuItem className="justify-end">
-                    Books
-                  </DropdownMenuItem>
+                  <DropdownMenuItem>Books</DropdownMenuItem>
                 </Link>
               </DropdownMenuContent>
             </DropdownMenu>

@@ -19,7 +19,10 @@ export function PaginationContainerSkeleton({
 }: PaginationContainerSkeletonProps) {
   return (
     <section
-      className={cn('flex w-full items-center justify-between', className)}
+      className={cn(
+        'flex w-full items-center justify-between gap-y-6 max-md:flex-col md:justify-between',
+        className,
+      )}
       {...props}
     >
       <div className="flex items-center justify-stretch gap-4">
@@ -27,8 +30,8 @@ export function PaginationContainerSkeleton({
         <Skeleton className="h-10 w-32" />
         <div>items</div>
       </div>
-      <Pagination className="justify-end">
-        <PaginationContent>
+      <Pagination className="md:justify-end">
+        <PaginationContent className="justify-center max-md:flex-wrap">
           <PaginationItem>
             <PaginationPrevious className="pointer-events-none opacity-60" />
           </PaginationItem>

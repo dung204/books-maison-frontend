@@ -25,7 +25,7 @@ export function BookCard({ book, className, ...props }: BookCardProps) {
       className={cn('group', className)}
       {...props}
     >
-      <Card className="overflow-hidden">
+      <Card className="w-full overflow-hidden">
         <div className="relative h-[300px] overflow-hidden">
           <div className="absolute left-0 top-0 z-20 flex h-full w-full items-center justify-center bg-black/50 opacity-0 transition-all duration-500 group-hover:opacity-100">
             <Button variant="secondary">See Details</Button>

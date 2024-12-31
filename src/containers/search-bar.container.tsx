@@ -34,11 +34,11 @@ export function SearchBarContainer({
 
   return (
     <form
-      className={cn('grid grid-cols-6 gap-4', className)}
+      className={cn('grid grid-cols-12 gap-4', className)}
       onSubmit={handleSearch}
       {...props}
     >
-      <div className="relative col-span-5">
+      <div className="relative col-span-8 xs:col-span-9 sm:col-span-10">
         <Input
           type="text"
           placeholder={placeholder}
@@ -53,7 +53,7 @@ export function SearchBarContainer({
           <Search className="h-6 w-6" />
         </label>
       </div>
-      <Button type="submit" className="col-span-1">
+      <Button type="submit" className="col-span-4 xs:col-span-3 sm:col-span-2">
         Search
       </Button>
     </form>

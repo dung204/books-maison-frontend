@@ -50,7 +50,10 @@ export function PaginationContainer({
 
   return (
     <Pagination
-      className={cn('items-center justify-between', className)}
+      className={cn(
+        'flex items-center gap-y-6 max-md:flex-col md:justify-between',
+        className,
+      )}
       {...props}
     >
       <div className="flex items-center justify-stretch gap-4">
@@ -73,7 +76,7 @@ export function PaginationContainer({
         </Select>
         <div>items</div>
       </div>
-      <PaginationContent>
+      <PaginationContent className="justify-center max-md:flex-wrap">
         <PaginationItem>
           <PaginationPrevious
             onClick={() => handleChangePage(pagination.page - 1)}

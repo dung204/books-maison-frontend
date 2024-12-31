@@ -29,7 +29,9 @@ export default function HomeBanner({
         className="z-10 select-none object-cover"
       />
       <div className="z-40 mt-[74px] text-center text-white">
-        <h1 className="text-5xl font-extrabold">{bannerTitle}</h1>
+        <h1 className="text-3xl font-extrabold xs:text-4xl md:text-5xl">
+          {bannerTitle}
+        </h1>
       </div>
     </section>
   );
