@@ -27,7 +27,7 @@ export function CategorySearchContainer({
 }: CategorySearchContainerProps) {
   return (
     <div>
-      <section className="w-1/2">
+      <section className="w-full md:w-2/3 xl:w-1/2">
         <SearchBarContainer
           fieldName="name"
           placeholder="Enter a category name to search..."
@@ -42,9 +42,11 @@ export function CategorySearchContainer({
       <section className="mt-6">
         <PaginationContainer pagination={pagination!} />
       </section>
-      <section className="mt-10 grid grid-cols-3 gap-8">
+      <section className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-3">
         {categories.length === 0 ? (
-          <p className="col-span-3 text-center">No categories found</p>
+          <p className="col-span-1 text-center md:col-span-2 xl:col-span-3">
+            No categories found
+          </p>
         ) : (
           categories.map(({ id, name }) => (
             <Link

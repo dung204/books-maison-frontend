@@ -31,7 +31,7 @@ export function BooksSearchContainerSkeleton() {
         </div>
       </section>
       <PaginationContainerSkeleton className="mt-6" />
-      <section className="mt-10 grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
+      <section className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-3">
         {Array.from({ length: 9 }).map((_, index) => (
           <Card key={index} className="overflow-hidden">
             <div className="relative h-[300px] overflow-hidden">

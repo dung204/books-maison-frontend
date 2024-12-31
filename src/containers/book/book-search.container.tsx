@@ -49,9 +49,9 @@ export function BookSearchContainer({
           <PaginationContainer pagination={pagination} />
         </section>
       )}
-      <section className="mt-10 grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
+      <section className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-3">
         {books.length === 0 ? (
-          <p className="grid-cols-1 text-center md:grid-cols-2 xl:col-span-3">
+          <p className="col-span-1 text-center sm:col-span-2 xl:col-span-3">
             No books found
           </p>
         ) : (
