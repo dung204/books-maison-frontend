@@ -23,14 +23,14 @@ export function AuthorSearchContainer({
 }: AuthorSearchContainerProps) {
   return (
     <div>
-      <section className="w-1/2">
+      <section className="w-full md:w-2/3 xl:w-1/2">
         <SearchBarContainer
           fieldName="name"
           placeholder="Enter a category name to search..."
         />
       </section>
       {searchParams.name && (
-        <p className="mt-3">
+        <p className="mt-3 max-md:text-center">
           Showing categories containing name:{' '}
           <b>&quot;{searchParams.name}&quot;</b>
         </p>
@@ -38,7 +38,7 @@ export function AuthorSearchContainer({
       <section className="mt-6">
         <PaginationContainer pagination={pagination!} />
       </section>
-      <section className="mt-10 grid grid-cols-4 gap-8">
+      <section className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {authors.length === 0 ? (
           <p className="col-span-4 text-center">No books found</p>
         ) : (
@@ -54,7 +54,7 @@ export function AuthorSearchContainer({
                   <UserPen className="h-20 w-20" />
                 </AvatarFallback>
               </Avatar>
-              <p className="mt-6 text-center text-xl">{name}</p>
+              <p className="mt-6 line-clamp-1 text-center text-xl">{name}</p>
             </Link>
           ))
         )}

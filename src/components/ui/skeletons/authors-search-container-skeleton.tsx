@@ -9,12 +9,12 @@ export function AuthorsSearchContainerSkeleton() {
   return (
     <>
       <section className="flex justify-between">
-        <div className="w-1/2">
+        <div className="w-full md:w-2/3 xl:w-1/2">
           <SearchBarSkeleton />
         </div>
       </section>
       <PaginationContainerSkeleton className="mt-6" />
-      <section className="mt-10 grid grid-cols-4 gap-8">
+      <section className="mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {Array.from({ length: 10 }).map((_, index) => (
           <div
             key={index}

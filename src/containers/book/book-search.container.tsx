@@ -33,7 +33,7 @@ export function BookSearchContainer({
             placeholder="Enter a book title to search..."
           />
           {searchParams.title && (
-            <p className="mt-3">
+            <p className="mt-3 max-md:text-center">
               Showing books containing title:{' '}
               <b>&quot;{searchParams.title}&quot;</b>
             </p>

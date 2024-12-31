@@ -34,7 +34,7 @@ export function CategorySearchContainer({
         />
       </section>
       {searchParams.name && (
-        <p className="mt-3">
+        <p className="mt-3 max-md:text-center">
           Showing categories containing name:{' '}
           <b>&quot;{searchParams.name}&quot;</b>
         </p>
